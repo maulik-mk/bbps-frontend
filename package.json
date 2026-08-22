@@ -1,6 +1,6 @@
 {
-  "name": "sakai-react",
-  "version": "10.1.0",
+  "name": "fin",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
