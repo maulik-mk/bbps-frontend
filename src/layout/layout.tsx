@@ -8,7 +8,6 @@ import { classNames } from 'primereact/utils';
 import AppFooter from './AppFooter';
 import AppSidebar from './AppSidebar';
 import AppTopbar from './AppTopbar';
-import AppConfig from './AppConfig';
 import { LayoutContext } from './context/layoutcontext';
 import { PrimeReactContext } from 'primereact/api';
 import { ChildContainerProps, LayoutState, AppTopbarRef } from '@/types';
@@ -40,6 +39,10 @@ const Layout = ({ children }: ChildContainerProps) => {
         hideMenu();
         hideProfileMenu();
     }, [location]);
+
+    useEffect(() => {
+        document.documentElement.style.fontSize = layoutConfig.scale + 'px';
+    }, [layoutConfig.scale]);
 
     const [bindProfileMenuOutsideClickListener, unbindProfileMenuOutsideClickListener] = useEventListener({
         type: 'click',
@@ -132,7 +135,6 @@ const Layout = ({ children }: ChildContainerProps) => {
                     <div className="layout-main">{children}</div>
                     <AppFooter />
                 </div>
-                <AppConfig />
                 <div className="layout-mask"></div>
             </div>
         </React.Fragment>
