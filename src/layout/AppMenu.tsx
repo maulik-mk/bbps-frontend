@@ -5,21 +5,45 @@ import { MenuProvider } from './context/menucontext';
 import { Link } from "react-router-dom";
 import { AppMenuItem } from '@/types';
 
+import { useAuth } from '../context/AuthContext';
+
 const AppMenu = () => {
     const { layoutConfig } = useContext(LayoutContext);
+    const { user } = useAuth();
+    const userRole = user?.role || '';
+
+    const managementItems = [];
+
+    if (userRole === 'Admin' || userRole === 'admin') {
+        managementItems.push(
+            { label: 'Master Distributor', icon: 'pi pi-fw pi-user-plus', to: '/users/master-distributor' },
+            { label: 'Distributor', icon: 'pi pi-fw pi-users', to: '/users/distributor' },
+            { label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' }
+        );
+    } else if (userRole === 'Master Distributor' || userRole === 'master_distributor') {
+        managementItems.push(
+            { label: 'Distributor', icon: 'pi pi-fw pi-users', to: '/users/distributor' },
+            { label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' }
+        );
+    } else if (userRole === 'Distributor' || userRole === 'distributor') {
+        managementItems.push(
+            { label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' }
+        );
+    }
 
     const model: AppMenuItem[] = [
         {
             label: 'Home',
             items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
-        },
-        {
-            label: 'Management',
-            items: [
-                { label: 'User Management', icon: 'pi pi-fw pi-users', to: '/pages/crud' }
-            ]
         }
     ];
+
+    if (managementItems.length > 0) {
+        model.push({
+            label: 'User Management',
+            items: managementItems
+        });
+    }
 
     return (
         <MenuProvider>
