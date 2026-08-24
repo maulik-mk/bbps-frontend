@@ -1,5 +1,5 @@
 'use client';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import React, { useContext, useState, useEffect } from 'react';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
@@ -16,7 +16,7 @@ const LoginPage = () => {
     const [checked, setChecked] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    
+
     const { layoutConfig } = useContext(LayoutContext);
     const { login, isAuthenticated } = useAuth();
     const navigate = useNavigate();
@@ -34,10 +34,10 @@ const LoginPage = () => {
             setError('Please enter mobile number and password');
             return;
         }
-        
+
         setError('');
         setLoading(true);
-        
+
         try {
             const response = await authService.login({ mobile, password });
             login(response.data.token, response.data.user);
@@ -68,30 +68,22 @@ const LoginPage = () => {
 
                         <div>
                             {error && <div className="p-3 mb-4 text-red-700 bg-red-100 border-round">{error}</div>}
-                        
+
                             <label htmlFor="mobile" className="block text-900 text-xl font-medium mb-2">
                                 Mobile Number
                             </label>
-                            <InputText 
-                                id="mobile" 
-                                type="text" 
-                                placeholder="Enter mobile number" 
-                                className="w-full md:w-30rem mb-5" 
-                                style={{ padding: '1rem' }} 
-                                value={mobile}
-                                onChange={(e) => setMobile(e.target.value)}
-                            />
+                            <InputText id="mobile" type="text" placeholder="Enter mobile number" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} value={mobile} onChange={(e) => setMobile(e.target.value)} />
 
                             <label htmlFor="password" className="block text-900 font-medium text-xl mb-2">
                                 Password
                             </label>
-                            <Password 
-                                inputId="password" 
-                                value={password} 
-                                onChange={(e) => setPassword(e.target.value)} 
-                                placeholder="Enter password" 
-                                toggleMask 
-                                className="w-full mb-5" 
+                            <Password
+                                inputId="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter password"
+                                toggleMask
+                                className="w-full mb-5"
                                 inputClassName="w-full p-3 md:w-30rem"
                                 feedback={false}
                             ></Password>
@@ -102,12 +94,7 @@ const LoginPage = () => {
                                     <label htmlFor="rememberme">Remember me</label>
                                 </div>
                             </div>
-                            <Button 
-                                label={loading ? "Signing in..." : "Sign In"} 
-                                className="w-full p-3 text-xl" 
-                                onClick={handleLogin}
-                                disabled={loading}
-                            ></Button>
+                            <Button label={loading ? 'Signing in...' : 'Sign In'} className="w-full p-3 text-xl" onClick={handleLogin} disabled={loading}></Button>
                         </div>
                     </div>
                 </div>

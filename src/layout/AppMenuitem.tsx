@@ -1,6 +1,6 @@
 'use client';
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Ripple } from 'primereact/ripple';
 import { classNames } from 'primereact/utils';
 import React, { useEffect, useContext } from 'react';

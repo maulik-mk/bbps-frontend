@@ -1,5 +1,5 @@
 'use client';
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from 'react-router-dom';
 import React, { useContext, useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
@@ -16,7 +16,7 @@ const SignupPage = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
-    
+
     const { layoutConfig } = useContext(LayoutContext);
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
@@ -34,10 +34,10 @@ const SignupPage = () => {
             setError('Please enter mobile number and password');
             return;
         }
-        
+
         setError('');
         setLoading(true);
-        
+
         try {
             await authService.signup({ mobile, email, password });
             setSuccess(true);
@@ -69,54 +69,33 @@ const SignupPage = () => {
                         <div>
                             {error && <div className="p-3 mb-4 text-red-700 bg-red-100 border-round">{error}</div>}
                             {success && <div className="p-3 mb-4 text-green-700 bg-green-100 border-round">Registration successful! Redirecting to login...</div>}
-                        
+
                             <label htmlFor="mobile" className="block text-900 text-xl font-medium mb-2">
                                 Mobile Number
                             </label>
-                            <InputText 
-                                id="mobile" 
-                                type="text" 
-                                placeholder="Enter mobile number" 
-                                className="w-full md:w-30rem mb-5" 
-                                style={{ padding: '1rem' }} 
-                                value={mobile}
-                                onChange={(e) => setMobile(e.target.value)}
-                            />
-                            
+                            <InputText id="mobile" type="text" placeholder="Enter mobile number" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} value={mobile} onChange={(e) => setMobile(e.target.value)} />
+
                             <label htmlFor="email" className="block text-900 text-xl font-medium mb-2">
                                 Email (Optional)
                             </label>
-                            <InputText 
-                                id="email" 
-                                type="email" 
-                                placeholder="Enter email address" 
-                                className="w-full md:w-30rem mb-5" 
-                                style={{ padding: '1rem' }} 
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
+                            <InputText id="email" type="email" placeholder="Enter email address" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} value={email} onChange={(e) => setEmail(e.target.value)} />
 
                             <label htmlFor="password" className="block text-900 font-medium text-xl mb-2">
                                 Password
                             </label>
-                            <Password 
-                                inputId="password" 
-                                value={password} 
-                                onChange={(e) => setPassword(e.target.value)} 
-                                placeholder="Create password" 
-                                toggleMask 
-                                className="w-full mb-5" 
+                            <Password
+                                inputId="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Create password"
+                                toggleMask
+                                className="w-full mb-5"
                                 inputClassName="w-full p-3 md:w-30rem"
                                 feedback={true}
                             ></Password>
 
-                            <Button 
-                                label={loading ? "Registering..." : "Register"} 
-                                className="w-full p-3 text-xl mt-3" 
-                                onClick={handleSignup}
-                                disabled={loading || success}
-                            ></Button>
-                            
+                            <Button label={loading ? 'Registering...' : 'Register'} className="w-full p-3 text-xl mt-3" onClick={handleSignup} disabled={loading || success}></Button>
+
                             <div className="text-center mt-5">
                                 <span className="text-600 font-medium">Already have an account? </span>
                                 <Link to="/login" className="font-medium no-underline ml-1 text-primary cursor-pointer">

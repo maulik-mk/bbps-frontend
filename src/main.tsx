@@ -10,11 +10,11 @@ import '../styles/layout/layout.scss';
 import '../styles/demo/Demos.scss';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <PrimeReactProvider>
-      <LayoutProvider>
-        <App />
-      </LayoutProvider>
-    </PrimeReactProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <PrimeReactProvider>
+            <LayoutProvider>
+                <App />
+            </LayoutProvider>
+        </PrimeReactProvider>
+    </React.StrictMode>
 );

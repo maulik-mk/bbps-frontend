@@ -34,7 +34,7 @@ const Layout = ({ children }: ChildContainerProps) => {
     });
 
     const location = useLocation();
-    
+
     useEffect(() => {
         hideMenu();
         hideProfileMenu();

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppMenuitem from './AppMenuitem';
 import { LayoutContext } from './context/layoutcontext';
 import { MenuProvider } from './context/menucontext';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { AppMenuItem } from '@/types';
 
 import { useAuth } from '../context/AuthContext';
@@ -21,14 +21,9 @@ const AppMenu = () => {
             { label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' }
         );
     } else if (userRole === 'Master Distributor' || userRole === 'master_distributor') {
-        managementItems.push(
-            { label: 'Distributor', icon: 'pi pi-fw pi-users', to: '/users/distributor' },
-            { label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' }
-        );
+        managementItems.push({ label: 'Distributor', icon: 'pi pi-fw pi-users', to: '/users/distributor' }, { label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' });
     } else if (userRole === 'Distributor' || userRole === 'distributor') {
-        managementItems.push(
-            { label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' }
-        );
+        managementItems.push({ label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' });
     }
 
     const model: AppMenuItem[] = [
