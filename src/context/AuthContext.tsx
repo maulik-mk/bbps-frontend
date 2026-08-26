@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface User {
     id: string;
+    name?: string;
     mobile: string;
     email?: string;
     role: string;
