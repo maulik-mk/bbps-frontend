@@ -31,10 +31,28 @@ const AppMenu = () => {
             label: 'Home',
             items: [
                 { label: 'Dashboard', icon: 'pi pi-fw pi-th-large', to: '/' },
-                { label: 'Transactions', icon: 'pi pi-fw pi-wallet', to: '/bbps/transactions' }
+                { label: 'Transactions', icon: 'pi pi-fw pi-wallet', to: '/transactions' }
             ]
         }
     ];
+
+    if (userRole === 'Admin' || userRole === 'admin') {
+        model.push({
+            label: 'Master',
+            items: [{ label: 'Schemes', icon: 'pi pi-fw pi-tags', to: '/master/schemes' }]
+        });
+    }
+
+    if (userRole === 'Retailer' || userRole === 'retailer') {
+        model.push({
+            label: 'BBPS Services',
+            items: [
+                { label: 'Complaint Registration', icon: 'pi pi-fw pi-file-edit', to: '/bbps/complaint/registration' },
+                { label: 'Check Complaint Status', icon: 'pi pi-fw pi-info-circle', to: '/bbps/complaint/track' },
+                { label: 'Transaction Search', icon: 'pi pi-fw pi-search', to: '/bbps/transactions/search' }
+            ]
+        });
+    }
 
     if (managementItems.length > 0) {
         model.push({

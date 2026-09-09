@@ -17,8 +17,14 @@ import NotFound from './pages/(full-page)/pages/notfound/page';
 import Categories from './pages/(main)/bbps/page';
 import CategorySelection from './pages/(main)/bbps/category/page';
 import BillSummary from './pages/(main)/bbps/bills/page';
-import Transactions from './pages/(main)/bbps/transactions/page';
-import Receipt from './pages/(main)/bbps/transactions/receipt/page';
+import Transactions from './pages/(main)/transactions/page';
+import Receipt from './pages/(main)/bbps/receipt/page';
+import SchemesPage from './pages/(main)/schemes/page';
+import SchemeChargesPage from './pages/(main)/schemes/charges/page';
+
+import ComplaintRegistration from './pages/(main)/bbps/complaint/registration';
+import TrackComplaint from './pages/(main)/bbps/complaint/track';
+import TransactionSearch from './pages/(main)/bbps/Search';
 
 export default function App() {
     return (
@@ -75,6 +81,28 @@ export default function App() {
                     />
 
                     <Route
+                        path="/master/schemes"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <SchemesPage />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/master/schemes/:id/charges"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <SchemeChargesPage />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
                         path="/bbps/categories"
                         element={
                             <ProtectedRoute>
@@ -108,7 +136,7 @@ export default function App() {
                     />
 
                     <Route
-                        path="/bbps/transactions"
+                        path="/transactions"
                         element={
                             <ProtectedRoute>
                                 <Layout>
@@ -118,6 +146,38 @@ export default function App() {
                         }
                     />
 
+                    <Route
+                        path="/bbps/complaint/registration"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <ComplaintRegistration />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/bbps/complaint/track"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <TrackComplaint />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/bbps/transactions/search"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <TransactionSearch />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
                     <Route
                         path="/bbps/transactions/receipt/:id"
                         element={

@@ -8,4 +8,14 @@
 @import "./_footer";
 @import "./_responsive";
 @import "./_utils";
-@import "./_typography";@import './dashboard_redesign';
+@import './_typography';
+@import './dashboard';
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

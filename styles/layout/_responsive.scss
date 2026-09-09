@@ -62,7 +62,11 @@
     .layout-wrapper {
         .layout-main-container {
             margin-left: 0;
-            padding-left: 2rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            width: 100%;
+            overflow-x: hidden;
+            box-sizing: border-box;
         }
 
         .layout-sidebar {
@@ -94,6 +98,45 @@
                 display: block;
                 animation: fadein $transitionDuration;
             }
+        }
+    }
+}
+
+/* NATIVE RESPONSIVE FIXES FOR COMPONENTS */
+
+/* Prevent overall page horizontal scroll */
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+@media (max-width: 768px) {
+    /* 1. Fix Dropdown width and text wrapping on mobile */
+    .p-dropdown-panel {
+        max-width: 95vw !important;
+        
+        .p-dropdown-item {
+            white-space: normal !important;
+            word-break: break-word !important;
+            padding: 0.75rem 1rem !important;
+            line-height: 1.5;
+        }
+    }
+
+    /* 2. Ensure DataTables always scroll horizontally instead of squishing/overflowing */
+    .p-datatable .p-datatable-wrapper {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* 3. Fix negative margin overflow caused by nested PrimeFlex grids on mobile */
+    .grid {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+        
+        > .col, > [class*="col-"] {
+            padding-right: 0.5rem !important;
+            padding-left: 0.5rem !important;
         }
     }
 }

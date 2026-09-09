@@ -5,10 +5,10 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { Toolbar } from 'primereact/toolbar';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { userService } from '../../../services/user.service';
+import { PageHeader } from '../../../components/dashboard/PageHeader';
 
 interface UserManagementTableProps {
     role: string;
@@ -79,16 +79,6 @@ const UserManagementTable = ({ role, title }: UserManagementTableProps) => {
         setUser(_user);
     };
 
-    const leftToolbarTemplate = () => {
-        return (
-            <React.Fragment>
-                <div className="my-2">
-                    <Button label="New" icon="pi pi-plus" severity="success" className="mr-2" onClick={openNew} />
-                </div>
-            </React.Fragment>
-        );
-    };
-
     const userDialogFooter = (
         <React.Fragment>
             <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
@@ -97,19 +87,19 @@ const UserManagementTable = ({ role, title }: UserManagementTableProps) => {
     );
 
     return (
-        <div className="grid crud-demo">
+        <div className="grid">
             <div className="col-12">
-                <div className="card">
-                    <Toast ref={toast} />
-                    <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
+                <Toast ref={toast} />
+                <PageHeader title={`${title} Management`} actionLabel="New" actionIcon="pi pi-plus" actionColor="primary" onActionClick={openNew} />
 
+                <div className="mt-4">
                     <DataTable
                         value={users}
                         dataKey="id"
                         paginator
                         rows={10}
                         rowsPerPageOptions={[5, 10, 25]}
-                        className="datatable-responsive"
+                        className="custom-datatable"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users"
                         emptyMessage="No users found."
@@ -122,24 +112,24 @@ const UserManagementTable = ({ role, title }: UserManagementTableProps) => {
                         <Column field="status" header="Status" sortable headerStyle={{ minWidth: '10rem' }}></Column>
                         <Column field="created_by" header="Created By" sortable headerStyle={{ minWidth: '15rem' }}></Column>
                     </DataTable>
-
-                    <Dialog visible={userDialog} style={{ width: '450px' }} header={`Add ${title}`} modal className="p-fluid" footer={userDialogFooter} onHide={hideDialog}>
-                        <div className="field">
-                            <label htmlFor="name">Name</label>
-                            <InputText id="name" value={user.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !user.name })} />
-                            {submitted && !user.name && <small className="p-invalid text-red-500">Name is required.</small>}
-                        </div>
-                        <div className="field mt-3">
-                            <label htmlFor="mobile">Mobile</label>
-                            <InputText id="mobile" value={user.mobile} onChange={(e) => onInputChange(e, 'mobile')} required className={classNames({ 'p-invalid': submitted && !user.mobile })} />
-                            {submitted && !user.mobile && <small className="p-invalid text-red-500">Mobile is required.</small>}
-                        </div>
-                        <div className="field mt-3">
-                            <label htmlFor="email">Email</label>
-                            <InputText id="email" value={user.email} onChange={(e) => onInputChange(e, 'email')} />
-                        </div>
-                    </Dialog>
                 </div>
+
+                <Dialog visible={userDialog} style={{ width: '450px' }} header={`Add ${title}`} modal className="p-fluid" footer={userDialogFooter} onHide={hideDialog}>
+                    <div className="field">
+                        <label htmlFor="name">Name</label>
+                        <InputText id="name" value={user.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !user.name })} />
+                        {submitted && !user.name && <small className="p-invalid text-red-500">Name is required.</small>}
+                    </div>
+                    <div className="field mt-3">
+                        <label htmlFor="mobile">Mobile</label>
+                        <InputText id="mobile" value={user.mobile} onChange={(e) => onInputChange(e, 'mobile')} required className={classNames({ 'p-invalid': submitted && !user.mobile })} />
+                        {submitted && !user.mobile && <small className="p-invalid text-red-500">Mobile is required.</small>}
+                    </div>
+                    <div className="field mt-3">
+                        <label htmlFor="email">Email</label>
+                        <InputText id="email" value={user.email} onChange={(e) => onInputChange(e, 'email')} />
+                    </div>
+                </Dialog>
             </div>
         </div>
     );
