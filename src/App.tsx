@@ -12,7 +12,6 @@ import RetailerPage from './pages/(main)/users/retailer/page';
 import AccessDenied from './pages/(full-page)/auth/access/page';
 import AuthError from './pages/(full-page)/auth/error/page';
 import Login from './pages/(full-page)/auth/login/page';
-import Signup from './pages/(full-page)/auth/signup/page';
 import NotFound from './pages/(full-page)/pages/notfound/page';
 import Categories from './pages/(main)/bbps/page';
 import CategorySelection from './pages/(main)/bbps/category/page';
@@ -35,7 +34,6 @@ export default function App() {
                     <Route path="/auth/access" element={<AccessDenied />} />
                     <Route path="/auth/error" element={<AuthError />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
                     <Route path="/pages/notfound" element={<NotFound />} />
 
                     {/* Main Routes with Layout (Protected) */}
