@@ -16,7 +16,7 @@ const AppMenu = () => {
 
     if (userRole === 'Admin' || userRole === 'admin') {
         managementItems.push(
-            { label: 'Master Distributor', icon: 'pi pi-fw pi-user-plus', to: '/users/master-distributor' },
+            { label: 'Master Distributor', icon: 'pi pi-fw pi-box', to: '/users/master-distributor' },
             { label: 'Distributor', icon: 'pi pi-fw pi-users', to: '/users/distributor' },
             { label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' }
         );
@@ -29,7 +29,10 @@ const AppMenu = () => {
     const model: AppMenuItem[] = [
         {
             label: 'Home',
-            items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
+            items: [
+                { label: 'Dashboard', icon: 'pi pi-fw pi-th-large', to: '/' },
+                { label: 'Transactions', icon: 'pi pi-fw pi-wallet', to: '/bbps/transactions' }
+            ]
         }
     ];
 

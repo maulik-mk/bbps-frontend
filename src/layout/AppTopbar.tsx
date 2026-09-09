@@ -16,14 +16,17 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
     }));
 
     return (
-        <div className="layout-topbar">
-            <button ref={menubuttonRef} type="button" className="p-link layout-topbar-button" onClick={onMenuToggle}>
-                <i className="pi pi-bars" />
-            </button>
+        <div className="layout-topbar flex align-items-center justify-content-between">
+            <div className="flex align-items-center">
+                <button ref={menubuttonRef} type="button" className="p-link layout-topbar-button" onClick={onMenuToggle}>
+                    <i className="pi pi-bars" />
+                </button>
 
-            <button ref={topbarmenubuttonRef} type="button" className="p-link layout-topbar-menu-button layout-topbar-button" onClick={showProfileSidebar}>
-                <i className="pi pi-ellipsis-v" />
-            </button>
+                <div className="search-input-wrapper ml-4 hidden md:block">
+                    <i className="pi pi-search"></i>
+                    <input type="text" placeholder="Search.." />
+                </div>
+            </div>
 
             <div ref={topbarmenuRef} className={classNames('layout-topbar-menu', { 'layout-topbar-menu-mobile-active': layoutState.profileSidebarVisible })}>
                 <button type="button" className="p-link layout-topbar-button">
@@ -31,6 +34,10 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                     <span>Profile</span>
                 </button>
             </div>
+
+            <button ref={topbarmenubuttonRef} type="button" className="p-link layout-topbar-menu-button layout-topbar-button" onClick={showProfileSidebar}>
+                <i className="pi pi-ellipsis-v" />
+            </button>
         </div>
     );
 });

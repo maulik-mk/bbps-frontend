@@ -14,6 +14,11 @@ import AuthError from './pages/(full-page)/auth/error/page';
 import Login from './pages/(full-page)/auth/login/page';
 import Signup from './pages/(full-page)/auth/signup/page';
 import NotFound from './pages/(full-page)/pages/notfound/page';
+import Categories from './pages/(main)/bbps/page';
+import CategorySelection from './pages/(main)/bbps/category/page';
+import BillSummary from './pages/(main)/bbps/bills/page';
+import Transactions from './pages/(main)/bbps/transactions/page';
+import Receipt from './pages/(main)/bbps/transactions/receipt/page';
 
 export default function App() {
     return (
@@ -64,6 +69,61 @@ export default function App() {
                             <ProtectedRoute>
                                 <Layout>
                                     <RetailerPage />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/bbps/categories"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <Categories />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/bbps/category/:service"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <CategorySelection />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/bbps/bill/:billerId"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <BillSummary />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/bbps/transactions"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <Transactions />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/bbps/transactions/receipt/:id"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <Receipt />
                                 </Layout>
                             </ProtectedRoute>
                         }
