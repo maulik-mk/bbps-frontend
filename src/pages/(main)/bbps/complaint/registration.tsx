@@ -62,7 +62,7 @@ const ComplaintRegistration = () => {
     return (
         <div className="grid">
             <Toast ref={toast} />
-            <div className="col-12 md:col-8 md:offset-2">
+            <div className="col-12 lg:col-8">
                 <BBPSPageCard title="Register Complaint" subtitle="Submit a complaint for a specific BBPS transaction." onBack={() => navigate(-1)}>
                     <form onSubmit={handleSubmit} className="p-fluid">
                         <div className="grid formgrid">
@@ -162,6 +162,50 @@ const ComplaintRegistration = () => {
                         </div>
                     </form>
                 </BBPSPageCard>
+            </div>
+
+            <div className="col-12 lg:col-4">
+                <div className="bg-white border-1 border-solid border-200 border-round-2xl p-5 shadow-none h-full">
+                    <h3 className="m-0 text-900 font-bold text-xl mb-4">What happens next?</h3>
+                    <div className="flex flex-column gap-4">
+                        <div className="flex align-items-start">
+                            <div className="flex align-items-center justify-content-center bg-blue-100 text-blue-600 border-circle mr-3" style={{ width: '2.5rem', height: '2.5rem', minWidth: '2.5rem' }}>
+                                <span className="font-bold">1</span>
+                            </div>
+                            <div>
+                                <span className="font-bold text-700 block mb-1">Ticket Creation</span>
+                                <p className="m-0 text-500 text-sm line-height-3">A unique Tracking ID is generated instantly for your complaint.</p>
+                            </div>
+                        </div>
+                        <div className="flex align-items-start">
+                            <div className="flex align-items-center justify-content-center bg-blue-100 text-blue-600 border-circle mr-3" style={{ width: '2.5rem', height: '2.5rem', minWidth: '2.5rem' }}>
+                                <span className="font-bold">2</span>
+                            </div>
+                            <div>
+                                <span className="font-bold text-700 block mb-1">Agent Assignment</span>
+                                <p className="m-0 text-500 text-sm line-height-3">Our dedicated BBPS resolution team begins investigating the transaction.</p>
+                            </div>
+                        </div>
+                        <div className="flex align-items-start">
+                            <div className="flex align-items-center justify-content-center bg-blue-100 text-blue-600 border-circle mr-3" style={{ width: '2.5rem', height: '2.5rem', minWidth: '2.5rem' }}>
+                                <span className="font-bold">3</span>
+                            </div>
+                            <div>
+                                <span className="font-bold text-700 block mb-1">Biller Escalation</span>
+                                <p className="m-0 text-500 text-sm line-height-3">If required, we coordinate directly with your biller to resolve the failure.</p>
+                            </div>
+                        </div>
+                        <div className="flex align-items-start">
+                            <div className="flex align-items-center justify-content-center bg-green-100 text-green-600 border-circle mr-3" style={{ width: '2.5rem', height: '2.5rem', minWidth: '2.5rem' }}>
+                                <i className="pi pi-check font-bold"></i>
+                            </div>
+                            <div>
+                                <span className="font-bold text-700 block mb-1">Resolution</span>
+                                <p className="m-0 text-500 text-sm line-height-3">You will be notified via SMS/Email once the issue is completely resolved.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* Registration Successful Dialog */}

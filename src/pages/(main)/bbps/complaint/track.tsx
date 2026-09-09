@@ -35,7 +35,7 @@ const TrackComplaint = () => {
     return (
         <div className="grid">
             <Toast ref={toast} />
-            <div className="col-12 md:col-8 md:offset-2">
+            <div className="col-12 lg:col-7">
                 <BBPSPageCard title="Track Complaint Status" subtitle="Enter your Complaint Ticket ID to check the real-time status." onBack={() => navigate(-1)}>
                     <div className="p-fluid">
                         <div className="field mb-6">
@@ -106,6 +106,43 @@ const TrackComplaint = () => {
                         </div>
                     </div>
                 )}
+            </div>
+
+            <div className="col-12 lg:col-5">
+                <div className="bg-white border-1 border-solid border-200 border-round-2xl p-5 shadow-none h-full">
+                    <h3 className="m-0 text-900 font-bold text-xl mb-4">Ticket Status Guide</h3>
+                    <div className="flex flex-column gap-4">
+                        <div className="flex align-items-start">
+                            <i className="pi pi-clock text-orange-500 text-2xl mr-3 mt-1"></i>
+                            <div>
+                                <span className="font-bold text-700 block mb-1">In Progress</span>
+                                <p className="m-0 text-500 text-sm line-height-3">Your ticket is actively being reviewed by our support agents. Average resolution time is 24-48 hours.</p>
+                            </div>
+                        </div>
+                        <div className="flex align-items-start">
+                            <i className="pi pi-building text-blue-500 text-2xl mr-3 mt-1"></i>
+                            <div>
+                                <span className="font-bold text-700 block mb-1">Pending Biller Response</span>
+                                <p className="m-0 text-500 text-sm line-height-3">We have escalated the issue to the respective biller and are awaiting their clarification.</p>
+                            </div>
+                        </div>
+                        <div className="flex align-items-start">
+                            <i className="pi pi-check-circle text-green-500 text-2xl mr-3 mt-1"></i>
+                            <div>
+                                <span className="font-bold text-700 block mb-1">Resolved</span>
+                                <p className="m-0 text-500 text-sm line-height-3">The issue has been fixed and your transaction status or refund has been updated successfully.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-6 p-4 surface-50 border-round-xl">
+                        <span className="font-bold text-700 block mb-2">Need immediate assistance?</span>
+                        <p className="m-0 text-500 text-sm mb-3">If your transaction is urgent, please call our 24/7 toll-free helpline.</p>
+                        <div className="flex align-items-center text-blue-600 font-bold text-lg">
+                            <i className="pi pi-phone mr-2"></i>
+                            1800-123-4567
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
