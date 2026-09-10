@@ -9,8 +9,6 @@ import MasterDistributorPage from './pages/(main)/users/master-distributor/page'
 import DistributorPage from './pages/(main)/users/distributor/page';
 import RetailerPage from './pages/(main)/users/retailer/page';
 
-import AccessDenied from './pages/(full-page)/auth/access/page';
-import AuthError from './pages/(full-page)/auth/error/page';
 import Login from './pages/(full-page)/auth/login/page';
 import NotFound from './pages/(full-page)/pages/notfound/page';
 import Categories from './pages/(main)/bbps/page';
@@ -31,8 +29,6 @@ export default function App() {
             <AuthProvider>
                 <Routes>
                     {/* Full Page Routes */}
-                    <Route path="/auth/access" element={<AccessDenied />} />
-                    <Route path="/auth/error" element={<AuthError />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/pages/notfound" element={<NotFound />} />
 
