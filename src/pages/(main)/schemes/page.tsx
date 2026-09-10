@@ -134,7 +134,7 @@ const SchemesPage = () => {
         <div className="grid">
             <div className="col-12">
                 <Toast ref={toast} />
-                <PageHeader title="Schemes Management" actionLabel="New Scheme" actionIcon="pi pi-plus" actionColor="primary" onActionClick={openNew} />
+                <PageHeader title="Schemes" actionLabel="New Scheme" actionIcon="pi pi-plus" actionColor="primary" onActionClick={openNew} />
 
                 <div className="mt-4">
                     <DataTable

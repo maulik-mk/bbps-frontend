@@ -5,6 +5,17 @@ export interface UserData {
     mobile: string;
     email?: string;
     role: string;
+    shopname: string;
+    aadharcard: string;
+    pancard: string;
+    address: string;
+    city: string;
+    state: string;
+    pincode: string;
+    scheme_id: number;
+    bankname?: string;
+    accountnumber?: string;
+    ifsccode?: string;
 }
 
 export const userService = {
