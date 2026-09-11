@@ -24,8 +24,18 @@ export const userService = {
         return response.data;
     },
 
+    getUserDetails: async (publicId: string) => {
+        const response = await api.get(`/users/${encodeURIComponent(publicId)}/details`);
+        return response.data;
+    },
+
     createUser: async (userData: UserData) => {
         const response = await api.post('/users/create-account', userData);
+        return response.data;
+    },
+
+    getProfile: async () => {
+        const response = await api.get('/users/me');
         return response.data;
     }
 };

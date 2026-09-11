@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { TransactionList, TransactionItem } from '../../components/dashboard/TransactionList';
 import { WalletButton } from '../../components/dashboard/WalletButton';
+import { transactionService } from '../../services/transaction.service';
+import { userService } from '../../services/user.service';
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -10,11 +12,25 @@ const Dashboard = () => {
     const userName = user?.name || 'User';
 
     const [recentTransactions, setRecentTransactions] = useState<any[]>([]);
+    const [mainBalance, setMainBalance] = useState<number>(0);
 
     useEffect(() => {
-        fetch('/dummy/transactions.json')
-            .then((res) => res.json())
-            .then((data) => setRecentTransactions(data.slice(0, 4)))
+        userService
+            .getProfile()
+            .then((res) => {
+                if (res.data && res.data.mainbalance) {
+                    setMainBalance(parseFloat(res.data.mainbalance));
+                }
+            })
+            .catch((err) => console.error('Failed to fetch profile', err));
+
+        transactionService
+            .getTransactions()
+            .then((res) => {
+                if (res.data) {
+                    setRecentTransactions(res.data.slice(0, 4));
+                }
+            })
             .catch((err) => console.error('Failed to fetch transactions', err));
     }, []);
 
@@ -39,8 +55,8 @@ const Dashboard = () => {
                     </div>
                     <div className="mb-6 relative" style={{ zIndex: 1 }}>
                         <div className="text-500 font-medium mb-1">Total Balance</div>
-                        <span className="text-5xl font-bold tracking-tight">₹45,231</span>
-                        <span className="text-2xl font-medium text-500">.00</span>
+                        <span className="text-5xl font-bold tracking-tight">₹{Math.floor(mainBalance).toLocaleString('en-IN')}</span>
+                        <span className="text-2xl font-medium text-500">.{(mainBalance % 1).toFixed(2).substring(2)}</span>
                     </div>
                     <div className="flex gap-3 relative" style={{ zIndex: 1 }}>
                         <WalletButton label="Add Money" icon="pi pi-plus" bgColor="#ffffff" textColor="#0f172a" />
@@ -61,8 +77,8 @@ const Dashboard = () => {
                     </div>
                     <div className="mb-6 relative" style={{ zIndex: 1 }}>
                         <div className="text-blue-200 font-medium mb-1">Available for Payout</div>
-                        <span className="text-5xl font-bold tracking-tight">₹12,450</span>
-                        <span className="text-2xl font-medium text-blue-200">.50</span>
+                        <span className="text-5xl font-bold tracking-tight">₹0</span>
+                        <span className="text-2xl font-medium text-blue-200">.00</span>
                     </div>
                     <div className="flex gap-3 relative" style={{ zIndex: 1 }}>
                         <WalletButton label="Withdraw to Bank" icon="pi pi-building" bgColor="#ffffff" textColor="#1e40af" />
@@ -71,20 +87,22 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div className="col-12 md:col-6 lg:col-4">
-                <div className="surface-card shadow-2 border-round-2xl p-5 flex flex-column justify-content-between h-full relative overflow-hidden border-1 border-200" style={{ background: 'linear-gradient(to bottom right, #f8fafc, #f1f5f9)' }}>
-                    <div className="relative" style={{ zIndex: 1 }}>
-                        <div className="w-4rem h-4rem flex align-items-center justify-content-center border-round-2xl mb-4 bg-white shadow-1">
-                            <img src="/logo/B_mnemonic.png" alt="Bharat Connect" style={{ width: '30px' }} />
+            {user?.role === 'retailer' && (
+                <div className="col-12 md:col-6 lg:col-4">
+                    <div className="surface-card shadow-2 border-round-2xl p-5 flex flex-column justify-content-between h-full relative overflow-hidden border-1 border-200" style={{ background: 'linear-gradient(to bottom right, #f8fafc, #f1f5f9)' }}>
+                        <div className="relative" style={{ zIndex: 1 }}>
+                            <div className="w-4rem h-4rem flex align-items-center justify-content-center border-round-2xl mb-4 bg-white shadow-1">
+                                <img src="/logo/B_mnemonic.png" alt="Bharat Connect" style={{ width: '30px' }} />
+                            </div>
+                            <h5 className="text-2xl font-bold text-900 mb-2 mt-0 tracking-tight">Bharat Connect Bills</h5>
+                            <p className="text-600 text-base line-height-3 mb-5 font-medium">Pay electricity, mobile, DTH, and all other utilities securely in one place.</p>
                         </div>
-                        <h5 className="text-2xl font-bold text-900 mb-2 mt-0 tracking-tight">Bharat Connect Bills</h5>
-                        <p className="text-600 text-base line-height-3 mb-5 font-medium">Pay electricity, mobile, DTH, and all other utilities securely in one place.</p>
-                    </div>
-                    <div className="relative" style={{ zIndex: 1 }}>
-                        <WalletButton label="Explore Categories" icon="pi pi-arrow-right" bgColor="#2563eb" textColor="#ffffff" onClick={() => navigate('/bbps/categories')} />
+                        <div className="relative" style={{ zIndex: 1 }}>
+                            <WalletButton label="Explore Categories" icon="pi pi-arrow-right" bgColor="#2563eb" textColor="#ffffff" onClick={() => navigate('/bbps/categories')} />
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             {/* Bottom Row Lists */}
             <div className="col-12 xl:col-6 mt-4">
@@ -93,12 +111,12 @@ const Dashboard = () => {
                     {recentTransactions.map((tx) => (
                         <TransactionItem
                             key={tx.id}
-                            title={tx.provider}
-                            subtitle={`Payment by ${tx.userName}`}
-                            amount={formatCurrency(tx.amount)}
-                            icon={tx.status === 'SUCCESS' ? 'pi pi-check' : 'pi pi-times'}
-                            iconBgClass={tx.status === 'SUCCESS' ? 'bg-green-100' : 'bg-red-100'}
-                            iconTextClass={tx.status === 'SUCCESS' ? 'text-green-600' : 'text-red-600'}
+                            title={tx.service_name || 'Service Payment'}
+                            subtitle={`Txn ID: ${tx.txn_id}`}
+                            amount={formatCurrency(parseFloat(tx.total_amount))}
+                            icon={tx.status === 'success' ? 'pi pi-check' : 'pi pi-times'}
+                            iconBgClass={tx.status === 'success' ? 'bg-green-100' : 'bg-red-100'}
+                            iconTextClass={tx.status === 'success' ? 'text-green-600' : 'text-red-600'}
                             isViewable
                             onView={() => navigate(`/bbps/transactions/receipt/${tx.id}`)}
                         />

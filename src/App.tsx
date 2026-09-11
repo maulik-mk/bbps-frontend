@@ -22,6 +22,14 @@ import SchemeChargesPage from './pages/(main)/schemes/charges/page';
 import ComplaintRegistration from './pages/(main)/bbps/complaint/registration';
 import TrackComplaint from './pages/(main)/bbps/complaint/track';
 import TransactionSearch from './pages/(main)/bbps/Search';
+import LedgerPage from './pages/(main)/reports/ledger/page';
+import CommissionsPage from './pages/(main)/reports/commissions/page';
+
+// Settings Pages
+import ProfileSettings from './pages/(main)/settings/profile/page';
+import SecuritySettings from './pages/(main)/settings/security/page';
+import KycSettings from './pages/(main)/settings/kyc/page';
+import BankSettings from './pages/(main)/settings/banking/page';
 
 export default function App() {
     return (
@@ -99,7 +107,7 @@ export default function App() {
                     <Route
                         path="/bbps/categories"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['retailer']}>
                                 <Layout>
                                     <Categories />
                                 </Layout>
@@ -110,7 +118,7 @@ export default function App() {
                     <Route
                         path="/bbps/category/:service"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['retailer']}>
                                 <Layout>
                                     <CategorySelection />
                                 </Layout>
@@ -121,7 +129,7 @@ export default function App() {
                     <Route
                         path="/bbps/bill/:billerId"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['retailer']}>
                                 <Layout>
                                     <BillSummary />
                                 </Layout>
@@ -143,7 +151,7 @@ export default function App() {
                     <Route
                         path="/bbps/complaint/registration"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['retailer']}>
                                 <Layout>
                                     <ComplaintRegistration />
                                 </Layout>
@@ -154,7 +162,7 @@ export default function App() {
                     <Route
                         path="/bbps/complaint/track"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['retailer']}>
                                 <Layout>
                                     <TrackComplaint />
                                 </Layout>
@@ -165,7 +173,7 @@ export default function App() {
                     <Route
                         path="/bbps/transactions/search"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['retailer']}>
                                 <Layout>
                                     <TransactionSearch />
                                 </Layout>
@@ -175,9 +183,82 @@ export default function App() {
                     <Route
                         path="/bbps/transactions/receipt/:id"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['retailer']}>
                                 <Layout>
                                     <Receipt />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    {/* Settings Routes */}
+                    <Route
+                        path="/settings"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <ProfileSettings />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/settings/profile"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <ProfileSettings />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/settings/security"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <SecuritySettings />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/settings/kyc"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <KycSettings />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/settings/banking"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <BankSettings />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/reports/ledger"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <LedgerPage />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/reports/commissions"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <CommissionsPage />
                                 </Layout>
                             </ProtectedRoute>
                         }

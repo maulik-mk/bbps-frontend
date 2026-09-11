@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
+import { transactionService } from '../../../../services/transaction.service';
 
 const ReceiptPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -10,14 +11,15 @@ const ReceiptPage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('/dummy/transactions.json')
-            .then((res) => res.json())
-            .then((data: any[]) => {
-                const found = data.find((t) => t.id === id || t.transactionId === id || t.bbpsRefNo === id);
-                setTransaction(found || { notFound: true });
+        if (!id) return;
+        transactionService
+            .getReceipt(id)
+            .then((res) => {
+                if (res.data) setTransaction(res.data);
+                else setTransaction({ notFound: true });
             })
             .catch((err) => {
-                console.error('Failed to fetch transactions', err);
+                console.error('Failed to fetch transaction receipt', err);
                 setTransaction({ notFound: true });
             })
             .finally(() => setLoading(false));
@@ -42,8 +44,8 @@ const ReceiptPage = () => {
         );
     }
 
-    const isSuccess = transaction.status === 'SUCCESS';
-    const isPending = transaction.status === 'PENDING';
+    const isSuccess = transaction.status === 'success';
+    const isPending = transaction.status === 'pending';
 
     let statusIcon = 'pi pi-times-circle text-red-500';
     let statusColor = 'bg-red-100 text-red-700';
@@ -78,7 +80,7 @@ const ReceiptPage = () => {
                         <div className="flex align-items-center mb-3 sm:mb-0">
                             <i className={`${statusIcon} text-5xl mr-4`}></i>
                             <div>
-                                <div className="text-900 font-bold text-3xl mb-1">₹{transaction.amount?.toLocaleString('en-IN')}</div>
+                                <div className="text-900 font-bold text-3xl mb-1">₹{parseFloat(transaction.total_amount).toLocaleString('en-IN')}</div>
                                 <div className="text-600 font-medium text-sm uppercase tracking-wider">Total Amount {isSuccess ? 'Paid' : 'Attempted'}</div>
                             </div>
                         </div>
@@ -91,39 +93,67 @@ const ReceiptPage = () => {
                             <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
                                 <i className="pi pi-building mr-2"></i>Provider
                             </div>
-                            <div className="text-900 font-bold text-xl">{transaction.provider || transaction.billerName}</div>
+                            <div className="text-900 font-bold text-xl">{transaction.biller_name || 'N/A'}</div>
                         </div>
                         <div className="col-12 sm:col-6 p-3">
                             <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                <i className="pi pi-user mr-2"></i>Customer
+                                <i className="pi pi-user mr-2"></i>Customer / Mobile
                             </div>
-                            <div className="text-900 font-bold text-xl">{transaction.userName || transaction.customerName}</div>
+                            <div className="text-900 font-bold text-xl">{transaction.mobile}</div>
                         </div>
                         <div className="col-12 sm:col-6 p-3">
                             <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
                                 <i className="pi pi-hashtag mr-2"></i>Reference / ID
                             </div>
-                            <div className="text-900 font-bold font-mono text-lg">{transaction.billerNumber || transaction.consumerNumber}</div>
+                            <div className="text-900 font-bold font-mono text-lg">{transaction.consumer_number || 'N/A'}</div>
                         </div>
                         <div className="col-12 sm:col-6 p-3">
                             <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
                                 <i className="pi pi-file mr-2"></i>Transaction ID
                             </div>
-                            <div className="text-900 font-bold font-mono text-lg">{transaction.id}</div>
+                            <div className="text-900 font-bold font-mono text-lg">{transaction.txn_id}</div>
                         </div>
-                        {(transaction.utr || transaction.bbpsRefNo) && (
+                        {transaction.utr && (
                             <div className="col-12 sm:col-6 p-3">
                                 <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                    <i className="pi pi-sitemap mr-2"></i>BBPS Reference Number
+                                    <i className="pi pi-sitemap mr-2"></i>BBPS Reference Number / UTR
                                 </div>
-                                <div className="text-blue-700 bg-blue-50 font-bold font-mono inline-block px-2 py-1 border-round text-lg">{transaction.utr || transaction.bbpsRefNo}</div>
+                                <div className="text-blue-700 bg-blue-50 font-bold font-mono inline-block px-2 py-1 border-round text-lg">{transaction.utr}</div>
                             </div>
                         )}
                         <div className="col-12 sm:col-6 p-3">
                             <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
                                 <i className="pi pi-calendar mr-2"></i>Date & Time
                             </div>
-                            <div className="text-900 font-bold text-lg">{transaction.date ? new Date(transaction.date).toLocaleString('en-IN') : new Date().toLocaleString('en-IN')}</div>
+                            <div className="text-900 font-bold text-lg">{new Date(transaction.created_at).toLocaleString('en-IN')}</div>
+                        </div>
+
+                        <div className="col-12 p-0 mt-3 border-top-1 border-200"></div>
+
+                        <div className="col-12 sm:col-6 p-3">
+                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
+                                <i className="pi pi-wallet mr-2"></i>Opening Balance
+                            </div>
+                            <div className="text-900 font-bold text-lg">₹{parseFloat(transaction.balance_before || 0).toLocaleString('en-IN')}</div>
+                        </div>
+
+                        <div className="col-12 sm:col-6 p-3">
+                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
+                                <i className="pi pi-wallet mr-2"></i>Closing Balance
+                            </div>
+                            <div className="text-900 font-bold text-lg">₹{parseFloat(transaction.balance_after || 0).toLocaleString('en-IN')}</div>
+                        </div>
+                        <div className="col-12 sm:col-6 p-3">
+                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
+                                <i className="pi pi-bolt mr-2"></i>Bill Amount
+                            </div>
+                            <div className="text-900 font-bold text-lg">₹{parseFloat(transaction.bill_amount || 0).toLocaleString('en-IN')}</div>
+                        </div>
+                        <div className="col-12 sm:col-6 p-3">
+                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
+                                <i className="pi pi-dollar mr-2"></i>Charges Applied
+                            </div>
+                            <div className="text-900 font-bold text-lg text-red-500">₹{parseFloat(transaction.charge_amount || 0).toLocaleString('en-IN')}</div>
                         </div>
                     </div>
 

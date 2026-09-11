@@ -21,18 +21,12 @@ const CategorySelection = () => {
     const decodedService = service ? decodeURIComponent(service) : 'Service';
 
     useEffect(() => {
-        // Simulating the future REST API call: GET /api/operators?category=...
-        // For now, it fetches the static dummy file matching the exact category name
-        fetch(`/dummy/operators/${decodedService.toLowerCase()}.json`)
-            .then((res) => {
-                if (!res.ok) throw new Error('Category not found');
-                return res.json();
-            })
-            .then((data: any[]) => {
-                setOperators(data);
+        import(`../../../../data/operators/${decodedService.toLowerCase()}.json`)
+            .then((module) => {
+                setOperators(module.default || module);
             })
             .catch((err) => {
-                console.error('Failed to load dummy operators', err);
+                console.error('Failed to load operators', err);
                 setOperators([]);
             });
     }, [decodedService]);

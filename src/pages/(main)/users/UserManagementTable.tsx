@@ -92,9 +92,14 @@ const UserManagementTable = ({ role, title }: UserManagementTableProps) => {
         setUser(_user);
     };
 
-    const viewUser = (userData: any) => {
-        setUser({ ...userData });
-        setViewDialog(true);
+    const viewUser = async (userData: any) => {
+        try {
+            const response = await userService.getUserDetails(userData.id);
+            setUser({ ...response.data });
+            setViewDialog(true);
+        } catch (error) {
+            toast.current?.show({ severity: 'error', summary: 'Error', detail: 'Failed to fetch user details', life: 3000 });
+        }
     };
 
     const userDialogFooter = (
@@ -176,7 +181,7 @@ const UserManagementTable = ({ role, title }: UserManagementTableProps) => {
         <div className="grid">
             <div className="col-12">
                 <Toast ref={toast} />
-                <PageHeader title={`${title} Management`} actionLabel="New" actionIcon="pi pi-plus" actionColor="primary" onActionClick={openNew} />
+                <PageHeader title={`${title}`} actionLabel="New" actionIcon="pi pi-plus" actionColor="primary" onActionClick={openNew} />
 
                 <div className="mt-4">
                     <DataTable

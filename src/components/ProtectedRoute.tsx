@@ -2,8 +2,8 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-    const { isAuthenticated, isLoading } = useAuth();
+export const ProtectedRoute = ({ children, allowedRoles }: { children: React.ReactNode; allowedRoles?: string[] }) => {
+    const { isAuthenticated, isLoading, user } = useAuth();
 
     if (isLoading) {
         // Render a simple loading spinner while checking local storage
@@ -16,6 +16,10 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
     if (!isAuthenticated) {
         return <Navigate to="/login" replace />;
+    }
+
+    if (allowedRoles && user && !allowedRoles.includes(user.role)) {
+        return <Navigate to="/" replace />;
     }
 
     return <>{children}</>;

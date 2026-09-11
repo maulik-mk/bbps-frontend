@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dropdown } from 'primereact/dropdown';
+import { Toast } from 'primereact/toast';
 import BBPSPageCard from '../../../../components/BBPSPageCard';
+import { transactionService } from '../../../../services/transaction.service';
 
 interface BillSummaryProps {
     billerIdProp?: string;
@@ -16,9 +18,12 @@ interface BillSummaryProps {
 const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess }: BillSummaryProps) => {
     const { billerId: paramBillerId } = useParams<{ billerId: string }>();
     const navigate = useNavigate();
+    const toast = useRef<Toast>(null);
     const [showReceipt, setShowReceipt] = useState(false);
     const [payAmount, setPayAmount] = useState<number | null>(1250);
     const [paymentMode, setPaymentMode] = useState<string>('wallet');
+    const [loading, setLoading] = useState(false);
+    const [transactionResult, setTransactionResult] = useState<any>(null);
 
     const paymentModes = [
         { label: 'Main Wallet', value: 'wallet' },
@@ -34,7 +39,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
         consumerNumber: billerId || '0000000001',
         customerName: 'Maulik Kadeval',
         billerName: 'Selected Operator',
-        billAmount: '₹1,250.00',
+        billAmount: '₹500.00',
         dueDate: '15 Sep 2026',
         billDate: '01 Sep 2026',
         bbpsRefNo: 'TRX987654357'
@@ -42,14 +47,35 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
 
     const maxPayableAmount = parseFloat(dummyBill.billAmount.replace(/[^0-9.-]+/g, '')) || 0;
 
-    const handlePay = () => {
-        const audio = new Audio('/sounds/BharatConnect MOGO 270824.wav');
-        audio.play().catch((e) => console.error('Audio play failed:', e));
+    const handlePay = async () => {
+        if (!payAmount || payAmount <= 0) return;
 
-        if (onPaymentSuccess) {
-            onPaymentSuccess(payAmount || 0, dummyBill.billerName, dummyBill.consumerNumber, dummyBill.bbpsRefNo);
-        } else {
-            setShowReceipt(true);
+        setLoading(true);
+        try {
+            const res = await transactionService.processPayment({
+                category_id: 1,
+                amount: payAmount,
+                biller_name: dummyBill.billerName,
+                consumer_number: dummyBill.consumerNumber
+            });
+
+            const audio = new Audio('/sounds/BharatConnect MOGO 270824.wav');
+            audio.play().catch((e) => console.error('Audio play failed:', e));
+
+            const backendTxnId = res.data?.txn_id || dummyBill.bbpsRefNo;
+            setTransactionResult({ ...res.data, bbpsRefNo: backendTxnId });
+
+            if (onPaymentSuccess) {
+                onPaymentSuccess(payAmount, dummyBill.billerName, dummyBill.consumerNumber, backendTxnId);
+            } else {
+                setShowReceipt(true);
+            }
+        } catch (error: any) {
+            console.error('Payment failed:', error);
+            const errorMessage = error.response?.data?.error || 'Payment failed. Please try again.';
+            toast.current?.show({ severity: 'error', summary: 'Transaction Failed', detail: errorMessage, life: 5000 });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -202,7 +228,8 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
                             icon="pi pi-check-circle"
                             className="border-round-xl w-full py-3 font-bold text-lg shadow-1 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 transition-colors"
                             onClick={handlePay}
-                            disabled={!payAmount || payAmount <= 0 || payAmount > maxPayableAmount}
+                            disabled={!payAmount || payAmount <= 0 || payAmount > maxPayableAmount || loading}
+                            loading={loading}
                         />
                     </div>
                 </div>
@@ -222,7 +249,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
                         </div>
                         <div className="flex justify-content-between mb-2">
                             <span className="text-500 font-medium text-sm">BBPS Ref No.</span>
-                            <span className="text-900 font-bold text-sm">{dummyBill.bbpsRefNo}</span>
+                            <span className="text-900 font-bold text-sm">{transactionResult?.bbpsRefNo || dummyBill.bbpsRefNo}</span>
                         </div>
                         <div className="flex justify-content-between">
                             <span className="text-500 font-medium text-sm">Date</span>
@@ -237,6 +264,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
     if (isCanvas) {
         return (
             <div className="w-full h-full" style={{ fontFamily: 'var(--font-family)' }}>
+                <Toast ref={toast} />
                 {content}
             </div>
         );
@@ -244,6 +272,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
 
     return (
         <div className="grid justify-content-center" style={{ fontFamily: 'var(--font-family)' }}>
+            <Toast ref={toast} />
             <div className="col-12 lg:col-7 mt-5">{content}</div>
         </div>
     );

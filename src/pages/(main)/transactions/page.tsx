@@ -5,9 +5,11 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { useNavigate } from 'react-router-dom';
+import { reportService } from '../../../services/report.service';
 
 const TransactionsPage = () => {
     const [allTransactions, setAllTransactions] = useState<any[]>([]);
+    const [summary, setSummary] = useState({ total_transactions: 0, total_volume: 0 });
     const [activeTab, setActiveTab] = useState('All Transactions');
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
@@ -16,17 +18,20 @@ const TransactionsPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('/dummy/transactions.json')
-            .then((res) => res.json())
-            .then((data) => setAllTransactions(data))
+        reportService
+            .getTransactions()
+            .then((res) => {
+                if (res.results) setAllTransactions(res.results);
+                if (res.summary) setSummary(res.summary);
+            })
             .catch((err) => console.error('Failed to fetch transactions', err));
     }, []);
 
     const dateOptions = [{ name: 'All Time' }, { name: 'Last 7 Days' }, { name: 'Last 30 Days' }];
-    const statusOptions = [{ name: 'All' }, { name: 'SUCCESS' }, { name: 'PENDING' }, { name: 'FAILED' }, { name: 'REFUNDED' }];
+    const statusOptions = [{ name: 'All' }, { name: 'success' }, { name: 'pending' }, { name: 'failed' }, { name: 'refunded' }];
 
     const categoryOptions = useMemo(() => {
-        const cats = new Set(allTransactions.map((t) => t.category));
+        const cats = new Set(allTransactions.map((t) => t.category_name));
         return [
             { name: 'All' },
             ...Array.from(cats)
@@ -39,20 +44,20 @@ const TransactionsPage = () => {
         let data = [...allTransactions];
 
         // Tab Filter
-        if (activeTab === 'Succeeded') data = data.filter((t) => t.status === 'SUCCESS');
-        if (activeTab === 'Refunded') data = data.filter((t) => t.status === 'REFUNDED');
+        if (activeTab === 'Succeeded') data = data.filter((t) => t.status === 'success');
+        if (activeTab === 'Refunded') data = data.filter((t) => t.status === 'refunded');
 
         // Dropdown Filters
         if (selectedStatus && selectedStatus.name !== 'All') {
             data = data.filter((t) => t.status === selectedStatus.name);
         }
         if (selectedCategory && selectedCategory.name !== 'All') {
-            data = data.filter((t) => t.category === selectedCategory.name);
+            data = data.filter((t) => t.category_name === selectedCategory.name);
         }
         if (selectedDateRange && selectedDateRange.name !== 'All Time') {
             const now = new Date();
             data = data.filter((t) => {
-                const tDate = new Date(t.date);
+                const tDate = new Date(t.created_at);
                 if (selectedDateRange.name === 'Last 7 Days') {
                     return (now.getTime() - tDate.getTime()) / (1000 * 3600 * 24) <= 7;
                 } else if (selectedDateRange.name === 'Last 30 Days') {
@@ -67,10 +72,10 @@ const TransactionsPage = () => {
             const val = globalFilterValue.toLowerCase();
             data = data.filter((t) => {
                 return (
-                    (t.billerName && t.billerName.toLowerCase().includes(val)) ||
-                    (t.userName && t.userName.toLowerCase().includes(val)) ||
-                    (t.amount && t.amount.toString().includes(val)) ||
-                    (t.transactionId && t.transactionId.toLowerCase().includes(val))
+                    (t.service_name && t.service_name.toLowerCase().includes(val)) ||
+                    (t.first_name && t.first_name.toLowerCase().includes(val)) ||
+                    (t.total_amount && t.total_amount.toString().includes(val)) ||
+                    (t.txn_id && t.txn_id.toLowerCase().includes(val))
                 );
             });
         }
@@ -93,33 +98,33 @@ const TransactionsPage = () => {
     };
 
     const statusBodyTemplate = (rowData: any) => {
-        const s = rowData.status?.toUpperCase();
-        if (s === 'SUCCESS' || s === 'RECEIVE' || s === 'DEPOSIT') {
+        const s = rowData.status?.toLowerCase();
+        if (s === 'success') {
             return (
                 <div className="bg-green-50 text-green-700 px-2 py-1 flex align-items-center justify-content-center" style={{ width: 'max-content', borderRadius: '6px' }}>
                     <i className="pi pi-check-circle mr-2" style={{ fontSize: '0.8rem' }}></i>
-                    <span className="text-sm font-semibold">{rowData.status}</span>
+                    <span className="text-sm font-semibold">Success</span>
                 </div>
             );
-        } else if (s === 'PENDING') {
+        } else if (s === 'pending') {
             return (
                 <div className="bg-yellow-50 text-yellow-700 px-2 py-1 flex align-items-center justify-content-center" style={{ width: 'max-content', borderRadius: '6px' }}>
                     <i className="pi pi-clock mr-2" style={{ fontSize: '0.8rem' }}></i>
-                    <span className="text-sm font-semibold">{rowData.status}</span>
+                    <span className="text-sm font-semibold">Pending</span>
                 </div>
             );
         } else {
             return (
                 <div className="bg-red-50 text-red-600 px-2 py-1 flex align-items-center justify-content-center" style={{ width: 'max-content', borderRadius: '6px' }}>
                     <i className="pi pi-minus-circle mr-2" style={{ fontSize: '0.8rem' }}></i>
-                    <span className="text-sm font-semibold">{rowData.status || 'Failed'}</span>
+                    <span className="text-sm font-semibold">Failed</span>
                 </div>
             );
         }
     };
 
     const amountBodyTemplate = (rowData: any) => {
-        return <span className="font-bold text-700">{formatCurrency(rowData.amount)}</span>;
+        return <span className="font-bold text-700">{formatCurrency(parseFloat(rowData.total_amount))}</span>;
     };
 
     const actionBodyTemplate = (rowData: any) => {
@@ -129,7 +134,7 @@ const TransactionsPage = () => {
                 style={{ color: '#1e293b', borderColor: '#e2e8f0' }}
                 onClick={() => navigate(`/bbps/transactions/receipt/${rowData.id}`)}
             >
-                Details
+                Receipt
             </button>
         );
     };
@@ -212,20 +217,15 @@ const TransactionsPage = () => {
                             scrollable
                             responsiveLayout="scroll"
                         >
-                            <Column field="date" header="DATE & TIME" body={(rowData) => formatDate(rowData.date)} sortable style={{ minWidth: '12rem' }} />
-                            <Column field="userName" header="USER NAME" sortable style={{ minWidth: '12rem' }} />
-                            <Column field="userMobile" header="USER MOBILE NUMBER" sortable style={{ minWidth: '12rem' }} />
-                            <Column field="billerNumber" header="BILLER NUMBER" sortable style={{ minWidth: '10rem' }} />
-                            <Column field="billerMobile" header="BILLER MOBILES" sortable style={{ minWidth: '10rem' }} />
-                            <Column field="provider" header="PROVIDER" sortable style={{ minWidth: '12rem' }} />
-                            <Column field="transactionId" header="TRANSACTION ID" sortable style={{ minWidth: '12rem' }} />
-                            <Column field="utr" header="UTR" sortable style={{ minWidth: '10rem' }} />
-                            <Column field="amount" header="AMOUNT" body={amountBodyTemplate} sortable style={{ minWidth: '10rem' }} />
-                            <Column field="charges" header="CHARGES" body={(rowData) => formatCurrency(rowData.charges)} sortable style={{ minWidth: '10rem' }} />
-                            <Column field="openingBalance" header="OPENING" body={(rowData) => formatCurrency(rowData.openingBalance)} sortable style={{ minWidth: '10rem' }} />
-                            <Column field="closingBalance" header="CLOSING" body={(rowData) => formatCurrency(rowData.closingBalance)} sortable style={{ minWidth: '10rem' }} />
+                            <Column field="created_at" header="DATE & TIME" body={(rowData) => formatDate(rowData.created_at)} sortable style={{ minWidth: '12rem' }} />
+                            <Column field="first_name" header="USER NAME" sortable style={{ minWidth: '12rem' }} />
+                            <Column field="user_mobile" header="USER MOBILE" sortable style={{ minWidth: '12rem' }} />
+                            <Column field="category_name" header="CATEGORY" sortable style={{ minWidth: '10rem' }} />
+                            <Column field="service_name" header="SERVICE" sortable style={{ minWidth: '12rem' }} />
+                            <Column field="txn_id" header="TRANSACTION ID" sortable style={{ minWidth: '12rem' }} />
+                            <Column field="total_amount" header="AMOUNT" body={amountBodyTemplate} sortable style={{ minWidth: '10rem' }} />
                             <Column field="status" header="STATUS" body={statusBodyTemplate} sortable style={{ minWidth: '10rem' }} />
-                            <Column body={actionBodyTemplate} header="ACTION" style={{ minWidth: '8rem' }} />
+                            <Column body={actionBodyTemplate} header="ACTION" align="center" style={{ minWidth: '8rem' }} />
                         </DataTable>
                     </div>
                 </div>

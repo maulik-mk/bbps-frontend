@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppMenuitem from './AppMenuitem';
 import { LayoutContext } from './context/layoutcontext';
 import { MenuProvider } from './context/menucontext';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AppMenuItem } from '@/types';
 
 import { useAuth } from '../context/AuthContext';
@@ -26,38 +26,73 @@ const AppMenu = () => {
         managementItems.push({ label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' });
     }
 
-    const model: AppMenuItem[] = [
-        {
-            label: 'Home',
-            items: [
-                { label: 'Dashboard', icon: 'pi pi-fw pi-th-large', to: '/' },
-                { label: 'Transactions', icon: 'pi pi-fw pi-wallet', to: '/transactions' }
-            ]
+    const location = useLocation();
+
+    let model: AppMenuItem[] = [];
+
+    if (location.pathname.startsWith('/settings')) {
+        model = [
+            {
+                label: 'User Settings',
+                items: [
+                    { label: 'Personal Info', icon: 'pi pi-fw pi-user', to: '/settings/profile' },
+                    { label: 'Security', icon: 'pi pi-fw pi-lock', to: '/settings/security' },
+                    { label: 'KYC Details', icon: 'pi pi-fw pi-id-card', to: '/settings/kyc' },
+                    { label: 'Banking Details', icon: 'pi pi-fw pi-wallet', to: '/settings/banking' },
+                    { label: 'Back to Dashboard', icon: 'pi pi-fw pi-arrow-left', to: '/' }
+                ]
+            }
+        ];
+    } else {
+        model = [
+            {
+                label: 'Home',
+                items: [
+                    { label: 'Dashboard', icon: 'pi pi-fw pi-th-large', to: '/' },
+                    { label: 'Transactions', icon: 'pi pi-fw pi-wallet', to: '/transactions' }
+                ]
+            }
+        ];
+
+        if (userRole === 'Admin' || userRole === 'admin') {
+            model.push({
+                label: 'Master',
+                items: [{ label: 'Schemes', icon: 'pi pi-fw pi-tags', to: '/master/schemes' }]
+            });
         }
-    ];
 
-    if (userRole === 'Admin' || userRole === 'admin') {
+        if (userRole === 'Retailer' || userRole === 'retailer') {
+            model.push({
+                label: 'BBPS Services',
+                items: [
+                    { label: 'Complaint Registration', icon: 'pi pi-fw pi-file-edit', to: '/bbps/complaint/registration' },
+                    { label: 'Check Complaint Status', icon: 'pi pi-fw pi-info-circle', to: '/bbps/complaint/track' },
+                    { label: 'Transaction Search', icon: 'pi pi-fw pi-search', to: '/bbps/transactions/search' }
+                ]
+            });
+        }
+
+        if (managementItems.length > 0) {
+            model.push({
+                label: 'User Management',
+                items: managementItems
+            });
+        }
+
+        const reportItems = [{ label: 'Wallet Ledger', icon: 'pi pi-fw pi-book', to: '/reports/ledger' }];
+
+        if (userRole === 'Admin' || userRole === 'admin') {
+            reportItems.push({ label: 'Commission Ledger', icon: 'pi pi-fw pi-sitemap', to: '/reports/commissions' });
+        }
+
         model.push({
-            label: 'Master',
-            items: [{ label: 'Schemes', icon: 'pi pi-fw pi-tags', to: '/master/schemes' }]
+            label: 'Reports',
+            items: reportItems
         });
-    }
 
-    if (userRole === 'Retailer' || userRole === 'retailer') {
         model.push({
-            label: 'BBPS Services',
-            items: [
-                { label: 'Complaint Registration', icon: 'pi pi-fw pi-file-edit', to: '/bbps/complaint/registration' },
-                { label: 'Check Complaint Status', icon: 'pi pi-fw pi-info-circle', to: '/bbps/complaint/track' },
-                { label: 'Transaction Search', icon: 'pi pi-fw pi-search', to: '/bbps/transactions/search' }
-            ]
-        });
-    }
-
-    if (managementItems.length > 0) {
-        model.push({
-            label: 'User Management',
-            items: managementItems
+            label: 'Account',
+            items: [{ label: 'User Settings', icon: 'pi pi-fw pi-cog', to: '/settings/profile' }]
         });
     }
 
