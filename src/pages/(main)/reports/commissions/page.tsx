@@ -43,11 +43,7 @@ const CommissionsPage = () => {
         if (globalFilterValue) {
             const val = globalFilterValue.toLowerCase();
             data = data.filter((t) => {
-                return (
-                    (t.retailer?.name && t.retailer.name.toLowerCase().includes(val)) ||
-                    (t.retailer?.mobile && t.retailer.mobile.includes(val)) ||
-                    (t.service_name && t.service_name.toLowerCase().includes(val))
-                );
+                return (t.retailer?.name && t.retailer.name.toLowerCase().includes(val)) || (t.retailer?.mobile && t.retailer.mobile.includes(val)) || (t.service_name && t.service_name.toLowerCase().includes(val));
             });
         }
 
