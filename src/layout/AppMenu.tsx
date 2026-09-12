@@ -10,24 +10,14 @@ import { useAuth } from '../context/AuthContext';
 const AppMenu = () => {
     const { layoutConfig } = useContext(LayoutContext);
     const { user } = useAuth();
-    const userRole = user?.role || '';
+    const role = (user?.role || '').toLowerCase();
 
-    const managementItems = [];
-
-    if (userRole === 'Admin' || userRole === 'admin') {
-        managementItems.push(
-            { label: 'Master Distributor', icon: 'pi pi-fw pi-box', to: '/users/master-distributor' },
-            { label: 'Distributor', icon: 'pi pi-fw pi-users', to: '/users/distributor' },
-            { label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' }
-        );
-    } else if (userRole === 'Master Distributor' || userRole === 'master_distributor') {
-        managementItems.push({ label: 'Distributor', icon: 'pi pi-fw pi-users', to: '/users/distributor' }, { label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' });
-    } else if (userRole === 'Distributor' || userRole === 'distributor') {
-        managementItems.push({ label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' });
-    }
+    const isAdmin = role === 'admin';
+    const isMD = role === 'master_distributor' || role === 'master distributor';
+    const isDistributor = role === 'distributor';
+    const isRetailer = role === 'retailer';
 
     const location = useLocation();
-
     let model: AppMenuItem[] = [];
 
     if (location.pathname.startsWith('/settings')) {
@@ -47,60 +37,64 @@ const AppMenu = () => {
         model = [
             {
                 label: 'Home',
+                items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-th-large', to: '/' }]
+            },
+            ...(isAdmin
+                ? [
+                      {
+                          label: 'Master',
+                          items: [{ label: 'Schemes', icon: 'pi pi-fw pi-tags', to: '/master/schemes' }]
+                      }
+                  ]
+                : []),
+            ...(isRetailer
+                ? [
+                      {
+                          label: 'BBPS Services',
+                          items: [
+                              { label: 'Complaint Registration', icon: 'pi pi-fw pi-file-edit', to: '/bbps/complaint/registration' },
+                              { label: 'Check Complaint Status', icon: 'pi pi-fw pi-info-circle', to: '/bbps/complaint/track' },
+                              { label: 'Transaction Search', icon: 'pi pi-fw pi-search', to: '/bbps/transactions/search' }
+                          ]
+                      }
+                  ]
+                : []),
+            ...(isAdmin || isMD || isDistributor
+                ? [
+                      {
+                          label: 'User Management',
+                          items: [
+                              ...(isAdmin ? [{ label: 'Master Distributor', icon: 'pi pi-fw pi-box', to: '/users/master-distributor' }] : []),
+                              ...(isAdmin || isMD ? [{ label: 'Distributor', icon: 'pi pi-fw pi-users', to: '/users/distributor' }] : []),
+                              { label: 'Retailer', icon: 'pi pi-fw pi-user', to: '/users/retailer' }
+                          ]
+                      }
+                  ]
+                : []),
+            {
+                label: 'Transaction Report',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-th-large', to: '/' },
-                    { label: 'Transactions', icon: 'pi pi-fw pi-wallet', to: '/transactions' }
+                    { label: 'All Transactions', icon: 'pi pi-fw pi-wallet', to: '/transactions' },
+                    { label: 'BBPS Transactions', icon: 'pi pi-fw pi-wallet', to: '/bbps/transactions' },
+                    ...(isAdmin ? [{ label: 'Commission Ledger', icon: 'pi pi-fw pi-sitemap', to: '/reports/commissions' }] : [])
                 ]
+            },
+            {
+                label: 'Account Statement',
+                items: [{ label: 'Wallet Ledger', icon: 'pi pi-fw pi-book', to: '/reports/ledger' }]
+            },
+            {
+                label: 'Account',
+                items: [{ label: 'User Settings', icon: 'pi pi-fw pi-cog', to: '/settings/profile' }]
             }
         ];
-
-        if (userRole === 'Admin' || userRole === 'admin') {
-            model.push({
-                label: 'Master',
-                items: [{ label: 'Schemes', icon: 'pi pi-fw pi-tags', to: '/master/schemes' }]
-            });
-        }
-
-        if (userRole === 'Retailer' || userRole === 'retailer') {
-            model.push({
-                label: 'BBPS Services',
-                items: [
-                    { label: 'Complaint Registration', icon: 'pi pi-fw pi-file-edit', to: '/bbps/complaint/registration' },
-                    { label: 'Check Complaint Status', icon: 'pi pi-fw pi-info-circle', to: '/bbps/complaint/track' },
-                    { label: 'Transaction Search', icon: 'pi pi-fw pi-search', to: '/bbps/transactions/search' }
-                ]
-            });
-        }
-
-        if (managementItems.length > 0) {
-            model.push({
-                label: 'User Management',
-                items: managementItems
-            });
-        }
-
-        const reportItems = [{ label: 'Wallet Ledger', icon: 'pi pi-fw pi-book', to: '/reports/ledger' }];
-
-        if (userRole === 'Admin' || userRole === 'admin') {
-            reportItems.push({ label: 'Commission Ledger', icon: 'pi pi-fw pi-sitemap', to: '/reports/commissions' });
-        }
-
-        model.push({
-            label: 'Reports',
-            items: reportItems
-        });
-
-        model.push({
-            label: 'Account',
-            items: [{ label: 'User Settings', icon: 'pi pi-fw pi-cog', to: '/settings/profile' }]
-        });
     }
 
     return (
         <MenuProvider>
             <ul className="layout-menu">
                 {model.map((item, i) => {
-                    return !item?.seperator ? <AppMenuitem item={item} root={true} index={i} key={item.label} /> : <li className="menu-separator"></li>;
+                    return !item?.seperator ? <AppMenuitem item={item} root={true} index={i} key={item.label} /> : <li className="menu-separator" key={`sep-${i}`}></li>;
                 })}
             </ul>
         </MenuProvider>

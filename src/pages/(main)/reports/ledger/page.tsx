@@ -43,7 +43,13 @@ const LedgerPage = () => {
         if (globalFilterValue) {
             const val = globalFilterValue.toLowerCase();
             data = data.filter((t) => {
-                return (t.transaction_id && t.transaction_id.toLowerCase().includes(val)) || (t.transfer_type && t.transfer_type.toLowerCase().includes(val));
+                return (
+                    (t.txn_id && t.txn_id.toLowerCase().includes(val)) ||
+                    (t.transfer_type && t.transfer_type.toLowerCase().includes(val)) ||
+                    (t.service_name && t.service_name.toLowerCase().includes(val)) ||
+                    (t.user_name && t.user_name.toLowerCase().includes(val)) ||
+                    (t.user_mobile && t.user_mobile.includes(val))
+                );
             });
         }
 
@@ -64,18 +70,48 @@ const LedgerPage = () => {
         });
     };
 
-    const typeBodyTemplate = (rowData: any) => {
-        const isCredit = rowData.type === 'credit';
+    const amountDetailsTemplate = (rowData: any) => {
+        const baseAmount = parseFloat(rowData.transfer_type === 'BBPS_BILL_PAYMENT' ? rowData.bill_amount || rowData.amount : rowData.amount);
+        const charges = parseFloat(rowData.transfer_type === 'BBPS_BILL_PAYMENT' ? rowData.charge_amount || 0 : 0);
+
         return (
-            <div className={`px-2 py-1 flex align-items-center justify-content-center ${isCredit ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'}`} style={{ width: 'max-content', borderRadius: '6px' }}>
-                <i className={`pi ${isCredit ? 'pi-arrow-down' : 'pi-arrow-up'} mr-2`} style={{ fontSize: '0.8rem' }}></i>
-                <span className="text-sm font-semibold">{isCredit ? 'CREDIT' : 'DEBIT'}</span>
+            <div className="flex flex-column">
+                <span className="font-bold text-700">{formatCurrency(baseAmount)}</span>
+                {charges > 0 && <span className="text-orange-500 font-semibold mt-1">+ {formatCurrency(charges)} charge</span>}
             </div>
         );
     };
 
-    const transferTypeBodyTemplate = (rowData: any) => {
-        return <span className="font-semibold text-600 border-1 border-300 px-2 py-1 border-round-md">{rowData.transfer_type}</span>;
+    const typeBodyTemplate = (rowData: any) => {
+        const isCredit = rowData.type === 'credit';
+        const formattedAmount = formatCurrency(parseFloat(rowData.amount));
+        return (
+            <div className={`px-2 py-1 flex align-items-center justify-content-center ${isCredit ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'}`} style={{ width: 'max-content', borderRadius: '6px' }}>
+                <span className="text-sm font-bold">
+                    {isCredit ? '+' : '-'}
+                    {formattedAmount}
+                </span>
+            </div>
+        );
+    };
+
+    const descriptionTemplate = (rowData: any) => {
+        return (
+            <div className="flex flex-column">
+                <span className="font-bold text-700">
+                    {rowData.user_name || 'System Account'} <span className="text-sm text-500 font-normal ml-1">({rowData.user_mobile || '0000000000'})</span>
+                </span>
+                <div className="flex flex-wrap gap-2 mt-1 mb-1">
+                    <span className="text-xs text-600 bg-gray-100 px-2 py-1 border-round">{rowData.transfer_type}</span>
+                    {rowData.service_name && <span className="text-xs text-blue-700 bg-blue-50 px-2 py-1 border-round font-medium">Service: {rowData.service_name}</span>}
+                </div>
+                {rowData.txn_id && (
+                    <span className="text-xs text-500" style={{ fontFamily: 'monospace' }}>
+                        TXN ID: {rowData.txn_id}
+                    </span>
+                )}
+            </div>
+        );
     };
 
     return (
@@ -104,7 +140,7 @@ const LedgerPage = () => {
                         </div>
                         <span className="p-input-icon-left w-full md:w-auto mt-2 md:mt-0">
                             <i className="pi pi-search text-500" />
-                            <InputText value={globalFilterValue} onChange={(e) => setGlobalFilterValue(e.target.value)} placeholder="Search Ref ID, Event Type..." className="border-round-lg shadow-none border-300 w-full md:w-20rem py-2 pl-5" />
+                            <InputText value={globalFilterValue} onChange={(e) => setGlobalFilterValue(e.target.value)} placeholder="Search Txn ID, Service..." className="border-round-lg shadow-none border-300 w-full md:w-20rem py-2 pl-5" />
                         </span>
                     </div>
 
@@ -121,12 +157,11 @@ const LedgerPage = () => {
                             scrollable
                             responsiveLayout="scroll"
                         >
-                            <Column field="created_at" header="DATE" body={(r) => formatDate(r.created_at)} sortable style={{ minWidth: '12rem' }} />
-                            <Column field="transaction_id" header="REF ID" sortable style={{ minWidth: '15rem', fontFamily: 'monospace' }} />
-                            <Column field="transfer_type" header="EVENT TYPE" body={transferTypeBodyTemplate} style={{ minWidth: '12rem' }} />
-                            <Column field="type" header="TYPE" body={typeBodyTemplate} sortable style={{ minWidth: '8rem' }} />
-                            <Column field="amount" header="AMOUNT" body={(r) => formatCurrency(parseFloat(r.amount))} style={{ minWidth: '10rem', fontWeight: 'bold' }} />
+                            <Column field="created_at" header="DATE & TIME" body={(r) => formatDate(r.created_at)} sortable style={{ minWidth: '12rem' }} />
+                            <Column header="DESCRIPTION" body={descriptionTemplate} style={{ minWidth: '22rem' }} />
+                            <Column header="AMOUNT" body={amountDetailsTemplate} style={{ minWidth: '12rem' }} />
                             <Column field="opening_balance" header="OPENING BAL" body={(r) => formatCurrency(parseFloat(r.opening_balance))} style={{ minWidth: '10rem', color: '#64748b' }} />
+                            <Column field="type" header="CR/DR" body={typeBodyTemplate} sortable style={{ minWidth: '10rem' }} />
                             <Column field="closing_balance" header="CLOSING BAL" body={(r) => formatCurrency(parseFloat(r.closing_balance))} style={{ minWidth: '10rem', fontWeight: 'bold' }} />
                         </DataTable>
                     </div>

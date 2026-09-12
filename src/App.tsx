@@ -54,7 +54,7 @@ export default function App() {
                     <Route
                         path="/users/master-distributor"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['admin']}>
                                 <Layout>
                                     <MasterDistributorPage />
                                 </Layout>
@@ -64,7 +64,7 @@ export default function App() {
                     <Route
                         path="/users/distributor"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['admin', 'master_distributor']}>
                                 <Layout>
                                     <DistributorPage />
                                 </Layout>
@@ -74,7 +74,7 @@ export default function App() {
                     <Route
                         path="/users/retailer"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['admin', 'master_distributor', 'distributor']}>
                                 <Layout>
                                     <RetailerPage />
                                 </Layout>
@@ -85,7 +85,7 @@ export default function App() {
                     <Route
                         path="/master/schemes"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['admin']}>
                                 <Layout>
                                     <SchemesPage />
                                 </Layout>
@@ -96,7 +96,7 @@ export default function App() {
                     <Route
                         path="/master/schemes/:id/charges"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['admin']}>
                                 <Layout>
                                     <SchemeChargesPage />
                                 </Layout>
@@ -183,7 +183,7 @@ export default function App() {
                     <Route
                         path="/bbps/transactions/receipt/:id"
                         element={
-                            <ProtectedRoute allowedRoles={['retailer']}>
+                            <ProtectedRoute allowedRoles={['admin', 'retailer']}>
                                 <Layout>
                                     <Receipt />
                                 </Layout>
@@ -256,7 +256,7 @@ export default function App() {
                     <Route
                         path="/reports/commissions"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['admin']}>
                                 <Layout>
                                     <CommissionsPage />
                                 </Layout>

@@ -44,7 +44,13 @@ const SchemeChargesPage = () => {
         if (!id) return;
         setSaving(true);
         try {
-            await schemeService.saveCharges(parseInt(id), charges);
+            const formattedCharges = charges.map((c) => ({
+                ...c,
+                retailer_charge: Number(c.retailer_charge || 0).toFixed(4),
+                md_comm: Number(c.md_comm || 0).toFixed(4),
+                d_comm: Number(c.d_comm || 0).toFixed(4)
+            }));
+            await schemeService.saveCharges(parseInt(id), formattedCharges);
             toast.current?.show({ severity: 'success', summary: 'Successful', detail: 'All charges saved successfully', life: 3000 });
         } catch (error: any) {
             toast.current?.show({ severity: 'error', summary: 'Error', detail: error.response?.data?.error || 'Failed to save charges', life: 3000 });

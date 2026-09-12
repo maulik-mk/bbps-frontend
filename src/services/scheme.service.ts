@@ -12,10 +12,10 @@ export interface SchemeCharge {
     category_id: number;
     category_name?: string;
     retailer_charge_type: 'flat' | 'percentage';
-    retailer_charge: string | number;
+    retailer_charge: string;
     commission_type: 'flat' | 'percentage';
-    md_comm: string | number;
-    d_comm: string | number;
+    md_comm: string;
+    d_comm: string;
 }
 
 export const schemeService = {

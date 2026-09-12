@@ -54,7 +54,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
         try {
             const res = await transactionService.processPayment({
                 category_id: 1,
-                amount: payAmount,
+                amount: Number(payAmount).toFixed(2),
                 biller_name: dummyBill.billerName,
                 consumer_number: dummyBill.consumerNumber
             });
