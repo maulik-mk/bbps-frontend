@@ -47,18 +47,6 @@ const AppMenu = () => {
                       }
                   ]
                 : []),
-            ...(isRetailer
-                ? [
-                      {
-                          label: 'BBPS Services',
-                          items: [
-                              { label: 'Complaint Registration', icon: 'pi pi-fw pi-file-edit', to: '/bbps/complaint/registration' },
-                              { label: 'Check Complaint Status', icon: 'pi pi-fw pi-info-circle', to: '/bbps/complaint/track' },
-                              { label: 'Transaction Search', icon: 'pi pi-fw pi-search', to: '/bbps/transactions/search' }
-                          ]
-                      }
-                  ]
-                : []),
             ...(isAdmin || isMD || isDistributor
                 ? [
                       {
@@ -87,6 +75,18 @@ const AppMenu = () => {
                 label: 'Account Statement',
                 items: [{ label: 'Wallet Ledger', icon: 'pi pi-fw pi-book', to: '/reports/ledger' }]
             },
+            ...(isRetailer
+                ? [
+                      {
+                          label: 'BBPS Services',
+                          items: [
+                              { label: 'Complaint Registration', icon: 'pi pi-fw pi-file-edit', to: '/bbps/complaint/registration' },
+                              { label: 'Check Complaint Status', icon: 'pi pi-fw pi-info-circle', to: '/bbps/complaint/track' },
+                              { label: 'Transaction Search', icon: 'pi pi-fw pi-search', to: '/bbps/transactions/search' }
+                          ]
+                      }
+                  ]
+                : []),
             {
                 label: 'Account',
                 items: [{ label: 'User Settings', icon: 'pi pi-fw pi-cog', to: '/settings/profile' }]
