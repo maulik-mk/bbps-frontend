@@ -76,7 +76,7 @@ const CommissionsPage = () => {
     const txnDetailsTemplate = (rowData: any) => {
         return (
             <div className="flex flex-column">
-                <span className="text-sm text-500">Bill: {formatCurrency(parseFloat(rowData.bill_amount))}</span>
+                <span className="text-sm text-500">Amount: {formatCurrency(parseFloat(rowData.bill_amount))}</span>
                 <span className="text-sm text-orange-600 font-bold">Charge: {formatCurrency(parseFloat(rowData.charge_amount))}</span>
                 <span className="text-sm text-700 font-medium">Service: {rowData.service_name || 'N/A'}</span>
             </div>
