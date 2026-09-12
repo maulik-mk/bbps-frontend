@@ -20,7 +20,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
     const navigate = useNavigate();
     const toast = useRef<Toast>(null);
     const [showReceipt, setShowReceipt] = useState(false);
-    const [payAmount, setPayAmount] = useState<number | null>(1250);
+    const [payAmount, setPayAmount] = useState<number | null>(0);
     const [paymentMode, setPaymentMode] = useState<string>('wallet');
     const [loading, setLoading] = useState(false);
     const [transactionResult, setTransactionResult] = useState<any>(null);

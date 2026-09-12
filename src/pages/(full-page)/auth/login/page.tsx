@@ -55,8 +55,8 @@ const LoginPage = () => {
                 <div className="p-5 md:px-7"></div>
                 <div className="flex-1 flex align-items-center justify-content-center px-5 md:px-7 pb-8">
                     <div className="w-full" style={{ maxWidth: '420px' }}>
-                        <div className="text-center mb-5">
-                            <img src="/logo/Nexasoft.png" alt="Nexasoft Logo" style={{ height: '5rem', objectFit: 'contain' }} />
+                        <div className="justify-content-right mb-5">
+                            <img src="/logo/Nexasoft.png" alt="Nexasoft Logo" style={{ height: '4rem', objectFit: 'contain' }} />
                         </div>
                         <div className="mb-5">
                             <h1 className="text-900 text-3xl font-bold font-italic mb-2 uppercase">Welcome Back</h1>
