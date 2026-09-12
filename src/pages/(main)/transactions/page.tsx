@@ -7,7 +7,7 @@ import { InputText } from 'primereact/inputtext';
 import { useNavigate } from 'react-router-dom';
 import { reportService } from '../../../services/report.service';
 
-const TransactionsPage = () => {
+const TransactionsPage = ({ type }: { type?: string }) => {
     const [allTransactions, setAllTransactions] = useState<any[]>([]);
     const [summary, setSummary] = useState({ total_transactions: 0, total_volume: 0 });
     const [activeTab, setActiveTab] = useState('All Transactions');
@@ -19,7 +19,7 @@ const TransactionsPage = () => {
 
     useEffect(() => {
         reportService
-            .getTransactions()
+            .getTransactions(undefined, 100, type)
             .then((res) => {
                 if (res.results) setAllTransactions(res.results);
                 if (res.summary) setSummary(res.summary);
@@ -145,10 +145,9 @@ const TransactionsPage = () => {
                 <div className="px-3 md:px-5 py-4 w-full" style={{ maxWidth: '100vw', overflowX: 'hidden' }}>
                     {/* Header */}
                     <div className="flex justify-content-between align-items-center mb-4">
-                        <h1 className="m-0 text-800 font-semibold text-3xl">Transactions overview</h1>
+                        <h1 className="m-0 text-800 font-semibold text-3xl">{type === 'bbps' ? 'BBPS Transactions' : 'Transactions overview'}</h1>
                         <Button label="Export" icon="pi pi-cloud-download" className="p-button-outlined p-button-secondary border-round-lg text-700 bg-white border-300 font-medium py-2 px-3 shadow-none hover:surface-100" />
                     </div>
-
                     {/* Tabs */}
                     <div className="flex border-bottom-1 border-200 mb-4 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
                         {['All Transactions', 'Succeeded', 'Refunded'].map((tab) => (

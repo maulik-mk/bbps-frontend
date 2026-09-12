@@ -70,7 +70,22 @@ const SchemeChargesPage = () => {
     };
 
     const numberTemplate = (rowData: SchemeCharge, options: any, field: keyof SchemeCharge) => {
-        return <InputNumber value={Number(rowData[field])} onValueChange={(e) => onInputChange(e.value || 0, options.rowIndex, field)} mode="decimal" minFractionDigits={2} maxFractionDigits={2} min={0} className="w-full" />;
+        let isPercentage = false;
+        if (field === 'retailer_charge') isPercentage = rowData.retailer_charge_type === 'percentage';
+        if (field === 'md_comm' || field === 'd_comm') isPercentage = rowData.commission_type === 'percentage';
+
+        return (
+            <InputNumber
+                value={Number(rowData[field])}
+                onValueChange={(e) => onInputChange(e.value || 0, options.rowIndex, field)}
+                mode="decimal"
+                minFractionDigits={2}
+                maxFractionDigits={2}
+                min={0}
+                max={isPercentage ? 100 : undefined}
+                className="w-full"
+            />
+        );
     };
 
     return (

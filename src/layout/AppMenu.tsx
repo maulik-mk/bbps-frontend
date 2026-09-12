@@ -71,14 +71,18 @@ const AppMenu = () => {
                       }
                   ]
                 : []),
-            {
-                label: 'Transaction Report',
-                items: [
-                    { label: 'All Transactions', icon: 'pi pi-fw pi-wallet', to: '/transactions' },
-                    { label: 'BBPS Transactions', icon: 'pi pi-fw pi-wallet', to: '/bbps/transactions' },
-                    ...(isAdmin ? [{ label: 'Commission Ledger', icon: 'pi pi-fw pi-sitemap', to: '/reports/commissions' }] : [])
-                ]
-            },
+            ...(isAdmin || isRetailer
+                ? [
+                      {
+                          label: 'Transaction Report',
+                          items: [
+                              { label: 'All Transactions', icon: 'pi pi-fw pi-wallet', to: '/transactions' },
+                              { label: 'BBPS Transactions', icon: 'pi pi-fw pi-wallet', to: '/bbps/transactions' },
+                              ...(isAdmin ? [{ label: 'Commission Ledger', icon: 'pi pi-fw pi-sitemap', to: '/reports/commissions' }] : [])
+                          ]
+                      }
+                  ]
+                : []),
             {
                 label: 'Account Statement',
                 items: [{ label: 'Wallet Ledger', icon: 'pi pi-fw pi-book', to: '/reports/ledger' }]

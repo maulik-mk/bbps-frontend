@@ -39,7 +39,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
         consumerNumber: billerId || '0000000001',
         customerName: 'Maulik Kadeval',
         billerName: 'Selected Operator',
-        billAmount: '₹500.00',
+        billAmount: '₹173.00',
         dueDate: '15 Sep 2026',
         billDate: '01 Sep 2026',
         bbpsRefNo: 'TRX987654357'
@@ -53,7 +53,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
         setLoading(true);
         try {
             const res = await transactionService.processPayment({
-                category_id: 1,
+                category_id: 3,
                 amount: Number(payAmount).toFixed(2),
                 biller_name: dummyBill.billerName,
                 consumer_number: dummyBill.consumerNumber

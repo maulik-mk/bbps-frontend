@@ -22,6 +22,7 @@ import SchemeChargesPage from './pages/(main)/schemes/charges/page';
 import ComplaintRegistration from './pages/(main)/bbps/complaint/registration';
 import TrackComplaint from './pages/(main)/bbps/complaint/track';
 import TransactionSearch from './pages/(main)/bbps/Search';
+import BBPSTransactions from './pages/(main)/bbps/transactions/page';
 import LedgerPage from './pages/(main)/reports/ledger/page';
 import CommissionsPage from './pages/(main)/reports/commissions/page';
 
@@ -140,9 +141,19 @@ export default function App() {
                     <Route
                         path="/transactions"
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['admin', 'retailer']}>
                                 <Layout>
                                     <Transactions />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/bbps/transactions"
+                        element={
+                            <ProtectedRoute allowedRoles={['admin', 'retailer']}>
+                                <Layout>
+                                    <BBPSTransactions />
                                 </Layout>
                             </ProtectedRoute>
                         }
