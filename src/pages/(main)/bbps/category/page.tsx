@@ -21,7 +21,7 @@ const CategorySelection = () => {
     const decodedService = service ? decodeURIComponent(service) : 'Service';
 
     useEffect(() => {
-        import(`../../../../data/operators/${decodedService.toLowerCase()}.json`)
+        import(`../../../../../public/data/data/operators/${decodedService.toLowerCase()}.json`)
             .then((module) => {
                 setOperators(module.default || module);
             })
