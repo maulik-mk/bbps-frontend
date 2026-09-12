@@ -83,14 +83,24 @@ const TransactionsPage = ({ type }: { type?: string }) => {
         return data;
     }, [allTransactions, activeTab, selectedStatus, selectedCategory, selectedDateRange, globalFilterValue]);
 
-    const formatDate = (value: string) => {
-        return new Date(value).toLocaleDateString('en-IN', {
+    const dateTemplate = (rowData: any) => {
+        const dateObj = new Date(rowData.created_at);
+        const dateStr = dateObj.toLocaleDateString('en-GB', {
             day: '2-digit',
             month: 'short',
-            year: 'numeric',
+            year: 'numeric'
+        });
+        const timeStr = dateObj.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit'
         });
+
+        return (
+            <div className="flex flex-column gap-1">
+                <span className="font-bold text-800">{dateStr}</span>
+                <span className="text-sm text-500 font-medium">{timeStr}</span>
+            </div>
+        );
     };
 
     const formatCurrency = (value: number) => {
@@ -216,7 +226,7 @@ const TransactionsPage = ({ type }: { type?: string }) => {
                             scrollable
                             responsiveLayout="scroll"
                         >
-                            <Column field="created_at" header="DATE & TIME" body={(rowData) => formatDate(rowData.created_at)} sortable style={{ minWidth: '12rem' }} />
+                            <Column field="created_at" header="DATE & TIME" body={dateTemplate} sortable style={{ minWidth: '12rem' }} />
                             <Column field="first_name" header="USER NAME" sortable style={{ minWidth: '12rem' }} />
                             <Column field="user_mobile" header="USER MOBILE" sortable style={{ minWidth: '12rem' }} />
                             <Column field="category_name" header="CATEGORY" sortable style={{ minWidth: '10rem' }} />

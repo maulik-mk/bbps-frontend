@@ -116,11 +116,23 @@ const SchemesPage = () => {
     };
 
     const dateBodyTemplate = (rowData: Scheme) => {
-        return new Date(rowData.created_at).toLocaleDateString('en-IN', {
+        const dateObj = new Date(rowData.created_at);
+        const dateStr = dateObj.toLocaleDateString('en-GB', {
             day: '2-digit',
             month: 'short',
             year: 'numeric'
         });
+        const timeStr = dateObj.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        return (
+            <div className="flex flex-column gap-1">
+                <span className="font-bold text-800">{dateStr}</span>
+                <span className="text-sm text-500 font-medium">{timeStr}</span>
+            </div>
+        );
     };
 
     const schemeDialogFooter = (

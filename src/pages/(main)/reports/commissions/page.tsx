@@ -54,14 +54,24 @@ const CommissionsPage = () => {
         return value ? value.toLocaleString('en-IN', { style: 'currency', currency: 'INR' }) : '₹0.00';
     };
 
-    const formatDate = (value: string) => {
-        return new Date(value).toLocaleDateString('en-IN', {
+    const dateTemplate = (rowData: any) => {
+        const dateObj = new Date(rowData.created_at);
+        const dateStr = dateObj.toLocaleDateString('en-GB', {
             day: '2-digit',
             month: 'short',
-            year: 'numeric',
+            year: 'numeric'
+        });
+        const timeStr = dateObj.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit'
         });
+
+        return (
+            <div className="flex flex-column gap-1">
+                <span className="font-bold text-800">{dateStr}</span>
+                <span className="text-sm text-500 font-medium">{timeStr}</span>
+            </div>
+        );
     };
 
     const retailerTemplate = (rowData: any) => {
@@ -150,7 +160,7 @@ const CommissionsPage = () => {
                             scrollable
                             responsiveLayout="scroll"
                         >
-                            <Column field="created_at" header="DATE" body={(r) => formatDate(r.created_at)} sortable style={{ minWidth: '12rem' }}></Column>
+                            <Column field="created_at" header="DATE & TIME" body={dateTemplate} sortable style={{ minWidth: '12rem' }}></Column>
                             <Column header="RETAILER DETAILS" body={retailerTemplate} style={{ minWidth: '18rem' }}></Column>
                             <Column header="TXN DETAILS" body={txnDetailsTemplate} style={{ minWidth: '18rem' }}></Column>
                             <Column header="DISTRIBUTOR (D)" body={dTemplate} style={{ minWidth: '20rem' }}></Column>

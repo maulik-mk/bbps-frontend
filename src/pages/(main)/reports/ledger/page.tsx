@@ -60,14 +60,24 @@ const LedgerPage = () => {
         return value ? value.toLocaleString('en-IN', { style: 'currency', currency: 'INR' }) : '₹0.00';
     };
 
-    const formatDate = (value: string) => {
-        return new Date(value).toLocaleDateString('en-IN', {
+    const dateTemplate = (rowData: any) => {
+        const dateObj = new Date(rowData.created_at);
+        const dateStr = dateObj.toLocaleDateString('en-GB', {
             day: '2-digit',
             month: 'short',
-            year: 'numeric',
+            year: 'numeric'
+        });
+        const timeStr = dateObj.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit'
         });
+
+        return (
+            <div className="flex flex-column gap-1">
+                <span className="font-bold text-800">{dateStr}</span>
+                <span className="text-sm text-500 font-medium">{timeStr}</span>
+            </div>
+        );
     };
 
     const amountDetailsTemplate = (rowData: any) => {
@@ -95,21 +105,46 @@ const LedgerPage = () => {
         );
     };
 
+    const getEventDescription = (rowData: any) => {
+        switch (rowData.transfer_type) {
+            case 'D_COMMISSION':
+            case 'MD_COMMISSION':
+                return `Commission for ${rowData.txn_id || 'Transaction'}`;
+            case 'BBPS_BILL_PAYMENT':
+                return `Bill Payment for ${rowData.txn_id || 'Transaction'}`;
+            case 'COMPANY_REVENUE':
+                return `Revenue for ${rowData.txn_id || 'Transaction'}`;
+            default:
+                return rowData.transfer_type;
+        }
+    };
+
     const descriptionTemplate = (rowData: any) => {
         return (
-            <div className="flex flex-column">
-                <span className="font-bold text-700">
-                    {rowData.user_name || 'System Account'} <span className="text-sm text-500 font-normal ml-1">({rowData.user_mobile || '0000000000'})</span>
-                </span>
-                <div className="flex flex-wrap gap-2 mt-1 mb-1">
-                    <span className="text-xs text-600 bg-gray-100 px-2 py-1 border-round">{rowData.transfer_type}</span>
-                    {rowData.service_name && <span className="text-xs text-blue-700 bg-blue-50 px-2 py-1 border-round font-medium">Service: {rowData.service_name}</span>}
-                </div>
-                {rowData.txn_id && (
-                    <span className="text-xs text-500" style={{ fontFamily: 'monospace' }}>
-                        TXN ID: {rowData.txn_id}
+            <div className="flex flex-column py-1 justify-content-center" style={{ minHeight: '80px' }}>
+                <div className="flex align-items-center gap-2 flex-wrap mb-1">
+                    <span className="font-bold text-900 text-base" style={{ letterSpacing: '-0.3px' }}>
+                        {rowData.user_name || 'System Account'}
                     </span>
+                    <span className="text-xs text-600 bg-gray-100 px-2 py-1 border-round flex align-items-center font-medium">
+                        <i className="pi pi-phone mr-1" style={{ fontSize: '0.7rem', color: '#9ca3af' }}></i>
+                        {rowData.user_mobile || 'N/A'}
+                    </span>
+                    <span className="text-xs font-bold text-blue-700 bg-blue-100 px-2 py-1 border-round">BBPS</span>
+                </div>
+
+                {rowData.txn_id && (
+                    <div className="flex align-items-center gap-2 mb-1">
+                        <span className="text-sm font-semibold text-600" style={{ fontFamily: 'monospace', letterSpacing: '-0.2px' }}>
+                            {rowData.txn_id}
+                        </span>
+                        <i className="pi pi-copy text-400 cursor-pointer transition-colors hover:text-600" style={{ fontSize: '0.85rem' }} title="Copy Transaction ID" onClick={() => navigator.clipboard.writeText(rowData.txn_id)}></i>
+                    </div>
                 )}
+
+                <div className="text-sm text-700 font-medium mt-1" style={{ lineHeight: '1.4', maxWidth: '350px' }}>
+                    {getEventDescription(rowData)} {rowData.service_name && <span className="font-bold"></span>}
+                </div>
             </div>
         );
     };
@@ -157,7 +192,7 @@ const LedgerPage = () => {
                             scrollable
                             responsiveLayout="scroll"
                         >
-                            <Column field="created_at" header="DATE & TIME" body={(r) => formatDate(r.created_at)} sortable style={{ minWidth: '12rem' }} />
+                            <Column field="created_at" header="DATE & TIME" body={dateTemplate} sortable style={{ minWidth: '12rem' }} />
                             <Column header="DESCRIPTION" body={descriptionTemplate} style={{ minWidth: '22rem' }} />
                             <Column header="AMOUNT" body={amountDetailsTemplate} style={{ minWidth: '12rem' }} />
                             <Column field="opening_balance" header="OPENING BAL" body={(r) => formatCurrency(parseFloat(r.opening_balance))} style={{ minWidth: '10rem', color: '#64748b' }} />
