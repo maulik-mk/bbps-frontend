@@ -1,18 +1,42 @@
 [
     {
-        "id": "7936",
-        "name": "Gujarat Traffic Police"
-    },
-    {
-        "id": "6232",
-        "name": "Mumbai Traffic Police"
-    },
-    {
-        "id": "3178",
+        "id": "1",
         "name": "Delhi Traffic Police"
     },
     {
-        "id": "7686",
+        "id": "2",
+        "name": "Mumbai Traffic Police"
+    },
+    {
+        "id": "3",
+        "name": "Bangalore Traffic Police"
+    },
+    {
+        "id": "4",
+        "name": "Chennai Traffic Police"
+    },
+    {
+        "id": "5",
+        "name": "Hyderabad Traffic Police"
+    },
+    {
+        "id": "6",
+        "name": "Pune Traffic Police"
+    },
+    {
+        "id": "7",
+        "name": "Ahmedabad Traffic Police"
+    },
+    {
+        "id": "8",
+        "name": "Kolkata Traffic Police"
+    },
+    {
+        "id": "9",
         "name": "UP Traffic Police"
+    },
+    {
+        "id": "10",
+        "name": "Gujarat Traffic Police"
     }
 ]

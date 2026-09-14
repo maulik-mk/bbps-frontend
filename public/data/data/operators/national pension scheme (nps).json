@@ -1,14 +1,42 @@
 [
     {
-        "id": "1068",
-        "name": "NSDL CRA"
+        "id": "1",
+        "name": "SBI Pension Funds"
     },
     {
-        "id": "3752",
-        "name": "KFintech CRA"
+        "id": "2",
+        "name": "LIC Pension Fund"
     },
     {
-        "id": "3963",
-        "name": "CAMS CRA"
+        "id": "3",
+        "name": "UTI Retirement Solutions"
+    },
+    {
+        "id": "4",
+        "name": "HDFC Pension"
+    },
+    {
+        "id": "5",
+        "name": "ICICI Prudential Pension"
+    },
+    {
+        "id": "6",
+        "name": "Kotak Mahindra Pension"
+    },
+    {
+        "id": "7",
+        "name": "Aditya Birla Sun Life Pension"
+    },
+    {
+        "id": "8",
+        "name": "Tata Pension Management"
+    },
+    {
+        "id": "9",
+        "name": "Max Life Pension"
+    },
+    {
+        "id": "10",
+        "name": "Axis Pension Fund"
     }
 ]

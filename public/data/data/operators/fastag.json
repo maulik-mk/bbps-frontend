@@ -1,5 +1,42 @@
 [
-    { "id": "13", "name": "ICICI Bank FASTag" },
-    { "id": "14", "name": "HDFC Bank FASTag" },
-    { "id": "15", "name": "IDFC First Bank FASTag" }
+    {
+        "id": "1",
+        "name": "Paytm Payments Bank FASTag"
+    },
+    {
+        "id": "2",
+        "name": "HDFC Bank FASTag"
+    },
+    {
+        "id": "3",
+        "name": "ICICI Bank FASTag"
+    },
+    {
+        "id": "4",
+        "name": "SBI FASTag"
+    },
+    {
+        "id": "5",
+        "name": "Axis Bank FASTag"
+    },
+    {
+        "id": "6",
+        "name": "Kotak Mahindra FASTag"
+    },
+    {
+        "id": "7",
+        "name": "IDFC FIRST Bank FASTag"
+    },
+    {
+        "id": "8",
+        "name": "Airtel Payments Bank FASTag"
+    },
+    {
+        "id": "9",
+        "name": "Bank of Baroda FASTag"
+    },
+    {
+        "id": "10",
+        "name": "Equitas Small Finance Bank FASTag"
+    }
 ]

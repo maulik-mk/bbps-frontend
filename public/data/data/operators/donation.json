@@ -1,18 +1,42 @@
 [
     {
-        "id": "2837",
+        "id": "1",
         "name": "PM CARES Fund"
     },
     {
-        "id": "2396",
-        "name": "Tirumala Tirupati Devasthanams"
+        "id": "2",
+        "name": "UNICEF India"
     },
     {
-        "id": "5875",
-        "name": "Siddhivinayak Temple"
+        "id": "3",
+        "name": "GiveIndia"
     },
     {
-        "id": "6577",
-        "name": "Shirdi Sai Baba Sansthan"
+        "id": "4",
+        "name": "Akshaya Patra"
+    },
+    {
+        "id": "5",
+        "name": "Smile Foundation"
+    },
+    {
+        "id": "6",
+        "name": "HelpAge India"
+    },
+    {
+        "id": "7",
+        "name": "Goonj"
+    },
+    {
+        "id": "8",
+        "name": "CRY"
+    },
+    {
+        "id": "9",
+        "name": "Pratham"
+    },
+    {
+        "id": "10",
+        "name": "Save the Children"
     }
 ]

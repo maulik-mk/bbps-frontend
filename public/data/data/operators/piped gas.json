@@ -1,18 +1,42 @@
 [
     {
-        "id": "1517",
-        "name": "Indraprastha Gas Limited"
+        "id": "1",
+        "name": "Indraprastha Gas"
     },
     {
-        "id": "4326",
+        "id": "2",
         "name": "Mahanagar Gas"
     },
     {
-        "id": "5900",
-        "name": "Adani Total Gas"
+        "id": "3",
+        "name": "Adani Gas"
     },
     {
-        "id": "9225",
+        "id": "4",
         "name": "Gujarat Gas"
+    },
+    {
+        "id": "5",
+        "name": "Sabarmati Gas"
+    },
+    {
+        "id": "6",
+        "name": "Green Gas"
+    },
+    {
+        "id": "7",
+        "name": "Maharashtra Natural Gas"
+    },
+    {
+        "id": "8",
+        "name": "Central U.P. Gas"
+    },
+    {
+        "id": "9",
+        "name": "Bhagyanagar Gas"
+    },
+    {
+        "id": "10",
+        "name": "Torrent Gas"
     }
 ]

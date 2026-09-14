@@ -1,14 +1,42 @@
 [
     {
-        "id": "1943",
+        "id": "1",
+        "name": "MagicBricks Rent"
+    },
+    {
+        "id": "2",
         "name": "NoBroker Rent"
     },
     {
-        "id": "3895",
+        "id": "3",
+        "name": "Housing.com Rent"
+    },
+    {
+        "id": "4",
+        "name": "99acres Rent"
+    },
+    {
+        "id": "5",
         "name": "Cred Rent"
     },
     {
-        "id": "3299",
-        "name": "Housing.com"
+        "id": "6",
+        "name": "Paytm Rent"
+    },
+    {
+        "id": "7",
+        "name": "Freecharge Rent"
+    },
+    {
+        "id": "8",
+        "name": "RedGirraffe"
+    },
+    {
+        "id": "9",
+        "name": "PhonePe Rent"
+    },
+    {
+        "id": "10",
+        "name": "Nobrokerhood Rent"
     }
 ]

@@ -1,18 +1,42 @@
 [
     {
-        "id": "3753",
+        "id": "1",
         "name": "HDFC Bank Credit Card"
     },
     {
-        "id": "3141",
+        "id": "2",
         "name": "SBI Card"
     },
     {
-        "id": "9083",
+        "id": "3",
         "name": "ICICI Bank Credit Card"
     },
     {
-        "id": "1901",
+        "id": "4",
         "name": "Axis Bank Credit Card"
+    },
+    {
+        "id": "5",
+        "name": "Kotak Mahindra Bank Credit Card"
+    },
+    {
+        "id": "6",
+        "name": "Citi Bank Credit Card"
+    },
+    {
+        "id": "7",
+        "name": "Standard Chartered Credit Card"
+    },
+    {
+        "id": "8",
+        "name": "RBL Bank Credit Card"
+    },
+    {
+        "id": "9",
+        "name": "IndusInd Bank Credit Card"
+    },
+    {
+        "id": "10",
+        "name": "YES Bank Credit Card"
     }
 ]

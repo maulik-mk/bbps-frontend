@@ -1,14 +1,42 @@
 [
     {
-        "id": "4021",
-        "name": "Torrent Power Prepaid"
+        "id": "1",
+        "name": "UPPCL Prepaid Meter"
     },
     {
-        "id": "3446",
-        "name": "UPPCL Prepaid"
-    },
-    {
-        "id": "8676",
+        "id": "2",
         "name": "Bihar State Power Prepaid"
+    },
+    {
+        "id": "3",
+        "name": "Assam Power Prepaid"
+    },
+    {
+        "id": "4",
+        "name": "Tripura State Electricity Prepaid"
+    },
+    {
+        "id": "5",
+        "name": "Manipur State Power Prepaid"
+    },
+    {
+        "id": "6",
+        "name": "Meghalaya Power Prepaid"
+    },
+    {
+        "id": "7",
+        "name": "APDCL Prepaid"
+    },
+    {
+        "id": "8",
+        "name": "JBVNL Prepaid"
+    },
+    {
+        "id": "9",
+        "name": "NBPDCL Prepaid"
+    },
+    {
+        "id": "10",
+        "name": "SBPDCL Prepaid"
     }
 ]

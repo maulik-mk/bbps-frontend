@@ -1,18 +1,42 @@
 [
     {
-        "id": "9473",
+        "id": "1",
         "name": "BSNL Landline"
     },
     {
-        "id": "4966",
+        "id": "2",
         "name": "MTNL Delhi"
     },
     {
-        "id": "3707",
+        "id": "3",
+        "name": "MTNL Mumbai"
+    },
+    {
+        "id": "4",
         "name": "Airtel Landline"
     },
     {
-        "id": "5423",
-        "name": "JioFiber Landline"
+        "id": "5",
+        "name": "Jio Landline"
+    },
+    {
+        "id": "6",
+        "name": "Tata Teleservices"
+    },
+    {
+        "id": "7",
+        "name": "Vodafone Idea Landline"
+    },
+    {
+        "id": "8",
+        "name": "Reliance Communications"
+    },
+    {
+        "id": "9",
+        "name": "Connect Broadband"
+    },
+    {
+        "id": "10",
+        "name": "Quadrant Televentures"
     }
 ]

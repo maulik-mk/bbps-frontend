@@ -1,14 +1,42 @@
 [
     {
-        "id": "9924",
-        "name": "LIC Premium Collection"
+        "id": "1",
+        "name": "Bajaj Finance"
     },
     {
-        "id": "3233",
-        "name": "Bajaj Finance Agent"
+        "id": "2",
+        "name": "Muthoot Finance"
     },
     {
-        "id": "1518",
-        "name": "Muthoot Agent"
+        "id": "3",
+        "name": "Cholamandalam"
+    },
+    {
+        "id": "4",
+        "name": "Shriram Finance"
+    },
+    {
+        "id": "5",
+        "name": "L&T Finance"
+    },
+    {
+        "id": "6",
+        "name": "Mahindra Finance"
+    },
+    {
+        "id": "7",
+        "name": "HDB Financial"
+    },
+    {
+        "id": "8",
+        "name": "Home Credit"
+    },
+    {
+        "id": "9",
+        "name": "Manappuram Finance"
+    },
+    {
+        "id": "10",
+        "name": "TVS Credit"
     }
 ]

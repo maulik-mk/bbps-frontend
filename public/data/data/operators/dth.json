@@ -1,6 +1,42 @@
 [
-    { "id": "9", "name": "Tata Play" },
-    { "id": "10", "name": "Airtel Digital TV" },
-    { "id": "11", "name": "Dish TV" },
-    { "id": "12", "name": "Sun Direct" }
+    {
+        "id": "1",
+        "name": "Tata Play"
+    },
+    {
+        "id": "2",
+        "name": "Airtel Digital TV"
+    },
+    {
+        "id": "3",
+        "name": "Dish TV"
+    },
+    {
+        "id": "4",
+        "name": "D2H"
+    },
+    {
+        "id": "5",
+        "name": "Sun Direct"
+    },
+    {
+        "id": "6",
+        "name": "Zing Digital"
+    },
+    {
+        "id": "7",
+        "name": "DD Free Dish"
+    },
+    {
+        "id": "8",
+        "name": "Reliance Digital TV"
+    },
+    {
+        "id": "9",
+        "name": "Videocon D2H"
+    },
+    {
+        "id": "10",
+        "name": "Independent TV"
+    }
 ]

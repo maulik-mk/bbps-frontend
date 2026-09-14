@@ -1,22 +1,42 @@
 [
     {
-        "id": "4095",
+        "id": "1",
         "name": "Netflix"
     },
     {
-        "id": "2313",
+        "id": "2",
+        "name": "Amazon Prime Video"
+    },
+    {
+        "id": "3",
         "name": "Disney+ Hotstar"
     },
     {
-        "id": "6154",
-        "name": "Amazon Prime"
-    },
-    {
-        "id": "7142",
+        "id": "4",
         "name": "SonyLIV"
     },
     {
-        "id": "7355",
+        "id": "5",
+        "name": "ZEE5"
+    },
+    {
+        "id": "6",
         "name": "Spotify"
+    },
+    {
+        "id": "7",
+        "name": "YouTube Premium"
+    },
+    {
+        "id": "8",
+        "name": "Apple Music"
+    },
+    {
+        "id": "9",
+        "name": "JioCinema"
+    },
+    {
+        "id": "10",
+        "name": "Voot"
     }
 ]

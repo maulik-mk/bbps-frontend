@@ -1,22 +1,42 @@
 [
     {
-        "id": "4340",
+        "id": "1",
         "name": "Bajaj Finance"
     },
     {
-        "id": "5381",
+        "id": "2",
         "name": "Muthoot Finance"
     },
     {
-        "id": "9908",
-        "name": "HDFC Bank Loans"
-    },
-    {
-        "id": "7778",
-        "name": "SBI Home Loans"
-    },
-    {
-        "id": "8132",
+        "id": "3",
         "name": "Cholamandalam"
+    },
+    {
+        "id": "4",
+        "name": "Shriram Finance"
+    },
+    {
+        "id": "5",
+        "name": "L&T Finance"
+    },
+    {
+        "id": "6",
+        "name": "Mahindra Finance"
+    },
+    {
+        "id": "7",
+        "name": "HDB Financial"
+    },
+    {
+        "id": "8",
+        "name": "Home Credit"
+    },
+    {
+        "id": "9",
+        "name": "Manappuram Finance"
+    },
+    {
+        "id": "10",
+        "name": "TVS Credit"
     }
 ]

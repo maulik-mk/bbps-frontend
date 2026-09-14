@@ -1,18 +1,42 @@
 [
     {
-        "id": "8914",
-        "name": "Brihanmumbai Municipal Corporation"
+        "id": "1",
+        "name": "MCGM Mumbai"
     },
     {
-        "id": "4374",
-        "name": "Pune Municipal Corporation"
+        "id": "2",
+        "name": "NDMC Delhi"
     },
     {
-        "id": "7921",
-        "name": "Ahmedabad Municipal Corporation"
+        "id": "3",
+        "name": "BBMP Bangalore"
     },
     {
-        "id": "8652",
-        "name": "Delhi Municipal Corporation"
+        "id": "4",
+        "name": "GCC Chennai"
+    },
+    {
+        "id": "5",
+        "name": "GHMC Hyderabad"
+    },
+    {
+        "id": "6",
+        "name": "PMC Pune"
+    },
+    {
+        "id": "7",
+        "name": "AMC Ahmedabad"
+    },
+    {
+        "id": "8",
+        "name": "KMC Kolkata"
+    },
+    {
+        "id": "9",
+        "name": "LMC Lucknow"
+    },
+    {
+        "id": "10",
+        "name": "JMC Jaipur"
     }
 ]

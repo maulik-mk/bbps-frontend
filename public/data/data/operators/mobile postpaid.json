@@ -1,6 +1,42 @@
 [
-    { "id": "5", "name": "Jio Postpaid" },
-    { "id": "6", "name": "Airtel Postpaid" },
-    { "id": "7", "name": "Vi Postpaid" },
-    { "id": "8", "name": "BSNL Postpaid" }
+    {
+        "id": "1",
+        "name": "Airtel Postpaid"
+    },
+    {
+        "id": "2",
+        "name": "Jio Postpaid"
+    },
+    {
+        "id": "3",
+        "name": "Vi Postpaid"
+    },
+    {
+        "id": "4",
+        "name": "BSNL Postpaid"
+    },
+    {
+        "id": "5",
+        "name": "MTNL Mumbai Postpaid"
+    },
+    {
+        "id": "6",
+        "name": "MTNL Delhi Postpaid"
+    },
+    {
+        "id": "7",
+        "name": "Tata Docomo Postpaid"
+    },
+    {
+        "id": "8",
+        "name": "Reliance Mobile Postpaid"
+    },
+    {
+        "id": "9",
+        "name": "Aircel Postpaid"
+    },
+    {
+        "id": "10",
+        "name": "Telenor Postpaid"
+    }
 ]

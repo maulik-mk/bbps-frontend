@@ -1,4 +1,42 @@
 [
-    { "id": "22", "name": "Delhi Jal Board" },
-    { "id": "23", "name": "Bangalore Water Supply" }
+    {
+        "id": "1",
+        "name": "Delhi Jal Board"
+    },
+    {
+        "id": "2",
+        "name": "BMC Water Mumbai"
+    },
+    {
+        "id": "3",
+        "name": "BWSSB Bangalore"
+    },
+    {
+        "id": "4",
+        "name": "CMWSSB Chennai"
+    },
+    {
+        "id": "5",
+        "name": "HMWSSB Hyderabad"
+    },
+    {
+        "id": "6",
+        "name": "PMC Water Pune"
+    },
+    {
+        "id": "7",
+        "name": "AMC Water Ahmedabad"
+    },
+    {
+        "id": "8",
+        "name": "KMC Water Kolkata"
+    },
+    {
+        "id": "9",
+        "name": "PHED Rajasthan"
+    },
+    {
+        "id": "10",
+        "name": "UP Jal Nigam"
+    }
 ]

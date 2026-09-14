@@ -1,18 +1,42 @@
 [
     {
-        "id": "5523",
+        "id": "1",
         "name": "Tata Power EZ Charge"
     },
     {
-        "id": "9660",
-        "name": "Zeon Charging"
+        "id": "2",
+        "name": "Ather Grid"
     },
     {
-        "id": "5637",
+        "id": "3",
+        "name": "Ola Hypercharger"
+    },
+    {
+        "id": "4",
         "name": "ChargeZone"
     },
     {
-        "id": "7745",
-        "name": "Ather Grid"
+        "id": "5",
+        "name": "Statiq"
+    },
+    {
+        "id": "6",
+        "name": "Zeon Charging"
+    },
+    {
+        "id": "7",
+        "name": "Magenta ChargeGrid"
+    },
+    {
+        "id": "8",
+        "name": "Fortum Charge & Drive"
+    },
+    {
+        "id": "9",
+        "name": "BPCL EV"
+    },
+    {
+        "id": "10",
+        "name": "Jio-bp pulse"
     }
 ]

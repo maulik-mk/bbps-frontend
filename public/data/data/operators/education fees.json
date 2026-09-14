@@ -1,18 +1,42 @@
 [
     {
-        "id": "5805",
-        "name": "Kendriya Vidyalaya"
-    },
-    {
-        "id": "8859",
+        "id": "1",
         "name": "Delhi Public School"
     },
     {
-        "id": "9102",
+        "id": "2",
+        "name": "Kendriya Vidyalaya"
+    },
+    {
+        "id": "3",
+        "name": "Navodaya Vidyalaya"
+    },
+    {
+        "id": "4",
         "name": "Amity University"
     },
     {
-        "id": "7621",
+        "id": "5",
+        "name": "Lovely Professional University"
+    },
+    {
+        "id": "6",
+        "name": "SRM Institute"
+    },
+    {
+        "id": "7",
+        "name": "VIT"
+    },
+    {
+        "id": "8",
+        "name": "Manipal University"
+    },
+    {
+        "id": "9",
+        "name": "Christ University"
+    },
+    {
+        "id": "10",
         "name": "BITS Pilani"
     }
 ]

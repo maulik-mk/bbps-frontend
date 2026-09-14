@@ -1,18 +1,42 @@
 [
     {
-        "id": "3503",
+        "id": "1",
         "name": "Hathway Cable"
     },
     {
-        "id": "7251",
+        "id": "2",
+        "name": "Asianet Digital"
+    },
+    {
+        "id": "3",
         "name": "DEN Networks"
     },
     {
-        "id": "7179",
+        "id": "4",
         "name": "GTPL Hathway"
     },
     {
-        "id": "5664",
+        "id": "5",
         "name": "Siti Networks"
+    },
+    {
+        "id": "6",
+        "name": "InDigital"
+    },
+    {
+        "id": "7",
+        "name": "Fastway Transmissions"
+    },
+    {
+        "id": "8",
+        "name": "UCN Cable"
+    },
+    {
+        "id": "9",
+        "name": "Kerala Vision"
+    },
+    {
+        "id": "10",
+        "name": "Thamizhaga Cable TV"
     }
 ]

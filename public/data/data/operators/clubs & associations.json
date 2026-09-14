@@ -1,14 +1,42 @@
 [
     {
-        "id": "9620",
-        "name": "Rotary Club India"
+        "id": "1",
+        "name": "Rotary Club"
     },
     {
-        "id": "2419",
-        "name": "Lions Club"
+        "id": "2",
+        "name": "Lions Club International"
     },
     {
-        "id": "1949",
+        "id": "3",
         "name": "Gymkhana Club"
+    },
+    {
+        "id": "4",
+        "name": "Press Club of India"
+    },
+    {
+        "id": "5",
+        "name": "Bombay Gymkhana"
+    },
+    {
+        "id": "6",
+        "name": "Madras Boat Club"
+    },
+    {
+        "id": "7",
+        "name": "Bangalore Club"
+    },
+    {
+        "id": "8",
+        "name": "Delhi Golf Club"
+    },
+    {
+        "id": "9",
+        "name": "Tollygunge Club"
+    },
+    {
+        "id": "10",
+        "name": "Royal Western India Turf Club"
     }
 ]

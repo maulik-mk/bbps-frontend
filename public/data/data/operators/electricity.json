@@ -1,6 +1,42 @@
 [
-    { "id": "1", "name": "Torrent Power" },
-    { "id": "2", "name": "Adani Electricity" },
-    { "id": "3", "name": "Tata Power" },
-    { "id": "4", "name": "MSEDCL" }
+    {
+        "id": "1",
+        "name": "Torrent Power"
+    },
+    {
+        "id": "2",
+        "name": "Adani Electricity"
+    },
+    {
+        "id": "3",
+        "name": "Tata Power"
+    },
+    {
+        "id": "4",
+        "name": "MSEDCL"
+    },
+    {
+        "id": "5",
+        "name": "BESCOM"
+    },
+    {
+        "id": "6",
+        "name": "TANGEDCO"
+    },
+    {
+        "id": "7",
+        "name": "UPPCL"
+    },
+    {
+        "id": "8",
+        "name": "DHBVN"
+    },
+    {
+        "id": "9",
+        "name": "PSPCL"
+    },
+    {
+        "id": "10",
+        "name": "KSEB"
+    }
 ]

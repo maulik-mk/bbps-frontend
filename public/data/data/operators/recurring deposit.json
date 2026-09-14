@@ -1,14 +1,42 @@
 [
     {
-        "id": "7107",
-        "name": "India Post RD"
+        "id": "1",
+        "name": "SBI RD"
     },
     {
-        "id": "4196",
-        "name": "SBI Recurring Deposit"
-    },
-    {
-        "id": "4688",
+        "id": "2",
         "name": "HDFC Bank RD"
+    },
+    {
+        "id": "3",
+        "name": "ICICI Bank RD"
+    },
+    {
+        "id": "4",
+        "name": "Axis Bank RD"
+    },
+    {
+        "id": "5",
+        "name": "Kotak Mahindra Bank RD"
+    },
+    {
+        "id": "6",
+        "name": "Punjab National Bank RD"
+    },
+    {
+        "id": "7",
+        "name": "Bank of Baroda RD"
+    },
+    {
+        "id": "8",
+        "name": "Canara Bank RD"
+    },
+    {
+        "id": "9",
+        "name": "Union Bank of India RD"
+    },
+    {
+        "id": "10",
+        "name": "Indian Bank RD"
     }
 ]

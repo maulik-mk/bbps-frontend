@@ -1,14 +1,42 @@
 [
     {
-        "id": "3706",
-        "name": "Thomas Cook"
+        "id": "1",
+        "name": "Thomas Cook Forex"
     },
     {
-        "id": "9706",
+        "id": "2",
+        "name": "BookMyForex"
+    },
+    {
+        "id": "3",
+        "name": "HDFC Bank Forex"
+    },
+    {
+        "id": "4",
+        "name": "ICICI Bank Forex"
+    },
+    {
+        "id": "5",
+        "name": "SBI Forex"
+    },
+    {
+        "id": "6",
+        "name": "Axis Bank Forex"
+    },
+    {
+        "id": "7",
         "name": "EbixCash"
     },
     {
-        "id": "1042",
+        "id": "8",
         "name": "MakeMyTrip Forex"
+    },
+    {
+        "id": "9",
+        "name": "Centrum Forex"
+    },
+    {
+        "id": "10",
+        "name": "Orient Exchange"
     }
 ]

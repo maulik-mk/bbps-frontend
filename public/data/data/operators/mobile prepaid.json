@@ -1,18 +1,42 @@
 [
     {
-        "id": "4499",
-        "name": "Reliance Jio"
+        "id": "1",
+        "name": "Airtel Prepaid"
     },
     {
-        "id": "2499",
-        "name": "Bharti Airtel"
+        "id": "2",
+        "name": "Jio Prepaid"
     },
     {
-        "id": "4724",
-        "name": "Vodafone Idea (Vi)"
+        "id": "3",
+        "name": "Vi Prepaid"
     },
     {
-        "id": "4875",
-        "name": "BSNL Mobile"
+        "id": "4",
+        "name": "BSNL Prepaid"
+    },
+    {
+        "id": "5",
+        "name": "MTNL Mumbai Prepaid"
+    },
+    {
+        "id": "6",
+        "name": "MTNL Delhi Prepaid"
+    },
+    {
+        "id": "7",
+        "name": "Tata Docomo Prepaid"
+    },
+    {
+        "id": "8",
+        "name": "Reliance Mobile Prepaid"
+    },
+    {
+        "id": "9",
+        "name": "Aircel Prepaid"
+    },
+    {
+        "id": "10",
+        "name": "Telenor Prepaid"
     }
 ]

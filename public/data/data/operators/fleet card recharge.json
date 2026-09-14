@@ -1,14 +1,42 @@
 [
     {
-        "id": "2306",
-        "name": "HPCL DriveTrack Plus"
+        "id": "1",
+        "name": "BPCL SmartFleet"
     },
     {
-        "id": "1611",
+        "id": "2",
         "name": "IOCL XTRAPOWER"
     },
     {
-        "id": "9869",
-        "name": "BPCL SmartFleet"
+        "id": "3",
+        "name": "HPCL DriveTrack Plus"
+    },
+    {
+        "id": "4",
+        "name": "Reliance Fleet Management"
+    },
+    {
+        "id": "5",
+        "name": "Shell Fleet Solutions"
+    },
+    {
+        "id": "6",
+        "name": "Essar Fleet Plus"
+    },
+    {
+        "id": "7",
+        "name": "Nayara Energy Fleet"
+    },
+    {
+        "id": "8",
+        "name": "IndianOil Fleet Card"
+    },
+    {
+        "id": "9",
+        "name": "HPCL Fleet Card"
+    },
+    {
+        "id": "10",
+        "name": "BPCL Fleet Card"
     }
 ]

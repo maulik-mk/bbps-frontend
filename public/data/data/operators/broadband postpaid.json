@@ -1,5 +1,42 @@
 [
-    { "id": "16", "name": "Airtel Xstream Fiber" },
-    { "id": "17", "name": "JioFiber" },
-    { "id": "18", "name": "Hathway" }
+    {
+        "id": "1",
+        "name": "Airtel Broadband"
+    },
+    {
+        "id": "2",
+        "name": "JioFiber"
+    },
+    {
+        "id": "3",
+        "name": "ACT Fibernet"
+    },
+    {
+        "id": "4",
+        "name": "BSNL Broadband"
+    },
+    {
+        "id": "5",
+        "name": "Hathway"
+    },
+    {
+        "id": "6",
+        "name": "Excitel"
+    },
+    {
+        "id": "7",
+        "name": "You Broadband"
+    },
+    {
+        "id": "8",
+        "name": "Tikona"
+    },
+    {
+        "id": "9",
+        "name": "Tata Play Fiber"
+    },
+    {
+        "id": "10",
+        "name": "Asianet Broadband"
+    }
 ]

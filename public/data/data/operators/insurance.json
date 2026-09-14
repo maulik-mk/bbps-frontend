@@ -1,18 +1,42 @@
 [
     {
-        "id": "4144",
-        "name": "Life Insurance Corporation (LIC)"
+        "id": "1",
+        "name": "LIC of India"
     },
     {
-        "id": "2589",
+        "id": "2",
         "name": "HDFC Life"
     },
     {
-        "id": "2155",
+        "id": "3",
+        "name": "ICICI Prudential Life"
+    },
+    {
+        "id": "4",
         "name": "SBI Life"
     },
     {
-        "id": "1009",
-        "name": "Max Life Insurance"
+        "id": "5",
+        "name": "Max Life"
+    },
+    {
+        "id": "6",
+        "name": "Bajaj Allianz Life"
+    },
+    {
+        "id": "7",
+        "name": "Tata AIA Life"
+    },
+    {
+        "id": "8",
+        "name": "Kotak Mahindra Life"
+    },
+    {
+        "id": "9",
+        "name": "PNB MetLife"
+    },
+    {
+        "id": "10",
+        "name": "Reliance Nippon Life"
     }
 ]
