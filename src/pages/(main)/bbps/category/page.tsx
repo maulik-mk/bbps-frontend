@@ -70,7 +70,7 @@ const CategorySelection = () => {
     return (
         <div className="grid">
             <div className="col-12 lg:col-7 mt-5">
-                <BBPSPageCard title={`Pay ${decodedService}`} subtitle="Fetch your bill instantly." onBack={() => navigate(-1)}>
+                <BBPSPageCard title={`Pay ${decodedService} Bill`} subtitle="Fetch your bill instantly." onBack={() => navigate(-1)}>
                     <div className="p-fluid">
                         <div className="field mb-5">
                             <label htmlFor="operator" className="text-xs font-bold text-500 uppercase tracking-wide block mb-2">

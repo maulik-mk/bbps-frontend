@@ -66,35 +66,18 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div className="col-12 md:col-6 lg:col-4">
-                <div className="shadow-2 border-round-2xl p-5 flex flex-column justify-content-between h-full relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)', color: '#ffffff' }}>
-                    <div className="flex justify-content-between align-items-center mb-5 relative" style={{ zIndex: 1 }}>
-                        <div className="flex align-items-center text-blue-100 font-bold text-sm tracking-widest uppercase">
-                            <i className="pi pi-briefcase mr-2"></i>
-                            <span>Settlement Wallet</span>
-                        </div>
-                        <span className="bg-white-alpha-20 text-white text-xs font-bold px-3 py-1 border-round-2xl">T+1</span>
-                    </div>
-                    <div className="mb-6 relative" style={{ zIndex: 1 }}>
-                        <div className="text-blue-200 font-medium mb-1">Available for Payout</div>
-                        <span className="text-5xl font-bold tracking-tight">₹0</span>
-                        <span className="text-2xl font-medium text-blue-200">.00</span>
-                    </div>
-                    <div className="flex gap-3 relative" style={{ zIndex: 1 }}>
-                        <WalletButton label="Withdraw to Bank" icon="pi pi-building" bgColor="#ffffff" textColor="#1e40af" />
-                        <WalletButton icon="pi pi-download" bgColor="rgba(255,255,255,0.2)" textColor="#ffffff" isIconOnly />
-                    </div>
-                </div>
-            </div>
-
             {user?.role === 'retailer' && (
                 <div className="col-12 md:col-6 lg:col-4">
                     <div className="surface-card shadow-2 border-round-2xl p-5 flex flex-column justify-content-between h-full relative overflow-hidden border-1 border-200" style={{ background: 'linear-gradient(to bottom right, #f8fafc, #f1f5f9)' }}>
                         <div className="relative" style={{ zIndex: 1 }}>
-                            <div className="w-4rem h-4rem flex align-items-center justify-content-center border-round-2xl mb-4 bg-white shadow-1">
-                                <img src="/logo/B_mnemonic.png" alt="Bharat Connect" style={{ width: '30px' }} />
+                            <div 
+                                className="flex align-items-center justify-content-center mb-4 cursor-pointer transition-transform hover:-translate-y-1 mx-auto"
+                                onClick={() => navigate('/bbps/categories')}
+                                title="Go to Bharat Connect"
+                            >
+                                <img src="/logo/B_mnemonic.png" alt="Bharat Connect" style={{ width: '55px' }} />
                             </div>
-                            <h5 className="text-2xl font-bold text-900 mb-2 mt-0 tracking-tight">Bharat Connect Bills</h5>
+                            <h5 className="text-2xl font-bold text-900 mb-2 mt-0 tracking-tight">Bharat Connect Bill Pay</h5>
                             <p className="text-600 text-base line-height-3 mb-5 font-medium">Pay electricity, mobile, DTH, and all other utilities securely in one place.</p>
                         </div>
                         <div className="relative" style={{ zIndex: 1 }}>
