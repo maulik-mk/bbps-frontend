@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'primereact/button';
+import { BBPSLogo } from './BBPSLogo';
 
 interface BBPSPageCardProps {
     title: string;
@@ -8,10 +9,11 @@ interface BBPSPageCardProps {
     hideBack?: boolean;
     accentColor?: string;
     isCanvas?: boolean;
+    logoType?: 'bharat_connect' | 'b_assured' | 'none';
     children: React.ReactNode;
 }
 
-const BBPSPageCard: React.FC<BBPSPageCardProps> = ({ title, subtitle, onBack, hideBack = false, accentColor = 'bg-blue-500', isCanvas = false, children }) => {
+const BBPSPageCard: React.FC<BBPSPageCardProps> = ({ title, subtitle, onBack, hideBack = false, accentColor = 'bg-blue-500', isCanvas = false, logoType = 'bharat_connect', children }) => {
     return (
         <div className={`bg-white border-solid border-200 shadow-none relative overflow-hidden ${isCanvas ? 'border-none' : 'border-1 border-round-2xl'}`}>
             <div className={`absolute top-0 left-0 w-full h-1 ${accentColor}`}></div>
@@ -32,10 +34,11 @@ const BBPSPageCard: React.FC<BBPSPageCardProps> = ({ title, subtitle, onBack, hi
                             {subtitle && <p className="m-0 mt-1 text-500 text-xs sm:text-sm">{subtitle}</p>}
                         </div>
                     </div>
-                    <div className="ml-2 flex-shrink-0">
-                        <img src="/logo/Bharat_Connect1.png" alt="Bharat Connect" className="hidden sm:block" style={{ height: '55px' }} />
-                        <img src="/logo/Bharat_Connect1.png" alt="Bharat Connect" className="block sm:hidden" style={{ height: '35px' }} />
-                    </div>
+                    {logoType !== 'none' && (
+                        <div className="ml-2 flex-shrink-0">
+                            <BBPSLogo type={logoType} />
+                        </div>
+                    )}
                 </div>
 
                 <div className="mt-4 md:mt-5">{children}</div>

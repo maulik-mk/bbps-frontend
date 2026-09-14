@@ -4,11 +4,7 @@ import { LayoutContext } from './context/layoutcontext';
 const AppFooter = () => {
     const { layoutConfig } = useContext(LayoutContext);
 
-    return (
-        <div className="layout-footer">
-            <span className="font-medium ml-2">Application</span>
-        </div>
-    );
+    return <div className="layout-footer">{/* <span className="font-medium ml-2">Application</span> */}</div>;
 };
 
 export default AppFooter;
