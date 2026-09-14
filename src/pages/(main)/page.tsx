@@ -70,11 +70,7 @@ const Dashboard = () => {
                 <div className="col-12 md:col-6 lg:col-4">
                     <div className="surface-card shadow-2 border-round-2xl p-5 flex flex-column justify-content-between h-full relative overflow-hidden border-1 border-200" style={{ background: 'linear-gradient(to bottom right, #f8fafc, #f1f5f9)' }}>
                         <div className="relative" style={{ zIndex: 1 }}>
-                            <div 
-                                className="flex align-items-center justify-content-center mb-4 cursor-pointer transition-transform hover:-translate-y-1 mx-auto"
-                                onClick={() => navigate('/bbps/categories')}
-                                title="Go to Bharat Connect"
-                            >
+                            <div className="flex align-items-center justify-content-center mb-4 cursor-pointer transition-transform hover:-translate-y-1 mx-auto" onClick={() => navigate('/bbps/categories')} title="All Categories">
                                 <img src="/logo/B_mnemonic.png" alt="Bharat Connect" style={{ width: '55px' }} />
                             </div>
                             <h5 className="text-2xl font-bold text-900 mb-2 mt-0 tracking-tight">Bharat Connect Bill Pay</h5>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CategoriesGroup } from '../../../components/billers/CategoriesGroup';
 import { CategoriesGroupProps } from '../../../components/billers/CategoriesGroup';
 import { PageHeader } from '../../../components/dashboard/PageHeader';
+import { BBPSLogo } from '../../../components/BBPSLogo';
 
 const Categories = () => {
     const [billerCategories, setBillerCategories] = useState<CategoriesGroupProps[]>([]);
@@ -21,7 +22,7 @@ const Categories = () => {
                         <h2 className="m-0 text-900 font-bold text-2xl">Bharat Connect Billers</h2>
                     </div>
                     <div>
-                        <img src="/logo/Bharat_Connect1.png" alt="Bharat Connect" style={{ height: '55px' }} className="mt-3 md:mt-0" />
+                        <BBPSLogo type="bharat_connect" className="mt-3 md:mt-0" />
                     </div>
                 </div>
             </div>
