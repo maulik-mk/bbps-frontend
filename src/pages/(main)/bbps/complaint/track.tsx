@@ -4,6 +4,7 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import BBPSPageCard from '../../../../components/BBPSPageCard';
+import { BBPSLogo } from '../../../../components/BBPSLogo';
 
 const TrackComplaint = () => {
     const navigate = useNavigate();
@@ -71,37 +72,34 @@ const TrackComplaint = () => {
                 {status && (
                     <div className="mt-4 fadein animation-duration-500">
                         <div className="bg-white border-1 border-solid border-200 border-round-2xl p-4 shadow-none relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-full h-1 bg-orange-500"></div>
+                            <div className="absolute top-0 left-0 w-full h-1 bg-green-500"></div>
 
-                            <div className="flex justify-content-between align-items-start mb-4 border-bottom-1 border-200 pb-4">
+                            <div className="flex align-items-center justify-content-between mb-4 border-bottom-1 border-200 pb-4">
                                 <div>
-                                    <h3 className="m-0 text-900 font-bold text-xl">Ticket: {status.id}</h3>
-                                    <p className="m-0 mt-1 text-500 text-sm">Filed on {status.date}</p>
+                                    <h3 className="m-0 text-900 font-bold text-xl tracking-tight">Your complaint Status SUCCESS</h3>
                                 </div>
-                                <div className="bg-orange-100 text-orange-600 font-bold px-3 py-1 border-round-xl text-sm flex align-items-center">
-                                    <i className="pi pi-spin pi-spinner mr-2"></i>
-                                    {status.state}
+                                <div className="ml-2 flex-shrink-0">
+                                    <BBPSLogo type="bharat_connect" />
                                 </div>
                             </div>
 
-                            <div className="surface-50 border-round-xl p-4">
-                                <div className="flex justify-content-between align-items-center mb-3">
-                                    <div className="flex align-items-center text-600">
-                                        <i className="pi pi-building mr-3 text-lg text-blue-500"></i>
-                                        <span className="font-medium text-sm">Biller Status</span>
-                                    </div>
-                                    <div className="font-bold text-900">{status.billerStatus}</div>
+                            <div className="w-full surface-100 p-4 border-round-xl text-left shadow-1">
+                                <div className="flex justify-content-between mb-3 border-bottom-1 border-300 pb-2">
+                                    <span className="text-600 font-bold text-sm">ComplaintAssigned :</span>
+                                    <span className="text-900 font-bold text-sm">CC AVENUE</span>
                                 </div>
+                                <div className="flex justify-content-between mb-3 border-bottom-1 border-300 pb-2">
+                                    <span className="text-600 font-bold text-sm">ComplaintId :</span>
+                                    <span className="text-900 font-bold text-sm">{status.id}</span>
+                                </div>
+                                <div className="flex justify-content-between">
+                                    <span className="text-600 font-bold text-sm">ComplaintStatus :</span>
+                                    <span className="text-green-600 font-bold text-sm">SUCCESS</span>
+                                </div>
+                            </div>
 
-                                <div className="flex align-items-start">
-                                    <div className="flex align-items-center text-600 mt-1">
-                                        <i className="pi pi-info-circle mr-3 text-lg text-purple-500"></i>
-                                    </div>
-                                    <div>
-                                        <span className="font-medium text-sm text-600 block mb-1">Latest Update</span>
-                                        <p className="m-0 text-900 line-height-3 font-medium">{status.message}</p>
-                                    </div>
-                                </div>
+                            <div className="flex justify-content-center mt-4">
+                                <Button label="Okay" className="bg-blue-600 border-blue-600 font-bold px-4 shadow-1" onClick={() => setStatus(null)} />
                             </div>
                         </div>
                     </div>
@@ -139,7 +137,7 @@ const TrackComplaint = () => {
                         <p className="m-0 text-500 text-sm mb-3">If your transaction is urgent, please call our 24/7 toll-free helpline.</p>
                         <div className="flex align-items-center text-blue-600 font-bold text-lg">
                             <i className="pi pi-phone mr-2"></i>
-                            1800-123-4567
+                            0000-000-0000
                         </div>
                     </div>
                 </div>

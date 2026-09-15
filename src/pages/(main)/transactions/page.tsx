@@ -6,6 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { useNavigate } from 'react-router-dom';
 import { reportService } from '../../../services/report.service';
+import { BBPSLogo } from '../../../components/BBPSLogo';
 
 const TransactionsPage = ({ type }: { type?: string }) => {
     const [allTransactions, setAllTransactions] = useState<any[]>([]);
@@ -154,10 +155,18 @@ const TransactionsPage = ({ type }: { type?: string }) => {
             <div className="col-12 bg-white min-h-screen">
                 <div className="px-3 md:px-5 py-4 w-full" style={{ maxWidth: '100vw', overflowX: 'hidden' }}>
                     {/* Header */}
-                    <div className="flex justify-content-between align-items-center mb-4">
-                        <h1 className="m-0 text-800 font-semibold text-3xl">{type === 'bbps' ? 'BBPS Transactions' : 'Transactions overview'}</h1>
-                        <Button label="Export" icon="pi pi-cloud-download" className="p-button-outlined p-button-secondary border-round-lg text-700 bg-white border-300 font-medium py-2 px-3 shadow-none hover:surface-100" />
-                    </div>
+                    {type === 'bbps' ? (
+                        <div className="flex justify-content-between align-items-center mb-4 pb-3 border-bottom-1 border-200">
+                            <h1 className="m-0 text-900 font-bold text-2xl">Bharat Connect Transactions</h1>
+                            <div className="flex align-items-center">
+                                <BBPSLogo type="bharat_connect" />
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex justify-content-between align-items-center mb-4">
+                            <h1 className="m-0 text-800 font-semibold text-3xl">Transactions overview</h1>
+                        </div>
+                    )}
                     {/* Tabs */}
                     <div className="flex border-bottom-1 border-200 mb-4 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
                         {['All Transactions', 'Succeeded', 'Refunded'].map((tab) => (

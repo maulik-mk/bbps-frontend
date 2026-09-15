@@ -8,6 +8,7 @@ import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import BBPSPageCard from '../../../../components/BBPSPageCard';
+import { BBPSLogo } from '../../../../components/BBPSLogo';
 
 const ComplaintRegistration = () => {
     const navigate = useNavigate();
@@ -24,7 +25,6 @@ const ComplaintRegistration = () => {
     });
 
     const complaintTypes = [
-        { label: 'Transaction Successful, account not updated', value: 'success_not_updated' },
         { label: 'Transaction Successful, Amount Debited but services not received', value: 'success_debited_no_service' },
         { label: 'Transaction Successful, Amount Debited but Service Disconnected or Service Stopped', value: 'success_debited_disconnected' },
         { label: 'Transaction Successful, Amount Debited but Late Payment Surcharge Charges add in next bill', value: 'success_debited_surcharge' },
@@ -45,17 +45,21 @@ const ComplaintRegistration = () => {
         setLoading(true);
         // Simulate API call
         setTimeout(() => {
-            const newTicketId = 'TK-' + Math.floor(Math.random() * 10000);
+            const newTicketId = 'CC' + Math.floor(10000000000 + Math.random() * 90000000000);
             setTicketId(newTicketId);
             setShowSuccess(true);
-            setFormData({ dates: null, mobileNumber: '', transactionRef: '', complaintType: null, description: '' });
             setLoading(false);
         }, 1000);
     };
 
+    const handleCloseDialog = () => {
+        setShowSuccess(false);
+        setFormData({ dates: null, mobileNumber: '', transactionRef: '', complaintType: null, description: '' });
+    };
+
     const dialogFooter = (
         <div className="flex w-full mt-2">
-            <Button label="Done" icon="pi pi-check" className="w-full border-round-xl py-3 font-bold text-lg shadow-1" onClick={() => setShowSuccess(false)} autoFocus />
+            <Button label="Done" icon="pi pi-check" className="w-full border-round-xl py-3 font-bold text-lg shadow-1" onClick={handleCloseDialog} autoFocus />
         </div>
     );
 
@@ -68,7 +72,7 @@ const ComplaintRegistration = () => {
                         <div className="grid formgrid">
                             <div className="col-12 md:col-6 field mb-5">
                                 <label htmlFor="dates" className="text-xs font-bold text-500 uppercase tracking-wide block mb-2">
-                                    Date Range *
+                                    Date *
                                 </label>
                                 <span className="p-input-icon-left w-full">
                                     <i className="pi pi-calendar text-400 ml-2" style={{ zIndex: 1 }} />
@@ -76,9 +80,8 @@ const ComplaintRegistration = () => {
                                         id="dates"
                                         value={formData.dates}
                                         onChange={(e: any) => setFormData({ ...formData, dates: e.value })}
-                                        selectionMode="range"
                                         readOnlyInput
-                                        placeholder="Select Date Range"
+                                        placeholder="Select Date"
                                         className="w-full"
                                         inputClassName="border-round-xl border-300 shadow-none hover:border-blue-400 focus:border-blue-500 transition-colors py-3 pl-6 w-full text-lg"
                                     />
@@ -209,15 +212,35 @@ const ComplaintRegistration = () => {
             </div>
 
             {/* Registration Successful Dialog */}
-            <Dialog header="Complaint Registered" visible={showSuccess} style={{ width: '400px' }} footer={dialogFooter} onHide={() => setShowSuccess(false)} breakpoints={{ '960px': '75vw', '641px': '90vw' }}>
-                <div className="flex flex-column align-items-center text-center pt-3">
-                    <i className="pi pi-check-circle text-green-500 mb-3" style={{ fontSize: '4rem' }}></i>
-                    <h2 className="m-0 text-gray-900 mb-2">Successfully Registered</h2>
-                    <p className="text-500 mb-4 line-height-3">Your complaint has been submitted to BBPS and is under review.</p>
+            <Dialog showHeader={false} visible={showSuccess} style={{ width: '450px' }} footer={dialogFooter} onHide={handleCloseDialog} breakpoints={{ '960px': '75vw', '641px': '90vw' }} contentClassName="p-4">
+                <div className="relative pt-2">
+                    <div className="relative mb-5">
+                        <div className="flex flex-column align-items-center text-center">
+                            <i className="pi pi-check-circle text-800 mb-2" style={{ fontSize: '3.5rem' }}></i>
+                            <span className="text-green-500 font-bold text-md mt-2">Successfully Registered</span>
+                        </div>
+                        <div className="absolute right-0 top-50" style={{ transform: 'translateY(-60%) scale(1.4)', transformOrigin: 'right center' }}>
+                            <BBPSLogo type="b_assured" />
+                        </div>
+                    </div>
 
-                    <div className="w-full surface-100 p-3 border-round-xl text-center shadow-1">
-                        <span className="text-500 font-medium text-sm block mb-1">Ticket ID</span>
-                        <span className="text-900 font-bold text-2xl tracking-wide">{ticketId}</span>
+                    <div className="w-full surface-100 p-3 border-round-xl text-left shadow-1">
+                        <div className="flex justify-content-between mb-3">
+                            <span className="text-500 font-medium text-sm">Customer Name</span>
+                            <span className="text-900 font-bold text-sm text-right">B-Connect Customer</span>
+                        </div>
+                        <div className="flex justify-content-between mb-3">
+                            <span className="text-500 font-medium text-sm">Transaction ID</span>
+                            <span className="text-900 font-bold text-sm text-right">{formData.transactionRef}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-3">
+                            <span className="text-500 font-medium text-sm w-4">Complaint Type</span>
+                            <span className="text-900 font-bold text-sm text-right w-8 line-height-3">{complaintTypes.find((t) => t.value === formData.complaintType)?.label || formData.complaintType}</span>
+                        </div>
+                        <div className="flex justify-content-between">
+                            <span className="text-500 font-medium text-sm">Complaint Id</span>
+                            <span className="text-900 font-bold text-sm text-right">{ticketId}</span>
+                        </div>
                     </div>
                 </div>
             </Dialog>

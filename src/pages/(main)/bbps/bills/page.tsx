@@ -7,42 +7,45 @@ import { Dropdown } from 'primereact/dropdown';
 import { Toast } from 'primereact/toast';
 import BBPSPageCard from '../../../../components/BBPSPageCard';
 import { transactionService } from '../../../../services/transaction.service';
+import { BBPSLogo } from '../../../../components/BBPSLogo';
 
 interface BillSummaryProps {
     billerIdProp?: string;
+    billerNameProp?: string;
     onClose?: () => void;
     isCanvas?: boolean;
-    onPaymentSuccess?: (amount: number, billerName: string, consumerNumber: string, bbpsRefNo: string) => void;
+    onPaymentSuccess?: (amount: number, billerName: string, consumerNumber: string, bbpsRefNo: string, transactionId?: string) => void;
 }
 
-const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess }: BillSummaryProps) => {
+const BillSummary = ({ billerIdProp, billerNameProp, onClose, isCanvas = false, onPaymentSuccess }: BillSummaryProps) => {
     const { billerId: paramBillerId } = useParams<{ billerId: string }>();
     const navigate = useNavigate();
     const toast = useRef<Toast>(null);
     const [showReceipt, setShowReceipt] = useState(false);
     const [payAmount, setPayAmount] = useState<number | null>(0);
-    const [paymentMode, setPaymentMode] = useState<string>('wallet');
     const [loading, setLoading] = useState(false);
     const [transactionResult, setTransactionResult] = useState<any>(null);
-
-    const paymentModes = [
-        { label: 'Main Wallet', value: 'wallet' },
-        { label: 'UPI / QR', value: 'upi' },
-        { label: 'Credit / Debit Card', value: 'card' },
-        { label: 'Net Banking', value: 'net_banking' },
-        { label: 'Cash', value: 'cash' }
-    ];
 
     const billerId = billerIdProp || paramBillerId;
 
     const dummyBill = {
         consumerNumber: billerId || '0000000001',
-        customerName: 'Maulik Kadeval',
-        billerName: 'Selected Operator',
-        billAmount: '₹173.00',
+        customerName: 'Nexasoft',
+        billerName: billerNameProp || 'Torrent Power',
+        billAmount: '573.00',
+        ccfAmount: '₹15.00',
+        totalAmount: '588.00',
         dueDate: '15 Sep 2026',
         billDate: '01 Sep 2026',
-        bbpsRefNo: 'TRX987654357'
+        billPeriod: 'August',
+        billNumber: '9830219',
+        bbpsRefNo: 'CC014366BAAE00066544',
+        amountOptions: [
+            { label: 'Base Bill Amount', value: '573.00' },
+            { label: 'Late Payment Fee', value: '₹0.00' },
+            { label: 'Additional Charges', value: '₹0.00' },
+            { label: 'Fixed Charges', value: '₹0.00' }
+        ]
     };
 
     const maxPayableAmount = parseFloat(dummyBill.billAmount.replace(/[^0-9.-]+/g, '')) || 0;
@@ -53,7 +56,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
         setLoading(true);
         try {
             const res = await transactionService.processPayment({
-                category_id: 3,
+                category_id: 23,
                 amount: Number(payAmount).toFixed(2),
                 biller_name: dummyBill.billerName,
                 consumer_number: dummyBill.consumerNumber
@@ -66,7 +69,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
             setTransactionResult({ ...res.data, bbpsRefNo: backendTxnId });
 
             if (onPaymentSuccess) {
-                onPaymentSuccess(payAmount, dummyBill.billerName, dummyBill.consumerNumber, backendTxnId);
+                onPaymentSuccess(payAmount, dummyBill.billerName, dummyBill.consumerNumber, backendTxnId, res.data?.transaction_id);
             } else {
                 setShowReceipt(true);
             }
@@ -87,7 +90,8 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
                 className="p-button-outlined p-button-secondary flex-1"
                 onClick={() => {
                     setShowReceipt(false);
-                    navigate(`/bbps/transactions/receipt/${dummyBill.bbpsRefNo}`);
+                    const destId = transactionResult?.transaction_id || dummyBill.bbpsRefNo;
+                    navigate(`/bbps/transactions/receipt/${destId}`);
                 }}
             />
             <Button
@@ -109,11 +113,11 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
             <BBPSPageCard title="Bill Summary" subtitle="Review bill details before authorizing" onBack={() => (onClose ? onClose() : navigate(-1))} isCanvas={isCanvas}>
                 <div>
                     {/* Details List */}
-                    <div className="surface-50 border-round-2xl p-4 mb-4">
-                        <div className="flex justify-content-between align-items-center py-3 border-bottom-1 border-200">
+                    <div className="surface-50 border-round-2xl p-3 mb-3">
+                        <div className="flex justify-content-between align-items-center py-2 border-bottom-1 border-200">
                             <div className="flex align-items-center text-600">
                                 <i className="pi pi-building mr-3 text-lg text-blue-500"></i>
-                                <span className="font-medium text-sm">Biller</span>
+                                <span className="font-medium text-sm">Biller Name</span>
                             </div>
                             <div className="flex align-items-center text-900 font-bold">
                                 <span className="mr-3">{dummyBill.billerName}</span>
@@ -121,10 +125,10 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
                             </div>
                         </div>
 
-                        <div className="flex justify-content-between align-items-center py-3 border-bottom-1 border-200">
+                        <div className="flex justify-content-between align-items-center py-2 border-bottom-1 border-200">
                             <div className="flex align-items-center text-600">
                                 <i className="pi pi-hashtag mr-3 text-lg text-purple-500"></i>
-                                <span className="font-medium text-sm">Consumer Number</span>
+                                <span className="font-medium text-sm">Customer Number</span>
                             </div>
                             <div className="flex align-items-center text-900 font-bold font-mono tracking-wider">
                                 <span className="mr-3">{dummyBill.consumerNumber}</span>
@@ -132,7 +136,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
                             </div>
                         </div>
 
-                        <div className="flex justify-content-between align-items-center py-3 border-bottom-1 border-200">
+                        <div className="flex justify-content-between align-items-center py-2 border-bottom-1 border-200">
                             <div className="flex align-items-center text-600">
                                 <i className="pi pi-user mr-3 text-lg text-orange-500"></i>
                                 <span className="font-medium text-sm">Customer Name</span>
@@ -142,7 +146,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
                             </div>
                         </div>
 
-                        <div className="flex justify-content-between align-items-center py-3 border-bottom-1 border-200">
+                        <div className="flex justify-content-between align-items-center py-2 border-bottom-1 border-200">
                             <div className="flex align-items-center text-600">
                                 <i className="pi pi-calendar mr-3 text-lg text-teal-500"></i>
                                 <span className="font-medium text-sm">Bill Date</span>
@@ -152,7 +156,27 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
                             </div>
                         </div>
 
-                        <div className="flex justify-content-between align-items-center py-3">
+                        <div className="flex justify-content-between align-items-center py-2 border-bottom-1 border-200">
+                            <div className="flex align-items-center text-600">
+                                <i className="pi pi-calendar-plus mr-3 text-lg text-indigo-500"></i>
+                                <span className="font-medium text-sm">Bill Period</span>
+                            </div>
+                            <div className="flex align-items-center text-900 font-bold">
+                                <span>{dummyBill.billPeriod}</span>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-content-between align-items-center py-2 border-bottom-1 border-200">
+                            <div className="flex align-items-center text-600">
+                                <i className="pi pi-file mr-3 text-lg text-pink-500"></i>
+                                <span className="font-medium text-sm">Bill Number</span>
+                            </div>
+                            <div className="flex align-items-center text-900 font-bold">
+                                <span>{dummyBill.billNumber}</span>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-content-between align-items-center py-2">
                             <div className="flex align-items-center text-600">
                                 <i className="pi pi-clock text-red-500 mr-3 text-lg"></i>
                                 <span className="font-medium text-sm">Due Date</span>
@@ -165,20 +189,45 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
                     </div>
 
                     {/* Highlight Billed Amount Box */}
-                    <div className="bg-blue-50 p-4 flex justify-content-between align-items-center border-1 border-blue-100 border-round-xl">
-                        <div>
-                            <div className="font-bold text-blue-900 text-lg">Billed Amount</div>
-                            <div className="text-blue-600 text-sm mt-1 font-medium">Gross payable inclusive of taxes</div>
+                    <div className="bg-blue-50 p-4 flex flex-column border-1 border-blue-200 border-round-xl mb-3">
+                        {/* Header Row */}
+                        <div className="flex justify-content-between align-items-center border-bottom-1 border-blue-200 pb-3 mb-3">
+                            <div className="font-bold text-blue-900 text-lg">Bill Amount</div>
+                            <div className="text-blue-800 font-bold text-xl">{dummyBill.billAmount}</div>
                         </div>
-                        <div className="text-blue-700 font-bold text-3xl tracking-tight">{dummyBill.billAmount}</div>
+
+                        {/* Breakdown Rows */}
+                        <div className="flex flex-column gap-2 mb-3 px-2">
+                            {dummyBill.amountOptions.map((opt, idx) => (
+                                <div key={idx} className="flex justify-content-between align-items-center">
+                                    <span className="text-blue-800 text-sm">{opt.label}</span>
+                                    <span className="text-blue-900 font-semibold text-sm">{opt.value}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* CCF Row */}
+                        <div className="flex justify-content-between align-items-center py-3 border-top-1 border-bottom-1 border-blue-200 mb-3 px-2">
+                            <span className="text-blue-900 text-sm font-bold">Customer Convenience Fees</span>
+                            <span className="text-blue-900 font-bold text-sm">{dummyBill.ccfAmount}</span>
+                        </div>
+
+                        {/* Total Row */}
+                        <div className="flex justify-content-between align-items-center px-2">
+                            <div>
+                                <div className="font-bold text-blue-900 text-xl">Total Amount</div>
+                                <div className="text-blue-500 text-xs mt-1">Inclusive of all charges</div>
+                            </div>
+                            <div className="text-blue-900 font-bold text-4xl tracking-tight">{dummyBill.totalAmount}</div>
+                        </div>
                     </div>
 
                     {/* Divider */}
-                    <div className="w-full border-bottom-1 border-200 my-5 border-dashed"></div>
+                    <div className="w-full my-4" style={{ borderTop: '2px dashed #b0bac5ff' }}></div>
 
                     {/* Payment Input Section */}
                     <div>
-                        <label className="text-xs font-bold text-600 uppercase tracking-wide block mb-3">Enter Amount to Pay</label>
+                        <label className="text-xs font-bold text-600 uppercase tracking-wide block mb-2">Enter Amount to Pay</label>
 
                         <div className="relative w-full">
                             <span className="p-input-icon-left w-full">
@@ -191,7 +240,7 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
                                     onValueChange={(e) => setPayAmount(e.value ?? null)}
                                     mode="decimal"
                                     className="w-full"
-                                    inputClassName="w-full border-round-xl border-300 shadow-none hover:border-blue-400 focus:border-blue-500 transition-colors text-lg font-bold py-3 text-900 pl-5"
+                                    inputClassName="w-full border-round-xl border-300 shadow-none hover:border-blue-400 focus:border-blue-500 transition-colors text-lg font-bold py-2 text-900 pl-5"
                                     style={{ paddingRight: '7rem' }}
                                 />
                             </span>
@@ -203,57 +252,102 @@ const BillSummary = ({ billerIdProp, onClose, isCanvas = false, onPaymentSuccess
                             />
                         </div>
 
-                        <div className="mt-4 flex align-items-center text-sm ml-1">
-                            <span className="text-blue-600 font-bold mr-3 cursor-pointer hover:text-blue-800 transition-colors" onClick={() => setPayAmount(maxPayableAmount)}>
-                                Pay Full: {dummyBill.billAmount}
-                            </span>
-                            <span className="text-300 mr-3">•</span>
-                            <span className="text-500 font-medium cursor-pointer hover:text-700 transition-colors" onClick={() => setPayAmount(100)}>
-                                Custom Amount
-                            </span>
+                        {/* Payment Button */}
+                        <div className="mt-3">
+                            <Button
+                                label={`Pay ₹${(payAmount || 0).toLocaleString('en-IN')}`}
+                                icon="pi pi-check-circle"
+                                className="border-round-xl w-full py-3 font-bold text-lg shadow-1 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 transition-colors"
+                                onClick={handlePay}
+                                disabled={!payAmount || payAmount <= 0 || payAmount > maxPayableAmount || loading}
+                                loading={loading}
+                            />
                         </div>
-                        <div className="mt-5">
-                            <label className="text-xs font-bold text-600 uppercase tracking-wide block mb-3">Payment Mode</label>
-                            <div className="relative w-full">
-                                <i className="pi pi-wallet text-400 absolute z-1" style={{ left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
-                                <Dropdown value={paymentMode} options={paymentModes} onChange={(e) => setPaymentMode(e.value)} className="w-full border-round-xl border-300 py-1 pl-4 hover:border-blue-400 transition-colors" />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Payment Button */}
-                    <div className="mt-5 pt-2">
-                        <Button
-                            label={payAmount ? `Pay ₹${payAmount.toLocaleString('en-IN')}` : 'Pay'}
-                            icon="pi pi-check-circle"
-                            className="border-round-xl w-full py-3 font-bold text-lg shadow-1 bg-blue-500 border-blue-500 hover:bg-blue-600 hover:border-blue-600 transition-colors"
-                            onClick={handlePay}
-                            disabled={!payAmount || payAmount <= 0 || payAmount > maxPayableAmount || loading}
-                            loading={loading}
-                        />
                     </div>
                 </div>
             </BBPSPageCard>
 
-            <Dialog header="Payment Successful" visible={showReceipt} style={{ width: '400px' }} footer={receiptFooter} onHide={() => setShowReceipt(false)} breakpoints={{ '960px': '75vw', '641px': '90vw' }}>
-                <div className="flex flex-column align-items-center text-center">
-                    <i className="pi pi-check-circle text-green-500 mb-3" style={{ fontSize: '4rem' }}></i>
-                    <h2 className="m-0 text-gray-900 mb-1">₹{payAmount?.toLocaleString('en-IN') ?? 0}</h2>
-                    <p className="text-500 mb-3">Paid to {dummyBill.billerName}</p>
-                    <img src="/logo/B_Assured.png" alt="B Assured" style={{ height: '100px' }} className="mb-4" />
+            <Dialog showHeader={false} visible={showReceipt} style={{ width: '450px' }} footer={receiptFooter} onHide={() => setShowReceipt(false)} breakpoints={{ '960px': '75vw', '641px': '90vw' }} contentClassName="p-4">
+                <div className="relative pt-2">
+                    <div className="absolute top-0 right-0">
+                        <BBPSLogo type="b_assured" />
+                    </div>
 
-                    <div className="w-full surface-100 p-3 border-round-md mb-4 text-left">
-                        <div className="flex justify-content-between mb-2">
-                            <span className="text-500 font-medium text-sm">Consumer Number</span>
-                            <span className="text-900 font-bold text-sm">{dummyBill.consumerNumber}</span>
+                    <div className="flex flex-column align-items-center text-center mt-3 mb-5">
+                        <i className="pi pi-file text-800 mb-2" style={{ fontSize: '3.5rem' }}></i>
+                        <span className="text-green-500 font-bold text-md mt-2">Transaction success!</span>
+                    </div>
+
+                    <div className="w-full text-sm mt-4">
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold w-5">BBPS Transaction ID</span>
+                            <span className="text-900 font-bold w-7 text-right line-height-3" style={{ wordBreak: 'break-word' }}>
+                                {transactionResult?.bbpsRefNo || dummyBill.bbpsRefNo}
+                            </span>
                         </div>
-                        <div className="flex justify-content-between mb-2">
-                            <span className="text-500 font-medium text-sm">BBPS Ref No.</span>
-                            <span className="text-900 font-bold text-sm">{transactionResult?.bbpsRefNo || dummyBill.bbpsRefNo}</span>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Biller ID</span>
+                            <span className="text-900 font-bold text-right">{billerId || 'OTME00005XXZ43'}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Biller Name</span>
+                            <span className="text-900 font-bold text-right">{dummyBill.billerName}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Customer Name</span>
+                            <span className="text-900 font-bold text-right">{dummyBill.customerName}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Customer Number</span>
+                            <span className="text-900 font-bold text-right">{dummyBill.consumerNumber}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Bill Date</span>
+                            <span className="text-900 font-bold text-right">{dummyBill.billDate}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Bill Period</span>
+                            <span className="text-900 font-bold text-right">{dummyBill.billPeriod}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Bill Number</span>
+                            <span className="text-900 font-bold text-right">{dummyBill.billNumber}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Due Date</span>
+                            <span className="text-900 font-bold text-right">{dummyBill.dueDate}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Bill Amount</span>
+                            <span className="text-900 font-bold text-right">{dummyBill.billAmount}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Customer Convenience Fees</span>
+                            <span className="text-900 font-bold text-right">{dummyBill.ccfAmount}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Total Amount</span>
+                            <span className="text-900 font-bold text-right">₹{parseFloat((payAmount || 0).toString()).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Transaction Date and Time</span>
+                            <span className="text-900 font-bold text-right">{new Date().toLocaleString('en-CA').replace(',', '')}</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Initiating Channel</span>
+                            <span className="text-900 font-bold text-right">WEB</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Payment Mode</span>
+                            <span className="text-900 font-bold text-right">Main Wallet</span>
+                        </div>
+                        <div className="flex justify-content-between mb-4">
+                            <span className="text-900 font-bold">Transaction Status</span>
+                            <span className="text-green-600 font-bold text-right">Success</span>
                         </div>
                         <div className="flex justify-content-between">
-                            <span className="text-500 font-medium text-sm">Date</span>
-                            <span className="text-900 font-bold text-sm">{new Date().toLocaleDateString()}</span>
+                            <span className="text-900 font-bold">Approval Number</span>
+                            <span className="text-900 font-bold text-right">{(transactionResult?.bbpsRefNo || dummyBill.bbpsRefNo).replace('CC01', 'UTR1')}</span>
                         </div>
                     </div>
                 </div>

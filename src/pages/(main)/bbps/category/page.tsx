@@ -7,6 +7,7 @@ import { Tag } from 'primereact/tag';
 import { Dialog } from 'primereact/dialog';
 import BillSummary from '../bills/page';
 import BBPSPageCard from '../../../../components/BBPSPageCard';
+import { BBPSLogo } from '../../../../components/BBPSLogo';
 
 const CategorySelection = () => {
     const { service } = useParams<{ service: string }>();
@@ -16,7 +17,7 @@ const CategorySelection = () => {
     const [operators, setOperators] = useState<any[]>([]);
     const [showBillCanvas, setShowBillCanvas] = useState(false);
     const [showReceipt, setShowReceipt] = useState(false);
-    const [receiptData, setReceiptData] = useState<{ amount: number; billerName: string; consumerNumber: string; bbpsRefNo: string } | null>(null);
+    const [receiptData, setReceiptData] = useState<{ amount: number; billerName: string; consumerNumber: string; bbpsRefNo: string; transactionId?: string } | null>(null);
 
     const decodedService = service ? decodeURIComponent(service) : 'Service';
 
@@ -38,9 +39,9 @@ const CategorySelection = () => {
         }
     };
 
-    const handlePaymentSuccess = (amount: number, billerName: string, consumerNumber: string, bbpsRefNo: string) => {
+    const handlePaymentSuccess = (amount: number, billerName: string, consumerNumber: string, bbpsRefNo: string, transactionId?: string) => {
         setShowBillCanvas(false);
-        setReceiptData({ amount, billerName, consumerNumber, bbpsRefNo });
+        setReceiptData({ amount, billerName, consumerNumber, bbpsRefNo, transactionId });
         setShowReceipt(true);
     };
 
@@ -52,7 +53,8 @@ const CategorySelection = () => {
                 className="p-button-outlined p-button-secondary flex-1"
                 onClick={() => {
                     setShowReceipt(false);
-                    navigate(`/bbps/transactions/receipt/${receiptData?.bbpsRefNo || 'NEW'}`);
+                    const destId = receiptData?.transactionId || receiptData?.bbpsRefNo || 'NEW';
+                    navigate(`/bbps/transactions/receipt/${destId}`);
                 }}
             />
             <Button
@@ -140,7 +142,7 @@ const CategorySelection = () => {
                                     <span className="font-bold text-800 mr-2">Torrent Power</span>
                                     <Tag value="PAID" className="text-xs px-2 py-1 bg-green-100 text-green-700 font-bold border-round-xl" />
                                 </div>
-                                <span className="text-400 text-sm">Home • 12 Aug 2024</span>
+                                <span className="text-400 text-sm">Home • 12 Aug 2026</span>
                             </div>
                         </div>
                         <div className="text-right">
@@ -159,7 +161,7 @@ const CategorySelection = () => {
                                     <span className="font-bold text-800 mr-2">Tata Power</span>
                                     <Tag value="PAID" className="text-xs px-2 py-1 bg-green-100 text-green-700 font-bold border-round-xl" />
                                 </div>
-                                <span className="text-400 text-sm">Office • 08 Jul 2024</span>
+                                <span className="text-400 text-sm">Office • 08 Jul 2026</span>
                             </div>
                         </div>
                         <div className="text-right">
@@ -178,7 +180,7 @@ const CategorySelection = () => {
                                     <span className="font-bold text-800 mr-2">Adani Electricity</span>
                                     <Tag value="PAID" className="text-xs px-2 py-1 bg-green-100 text-green-700 font-bold border-round-xl" />
                                 </div>
-                                <span className="text-400 text-sm">Warehouse • 15 Jun 2024</span>
+                                <span className="text-400 text-sm">Warehouse • 15 Jun 2026</span>
                             </div>
                         </div>
                         <div className="text-right">
@@ -190,7 +192,7 @@ const CategorySelection = () => {
                     </div>
                 </div>
 
-                {/* Promotional Banner Widget */}
+                {/* Promotional Banner Widget
                 <div className="p-5 mb-4 relative overflow-hidden shadow-2" style={{ borderRadius: '24px', background: 'linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%)' }}>
                     <div className="flex justify-content-between align-items-start mb-4">
                         <span className="bg-white-alpha-20 text-white text-xs font-bold px-3 py-1 border-round-2xl">POWERSAVER EXCLUSIVE</span>
@@ -203,7 +205,7 @@ const CategorySelection = () => {
                         <span className="text-white-alpha-80 text-sm font-medium">Expires in 3 days</span>
                         <Button label="Apply Offer" className="bg-white text-indigo-600 border-none border-round-xl font-bold px-4 py-2 hover:bg-gray-50 transition-colors" />
                     </div>
-                </div>
+                </div> */}
 
                 {/* Support Widget */}
                 <div className="bg-white border-1 border-solid border-200 p-4 shadow-none flex align-items-center justify-content-between" style={{ borderRadius: '24px' }}>
@@ -226,37 +228,101 @@ const CategorySelection = () => {
                 onHide={() => setShowBillCanvas(false)}
                 className="w-11 md:w-8 lg:w-6 xl:w-5 p-0"
                 showHeader={false}
-                contentClassName="p-0 border-round-2xl overflow-hidden"
+                contentClassName="p-0 border-round-2xl overflow-y-auto overflow-x-hidden"
                 maskStyle={{
                     background: 'rgba(0, 0, 0, 0.2)',
                     backdropFilter: 'blur(4px)',
                     WebkitBackdropFilter: 'blur(8px)'
                 }}
             >
-                {showBillCanvas && <BillSummary billerIdProp={consumerNumber} onClose={() => setShowBillCanvas(false)} isCanvas={true} onPaymentSuccess={handlePaymentSuccess} />}
+                {showBillCanvas && <BillSummary billerIdProp={consumerNumber} billerNameProp={selectedOperator?.name} onClose={() => setShowBillCanvas(false)} isCanvas={true} onPaymentSuccess={handlePaymentSuccess} />}
             </Dialog>
 
             {/* Payment Successful Dialog */}
-            <Dialog header="Payment Successful" visible={showReceipt} style={{ width: '400px' }} footer={receiptFooter} onHide={() => setShowReceipt(false)} breakpoints={{ '960px': '75vw', '641px': '90vw' }}>
+            <Dialog showHeader={false} visible={showReceipt} style={{ width: '450px' }} footer={receiptFooter} onHide={() => setShowReceipt(false)} breakpoints={{ '960px': '75vw', '641px': '90vw' }} contentClassName="p-4">
                 {receiptData && (
-                    <div className="flex flex-column align-items-center text-center">
-                        <i className="pi pi-check-circle text-green-500 mb-3" style={{ fontSize: '4rem' }}></i>
-                        <h2 className="m-0 text-gray-900 mb-1">₹{receiptData.amount?.toLocaleString('en-IN') ?? 0}</h2>
-                        <p className="text-500 mb-3">Paid to {receiptData.billerName}</p>
-                        <img src="/logo/B_Assured.png" alt="B Assured" style={{ height: '100px' }} className="mb-4" />
-
-                        <div className="w-full surface-100 p-3 border-round-md mb-4 text-left">
-                            <div className="flex justify-content-between mb-2">
-                                <span className="text-500 font-medium text-sm">Consumer Number</span>
-                                <span className="text-900 font-bold text-sm">{receiptData.consumerNumber}</span>
+                    <div className="relative pt-2">
+                        <div className="relative mb-5">
+                            <div className="flex flex-column align-items-center text-center">
+                                <i className="pi pi-file text-800 mb-2" style={{ fontSize: '3.5rem' }}></i>
+                                <span className="text-green-500 font-bold text-md mt-2">Transaction success!</span>
                             </div>
-                            <div className="flex justify-content-between mb-2">
-                                <span className="text-500 font-medium text-sm">BBPS Ref No.</span>
-                                <span className="text-900 font-bold text-sm">{receiptData.bbpsRefNo}</span>
+
+                            <div className="absolute right-0 top-50" style={{ transform: 'translateY(-60%) scale(1.4)', transformOrigin: 'right center' }}>
+                                <BBPSLogo type="b_assured" />
+                            </div>
+                        </div>
+
+                        <div className="w-full text-sm mt-4">
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold w-5">BBPS Transaction ID</span>
+                                <span className="text-900 font-bold w-7 text-right line-height-3" style={{ wordBreak: 'break-word' }}>
+                                    {receiptData.bbpsRefNo}
+                                </span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Biller ID</span>
+                                <span className="text-900 font-bold text-right">OTME00005XXZ43</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Biller Name</span>
+                                <span className="text-900 font-bold text-right">{receiptData.billerName}</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Customer Name</span>
+                                <span className="text-900 font-bold text-right">Nexasoft</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Customer Number</span>
+                                <span className="text-900 font-bold text-right">{receiptData.consumerNumber}</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Bill Date</span>
+                                <span className="text-900 font-bold text-right">01 Sep 2026</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Bill Period</span>
+                                <span className="text-900 font-bold text-right">August</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Bill Number</span>
+                                <span className="text-900 font-bold text-right">9830219</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Due Date</span>
+                                <span className="text-900 font-bold text-right">15 Sep 2026</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Bill Amount</span>
+                                <span className="text-900 font-bold text-right">₹573.00</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Customer Convenience Fees</span>
+                                <span className="text-900 font-bold text-right">₹15.00</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Total Amount</span>
+                                <span className="text-900 font-bold text-right">₹588</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Transaction Date and Time</span>
+                                <span className="text-900 font-bold text-right">{new Date().toLocaleString('en-CA').replace(',', '')}</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Initiating Channel</span>
+                                <span className="text-900 font-bold text-right">WEB</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Payment Mode</span>
+                                <span className="text-900 font-bold text-right">Main Wallet</span>
+                            </div>
+                            <div className="flex justify-content-between mb-4">
+                                <span className="text-900 font-bold">Transaction Status</span>
+                                <span className="text-green-600 font-bold text-right">Success</span>
                             </div>
                             <div className="flex justify-content-between">
-                                <span className="text-500 font-medium text-sm">Date</span>
-                                <span className="text-900 font-bold text-sm">{new Date().toLocaleDateString()}</span>
+                                <span className="text-900 font-bold">Approval Number</span>
+                                <span className="text-900 font-bold text-right">{receiptData.bbpsRefNo.replace('CC01', 'UTR1')}</span>
                             </div>
                         </div>
                     </div>

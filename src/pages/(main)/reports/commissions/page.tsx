@@ -96,11 +96,21 @@ const CommissionsPage = () => {
     const mdTemplate = (rowData: any) => {
         const md = rowData.commissions?.master_distributor;
         if (!md) return <span className="text-400 font-bold">-</span>;
+
+        const amount = parseFloat(md.amount);
+        if (amount === 0) {
+            return (
+                <div className="flex flex-column">
+                    <span className="text-sm text-green-600 font-bold mt-1">Commission: {formatCurrency(amount)}</span>
+                </div>
+            );
+        }
+
         return (
             <div className="flex flex-column">
                 <span className="font-bold text-700">{md.name || 'MD'}</span>
                 <span className="text-sm text-500">{md.mobile || 'N/A'}</span>
-                <span className="text-sm text-green-600 font-bold mt-1">Commission: {formatCurrency(parseFloat(md.amount))}</span>
+                <span className="text-sm text-green-600 font-bold mt-1">Commission: {formatCurrency(amount)}</span>
             </div>
         );
     };
@@ -108,11 +118,21 @@ const CommissionsPage = () => {
     const dTemplate = (rowData: any) => {
         const d = rowData.commissions?.distributor;
         if (!d) return <span className="text-400 font-bold">-</span>;
+
+        const amount = parseFloat(d.amount);
+        if (amount === 0) {
+            return (
+                <div className="flex flex-column">
+                    <span className="text-sm text-green-600 font-bold mt-1">Commission: {formatCurrency(amount)}</span>
+                </div>
+            );
+        }
+
         return (
             <div className="flex flex-column">
                 <span className="font-bold text-700">{d.name || 'Distributor'}</span>
                 <span className="text-sm text-500">{d.mobile || 'N/A'}</span>
-                <span className="text-sm text-green-600 font-bold mt-1">Commission: {formatCurrency(parseFloat(d.amount))}</span>
+                <span className="text-sm text-green-600 font-bold mt-1">Commission: {formatCurrency(amount)}</span>
             </div>
         );
     };

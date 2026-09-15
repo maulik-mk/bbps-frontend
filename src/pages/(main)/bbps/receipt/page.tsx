@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 import { transactionService } from '../../../../services/transaction.service';
+import { BBPSLogo } from '../../../../components/BBPSLogo';
 
 const ReceiptPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -58,110 +59,135 @@ const ReceiptPage = () => {
     }
 
     return (
-        <div className="grid">
-            <div className="col-12 xl:col-8 xl:col-offset-2">
-                <div className="surface-card p-5 shadow-2 border-round-2xl">
-                    {/* Header */}
-                    <div className="flex flex-column sm:flex-row justify-content-between align-items-start sm:align-items-center mb-5 gap-3 border-bottom-1 border-200 pb-4">
-                        <div>
-                            <Button icon="pi pi-arrow-left" label="Back to Transactions" className="p-button-text p-button-secondary p-0 mb-3 hover:text-blue-500 transition-colors" onClick={() => navigate(-1)} />
-                            <div className="text-900 text-3xl font-bold">Transaction Details</div>
-                            <div className="text-600 font-medium mt-1">View the full details of this BBPS transaction.</div>
-                        </div>
-                        <img src="/logo/B_Assured.png" alt="B Assured" style={{ height: '100px' }} className="mb-4" />
+        <div className="grid justify-content-center" style={{ fontFamily: 'var(--font-family)' }}>
+            <div className="col-12 lg:col-10 xl:col-8 mt-5">
+                {/* Header */}
+                <div className="flex justify-content-between align-items-center mb-4">
+                    <h1 className="text-3xl font-bold text-blue-900 m-0 tracking-wide uppercase">Bill Pay Receipt</h1>
+                    <div style={{ transform: 'scale(1.4)', transformOrigin: 'right center' }}>
+                        <BBPSLogo type="b_assured" />
+                    </div>
+                </div>
+
+                {/* Receipt Card */}
+                <div className="surface-card border-1 border-300 border-round-xl shadow-none overflow-hidden mb-5">
+                    <div className="p-4 border-bottom-1 border-300 bg-gray-50 flex align-items-center">
+                        <span className="font-bold text-gray-900 text-lg">Transaction {transaction.status === 'success' ? 'Successful !' : transaction.status === 'pending' ? 'Pending' : 'Failed'}</span>
                     </div>
 
-                    {/* Status Highlights */}
-                    <div
-                        className={`p-4 border-round-xl mb-5 flex flex-column sm:flex-row align-items-start sm:align-items-center justify-content-between border-1 ${
-                            isSuccess ? 'surface-ground border-green-200' : isPending ? 'surface-ground border-orange-200' : 'surface-ground border-red-200'
-                        }`}
-                    >
-                        <div className="flex align-items-center mb-3 sm:mb-0">
-                            <i className={`${statusIcon} text-5xl mr-4`}></i>
-                            <div>
-                                <div className="text-900 font-bold text-3xl mb-1">₹{parseFloat(transaction.total_amount).toLocaleString('en-IN')}</div>
-                                <div className="text-600 font-medium text-sm uppercase tracking-wider">Total Amount {isSuccess ? 'Paid' : 'Attempted'}</div>
+                    <div className="flex flex-column w-full">
+                        {/* Row 1 */}
+                        <div className="flex flex-column md:flex-row w-full border-bottom-1 border-200">
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-none md:border-right-1 border-200">
+                                <span className="text-600 font-semibold text-sm">Biller Name</span>
+                                <span className="text-900 font-bold text-sm text-right">{transaction.biller_name || 'N/A'}</span>
+                            </div>
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-top-1 border-200 md:border-none">
+                                <span className="text-600 font-semibold text-sm">Bill Amount</span>
+                                <span className="text-900 font-bold text-sm text-right">{parseFloat(transaction.bill_amount || 0).toLocaleString('en-IN')}</span>
                             </div>
                         </div>
-                        <Tag value={transaction.status} severity={isSuccess ? 'success' : isPending ? 'warning' : 'danger'} className="text-sm px-4 py-2 font-bold border-round-2xl shadow-1 uppercase tracking-wide" />
+
+                        {/* Row 2 */}
+                        <div className="flex flex-column md:flex-row w-full border-bottom-1 border-200">
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-none md:border-right-1 border-200">
+                                <span className="text-600 font-semibold text-sm">Biller ID</span>
+                                <span className="text-900 font-bold text-sm text-right">{transaction.biller_id || '0TME00005XXZ43'}</span>
+                            </div>
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-top-1 border-200 md:border-none">
+                                <span className="text-600 font-semibold text-sm">Customer Convenience Fees</span>
+                                <span className="text-900 font-bold text-sm text-right">{parseFloat(transaction.charge_amount || 0).toLocaleString('en-IN')}</span>
+                            </div>
+                        </div>
+
+                        {/* Row 3 */}
+                        <div className="flex flex-column md:flex-row w-full border-bottom-1 border-200">
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-none md:border-right-1 border-200">
+                                <span className="text-600 font-semibold text-sm">Bharat Connect Transaction ID</span>
+                                <span className="text-900 font-bold text-sm text-right line-height-3 max-w-15rem" style={{ wordBreak: 'break-word' }}>
+                                    {transaction.txn_id}
+                                </span>
+                            </div>
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-top-1 border-200 md:border-none">
+                                <span className="text-600 font-semibold text-sm">Total Amount</span>
+                                <span className="text-900 font-bold text-sm text-right">{parseFloat(transaction.total_amount || 0).toLocaleString('en-IN')}</span>
+                            </div>
+                        </div>
+
+                        {/* Row 4 */}
+                        <div className="flex flex-column md:flex-row w-full border-bottom-1 border-200">
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-none md:border-right-1 border-200">
+                                <span className="text-600 font-semibold text-sm">Customer Name</span>
+                                <span className="text-900 font-bold text-sm text-right">{transaction.customer_name || 'Nexasoft'}</span>
+                            </div>
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-top-1 border-200 md:border-none">
+                                <span className="text-600 font-semibold text-sm">Transaction Date and Time</span>
+                                <span className="text-900 font-bold text-sm text-right">{new Date(transaction.created_at).toLocaleString('en-CA').replace(',', '')}</span>
+                            </div>
+                        </div>
+
+                        {/* Row 5 */}
+                        <div className="flex flex-column md:flex-row w-full border-bottom-1 border-200">
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-none md:border-right-1 border-200">
+                                <span className="text-600 font-semibold text-sm">Customer Number</span>
+                                <span className="text-900 font-bold text-sm text-right">{transaction.mobile || transaction.consumer_number}</span>
+                            </div>
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-top-1 border-200 md:border-none">
+                                <span className="text-600 font-semibold text-sm">Payment Mode</span>
+                                <span className="text-900 font-bold text-sm text-right">Main Wallet</span>
+                            </div>
+                        </div>
+
+                        {/* Row 6 */}
+                        <div className="flex flex-column md:flex-row w-full border-bottom-1 border-200">
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-none md:border-right-1 border-200">
+                                <span className="text-600 font-semibold text-sm">Bill Date</span>
+                                <span className="text-900 font-bold text-sm text-right">{transaction.bill_date || '01 Sep 2026'}</span>
+                            </div>
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-top-1 border-200 md:border-none">
+                                <span className="text-600 font-semibold text-sm">Transaction Status</span>
+                                <span className="text-900 font-bold text-sm text-right capitalize">{transaction.status}</span>
+                            </div>
+                        </div>
+
+                        {/* Row 7 */}
+                        <div className="flex flex-column md:flex-row w-full border-bottom-1 border-200">
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-none md:border-right-1 border-200">
+                                <span className="text-600 font-semibold text-sm">Bill Period</span>
+                                <span className="text-900 font-bold text-sm text-right">{transaction.bill_period || 'August'}</span>
+                            </div>
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-top-1 border-200 md:border-none">
+                                <span className="text-600 font-semibold text-sm">Approval Number</span>
+                                <span className="text-900 font-bold text-sm text-right">UTR1AE8B7B452F74B574</span>
+                            </div>
+                        </div>
+
+                        {/* Row 8 */}
+                        <div className="flex flex-column md:flex-row w-full border-bottom-1 border-200">
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-none md:border-right-1 border-200">
+                                <span className="text-600 font-semibold text-sm">Bill Number</span>
+                                <span className="text-900 font-bold text-sm text-right">{transaction.bill_number || '9830219'}</span>
+                            </div>
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-top-1 border-200 md:border-none">
+                                <span className="text-600 font-semibold text-sm">Initiating Channel</span>
+                                <span className="text-900 font-bold text-sm text-right">WEB</span>
+                            </div>
+                        </div>
+
+                        {/* Row 9 */}
+                        <div className="flex flex-column md:flex-row w-full">
+                            <div className="w-full md:w-6 flex justify-content-between p-4 border-none md:border-right-1 border-200">
+                                <span className="text-600 font-semibold text-sm">Due Date</span>
+                                <span className="text-900 font-bold text-sm text-right">{transaction.due_date || '15 Sep 2026'}</span>
+                            </div>
+                            <div className="w-full md:w-6 p-4 border-top-1 border-200 md:border-none"></div>
+                        </div>
                     </div>
+                </div>
 
-                    {/* Details Grid */}
-                    <div className="grid mb-5">
-                        <div className="col-12 sm:col-6 p-3">
-                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                <i className="pi pi-building mr-2"></i>Provider
-                            </div>
-                            <div className="text-900 font-bold text-xl">{transaction.biller_name || 'N/A'}</div>
-                        </div>
-                        <div className="col-12 sm:col-6 p-3">
-                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                <i className="pi pi-user mr-2"></i>Customer / Mobile
-                            </div>
-                            <div className="text-900 font-bold text-xl">{transaction.mobile}</div>
-                        </div>
-                        <div className="col-12 sm:col-6 p-3">
-                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                <i className="pi pi-hashtag mr-2"></i>Reference / ID
-                            </div>
-                            <div className="text-900 font-bold font-mono text-lg">{transaction.consumer_number || 'N/A'}</div>
-                        </div>
-                        <div className="col-12 sm:col-6 p-3">
-                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                <i className="pi pi-file mr-2"></i>Transaction ID
-                            </div>
-                            <div className="text-900 font-bold font-mono text-lg">{transaction.txn_id}</div>
-                        </div>
-                        {transaction.utr && (
-                            <div className="col-12 sm:col-6 p-3">
-                                <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                    <i className="pi pi-sitemap mr-2"></i>BBPS Reference Number / UTR
-                                </div>
-                                <div className="text-blue-700 bg-blue-50 font-bold font-mono inline-block px-2 py-1 border-round text-lg">{transaction.utr}</div>
-                            </div>
-                        )}
-                        <div className="col-12 sm:col-6 p-3">
-                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                <i className="pi pi-calendar mr-2"></i>Date & Time
-                            </div>
-                            <div className="text-900 font-bold text-lg">{new Date(transaction.created_at).toLocaleString('en-IN')}</div>
-                        </div>
-
-                        <div className="col-12 p-0 mt-3 border-top-1 border-200"></div>
-
-                        <div className="col-12 sm:col-6 p-3">
-                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                <i className="pi pi-wallet mr-2"></i>Opening Balance
-                            </div>
-                            <div className="text-900 font-bold text-lg">₹{parseFloat(transaction.balance_before || 0).toLocaleString('en-IN')}</div>
-                        </div>
-
-                        <div className="col-12 sm:col-6 p-3">
-                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                <i className="pi pi-wallet mr-2"></i>Closing Balance
-                            </div>
-                            <div className="text-900 font-bold text-lg">₹{parseFloat(transaction.balance_after || 0).toLocaleString('en-IN')}</div>
-                        </div>
-                        <div className="col-12 sm:col-6 p-3">
-                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                <i className="pi pi-bolt mr-2"></i>Bill Amount
-                            </div>
-                            <div className="text-900 font-bold text-lg">₹{parseFloat(transaction.bill_amount || 0).toLocaleString('en-IN')}</div>
-                        </div>
-                        <div className="col-12 sm:col-6 p-3">
-                            <div className="flex align-items-center text-500 font-bold text-xs mb-2 uppercase tracking-widest">
-                                <i className="pi pi-dollar mr-2"></i>Charges Applied
-                            </div>
-                            <div className="text-900 font-bold text-lg text-red-500">₹{parseFloat(transaction.charge_amount || 0).toLocaleString('en-IN')}</div>
-                        </div>
-                    </div>
-
-                    {/* Actions Footer */}
-                    <div className="border-top-1 border-200 pt-5 flex flex-column sm:flex-row justify-content-end gap-3">
-                        <Button label="Download PDF" icon="pi pi-download" className="p-button-outlined p-button-secondary border-round-xl font-bold px-4" />
-                        <Button label="Print Details" icon="pi pi-print" className="border-round-xl font-bold bg-blue-600 border-blue-600 hover:bg-blue-700 px-4 shadow-2" onClick={() => window.print()} />
-                    </div>
+                {/* Footer Buttons */}
+                <div className="flex justify-content-center mb-6">
+                    <Button label="Download Receipt" className="border-round-lg font-bold bg-blue-700 border-blue-700 hover:bg-blue-800 px-6 py-2 shadow-2" onClick={() => window.print()} />
                 </div>
             </div>
         </div>

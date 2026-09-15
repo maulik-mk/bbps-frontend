@@ -194,7 +194,7 @@ const SchemesPage = () => {
                                 onClick={() => goToCharges('BBPS')}
                             >
                                 <img src="/logo/Bharat_Connect1.png" alt="BBPS" style={{ height: '40px', marginBottom: '1rem' }} />
-                                <div className="text-900 font-bold text-xl mb-2">BBPS Charges</div>
+                                <div className="text-900 font-bold text-xl mb-2">Bharat Connect Charges</div>
                                 <span className="text-600 text-sm">Configure commissions for 30+ bill categories</span>
                             </div>
                         </div>

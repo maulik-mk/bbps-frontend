@@ -6,6 +6,8 @@ import { WalletButton } from '../../components/dashboard/WalletButton';
 import { transactionService } from '../../services/transaction.service';
 import { userService } from '../../services/user.service';
 
+import { reportService } from '../../services/report.service';
+
 const Dashboard = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
@@ -24,11 +26,11 @@ const Dashboard = () => {
             })
             .catch((err) => console.error('Failed to fetch profile', err));
 
-        transactionService
-            .getTransactions()
+        reportService
+            .getTransactions(undefined, 4)
             .then((res) => {
-                if (res.data) {
-                    setRecentTransactions(res.data.slice(0, 4));
+                if (res && res.results) {
+                    setRecentTransactions(res.results);
                 }
             })
             .catch((err) => console.error('Failed to fetch transactions', err));
@@ -85,21 +87,37 @@ const Dashboard = () => {
 
             {/* Bottom Row Lists */}
             <div className="col-12 xl:col-6 mt-4">
-                <TransactionList title="Latest Transactions" onActionClick={() => navigate('/bbps/transactions')}>
+                <TransactionList title="Latest Transactions" actionLabel="View All" onActionClick={() => navigate('/bbps/transactions')}>
                     <span className="text-500 font-semibold text-sm mb-4 uppercase tracking-wider block">Recent History</span>
-                    {recentTransactions.map((tx) => (
-                        <TransactionItem
-                            key={tx.id}
-                            title={tx.service_name || 'Service Payment'}
-                            subtitle={`Txn ID: ${tx.txn_id}`}
-                            amount={formatCurrency(parseFloat(tx.total_amount))}
-                            icon={tx.status === 'success' ? 'pi pi-check' : 'pi pi-times'}
-                            iconBgClass={tx.status === 'success' ? 'bg-green-100' : 'bg-red-100'}
-                            iconTextClass={tx.status === 'success' ? 'text-green-600' : 'text-red-600'}
-                            isViewable
-                            onView={() => navigate(`/bbps/transactions/receipt/${tx.id}`)}
-                        />
-                    ))}
+                    {recentTransactions.map((tx) => {
+                        let icon = 'pi pi-file';
+                        if (tx.type === 'credit') icon = 'pi pi-wallet';
+                        else {
+                            const cat = (tx.category_name || tx.service_name || '').toLowerCase();
+                            if (cat.includes('electricity')) icon = 'pi pi-bolt';
+                            else if (cat.includes('water')) icon = 'pi pi-filter';
+                            else if (cat.includes('mobile') || cat.includes('recharge')) icon = 'pi pi-mobile';
+                            else if (cat.includes('gas')) icon = 'pi pi-cloud';
+                            else if (cat.includes('dth')) icon = 'pi pi-desktop';
+                            else if (cat.includes('broadband')) icon = 'pi pi-wifi';
+                            else if (cat.includes('fastag')) icon = 'pi pi-car';
+                        }
+
+                        return (
+                            <TransactionItem
+                                key={tx.id}
+                                title={tx.biller_name || tx.service_name || 'Bill Payment'}
+                                subtitle={`Txn ID: ${tx.txn_id}`}
+                                amount={`${tx.type === 'credit' ? '+ ' : '- '}₹${parseFloat(tx.total_amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`}
+                                amountClass={tx.type === 'credit' ? 'text-green-600' : 'text-red-500'}
+                                icon={icon}
+                                iconBgClass={tx.status === 'success' ? 'bg-green-100' : tx.status === 'pending' ? 'bg-orange-100' : 'bg-red-100'}
+                                iconTextClass={tx.status === 'success' ? 'text-green-600' : tx.status === 'pending' ? 'text-orange-600' : 'text-red-600'}
+                                isViewable
+                                onView={() => navigate(`/bbps/transactions/receipt/${tx.id}`)}
+                            />
+                        );
+                    })}
                     {recentTransactions.length === 0 && <span className="text-500">No recent transactions.</span>}
                 </TransactionList>
             </div>
