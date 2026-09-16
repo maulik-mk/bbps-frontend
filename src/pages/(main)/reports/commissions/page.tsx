@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { DataTable } from 'primereact/datatable';
+import React, { useState, useEffect } from 'react';
+import { DataTable, DataTablePageEvent } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
@@ -8,47 +8,48 @@ import { reportService } from '../../../../services/report.service';
 
 const CommissionsPage = () => {
     const [distributions, setDistributions] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
     const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
-
-    useEffect(() => {
-        reportService
-            .getCommissionDistribution()
-            .then((res) => {
-                if (res.results) setDistributions(res.results);
-            })
-            .catch((err) => console.error('Failed to fetch commission distributions', err))
-            .finally(() => setLoading(false));
-    }, []);
+    const [loading, setLoading] = useState(false);
+    const [lazyParams, setLazyParams] = useState({ first: 0, rows: 10, page: 0 });
+    const [totalRecords, setTotalRecords] = useState(0);
 
     const dateOptions = [{ name: 'All Time' }, { name: 'Last 7 Days' }, { name: 'Last 30 Days' }];
 
-    const filteredDistributions = useMemo(() => {
-        let data = [...distributions];
+    useEffect(() => {
+        const timer = setTimeout(() => setDebouncedSearch(globalFilterValue), 500);
+        return () => clearTimeout(timer);
+    }, [globalFilterValue]);
 
-        if (selectedDateRange && selectedDateRange.name !== 'All Time') {
-            const now = new Date();
-            data = data.filter((t) => {
-                const tDate = new Date(t.created_at);
-                if (selectedDateRange.name === 'Last 7 Days') {
-                    return (now.getTime() - tDate.getTime()) / (1000 * 3600 * 24) <= 7;
-                } else if (selectedDateRange.name === 'Last 30 Days') {
-                    return (now.getTime() - tDate.getTime()) / (1000 * 3600 * 24) <= 30;
+    useEffect(() => {
+        setLazyParams({ first: 0, rows: 10, page: 0 });
+        fetchCommissions(0);
+    }, [debouncedSearch, selectedDateRange]);
+
+    const fetchCommissions = (first: number) => {
+        setLoading(true);
+        const filters = {
+            dateRange: selectedDateRange?.name === 'Last 7 Days' ? '7' : selectedDateRange?.name === 'Last 30 Days' ? '30' : undefined,
+            search: debouncedSearch || undefined
+        };
+
+        reportService
+            .getCommissionDistribution(first, 10, filters)
+            .then((res) => {
+                if (res.results) setDistributions(res.results);
+                if (res.totalRecords !== undefined) {
+                    setTotalRecords(res.totalRecords);
                 }
-                return true;
-            });
-        }
+            })
+            .catch((err) => console.error('Failed to fetch commission distributions', err))
+            .finally(() => setLoading(false));
+    };
 
-        if (globalFilterValue) {
-            const val = globalFilterValue.toLowerCase();
-            data = data.filter((t) => {
-                return (t.retailer?.name && t.retailer.name.toLowerCase().includes(val)) || (t.retailer?.mobile && t.retailer.mobile.includes(val)) || (t.service_name && t.service_name.toLowerCase().includes(val));
-            });
-        }
-
-        return data;
-    }, [distributions, selectedDateRange, globalFilterValue]);
+    const onPage = (event: DataTablePageEvent) => {
+        setLazyParams({ first: event.first, rows: event.rows, page: event.page || 0 });
+        fetchCommissions(event.first);
+    };
 
     const formatCurrency = (value: number) => {
         return value ? value.toLocaleString('en-IN', { style: 'currency', currency: 'INR' }) : '₹0.00';
@@ -169,11 +170,15 @@ const CommissionsPage = () => {
 
                     <div className="w-full overflow-hidden">
                         <DataTable
-                            value={filteredDistributions}
+                            value={distributions}
+                            lazy
+                            first={lazyParams.first}
+                            rows={10}
+                            totalRecords={totalRecords}
+                            onPage={onPage}
                             loading={loading}
                             className="flat-datatable"
                             paginator
-                            rows={10}
                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} commissions"
                             paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
                             emptyMessage="No commissions found."

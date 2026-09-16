@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { DataTable } from 'primereact/datatable';
+import { DataTable, DataTablePageEvent } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
@@ -9,80 +9,66 @@ import { reportService } from '../../../services/report.service';
 import { BBPSLogo } from '../../../components/BBPSLogo';
 
 const TransactionsPage = ({ type }: { type?: string }) => {
-    const [allTransactions, setAllTransactions] = useState<any[]>([]);
+    const [transactions, setTransactions] = useState<any[]>([]);
     const [summary, setSummary] = useState({ total_transactions: 0, total_volume: 0 });
     const [activeTab, setActiveTab] = useState('All Transactions');
     const [globalFilterValue, setGlobalFilterValue] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
     const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
     const [selectedStatus, setSelectedStatus] = useState<any>(null);
     const [selectedCategory, setSelectedCategory] = useState<any>(null);
+    const [categoryOptions, setCategoryOptions] = useState<any[]>([{ name: 'All' }]);
+    const [loading, setLoading] = useState(false);
+    const [lazyParams, setLazyParams] = useState({ first: 0, rows: 10, page: 0 });
+    const [totalRecords, setTotalRecords] = useState(0);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        reportService
-            .getTransactions(undefined, 100, type)
-            .then((res) => {
-                if (res.results) setAllTransactions(res.results);
-                if (res.summary) setSummary(res.summary);
-            })
-            .catch((err) => console.error('Failed to fetch transactions', err));
-    }, []);
-
     const dateOptions = [{ name: 'All Time' }, { name: 'Last 7 Days' }, { name: 'Last 30 Days' }];
     const statusOptions = [{ name: 'All' }, { name: 'success' }, { name: 'pending' }, { name: 'failed' }, { name: 'refunded' }];
 
-    const categoryOptions = useMemo(() => {
-        const cats = new Set(allTransactions.map((t) => t.category_name));
-        return [
-            { name: 'All' },
-            ...Array.from(cats)
-                .filter(Boolean)
-                .map((c) => ({ name: c as string }))
-        ];
-    }, [allTransactions]);
+    useEffect(() => {
+        reportService
+            .getCategories()
+            .then((res) => {
+                const dynamicCategories = res.map((cat: any) => ({ name: cat.name }));
+                setCategoryOptions([{ name: 'All' }, ...dynamicCategories]);
+            })
+            .catch((err) => console.error('Failed to load categories', err));
+    }, []);
 
-    const transactions = useMemo(() => {
-        let data = [...allTransactions];
+    useEffect(() => {
+        const timer = setTimeout(() => setDebouncedSearch(globalFilterValue), 500);
+        return () => clearTimeout(timer);
+    }, [globalFilterValue]);
 
-        // Tab Filter
-        if (activeTab === 'Succeeded') data = data.filter((t) => t.status === 'success');
-        if (activeTab === 'Refunded') data = data.filter((t) => t.status === 'refunded');
+    useEffect(() => {
+        setLazyParams({ first: 0, rows: 10, page: 0 });
+        fetchTransactions(0);
+    }, [activeTab, debouncedSearch, selectedDateRange, selectedStatus, selectedCategory, type]);
 
-        // Dropdown Filters
-        if (selectedStatus && selectedStatus.name !== 'All') {
-            data = data.filter((t) => t.status === selectedStatus.name);
-        }
-        if (selectedCategory && selectedCategory.name !== 'All') {
-            data = data.filter((t) => t.category_name === selectedCategory.name);
-        }
-        if (selectedDateRange && selectedDateRange.name !== 'All Time') {
-            const now = new Date();
-            data = data.filter((t) => {
-                const tDate = new Date(t.created_at);
-                if (selectedDateRange.name === 'Last 7 Days') {
-                    return (now.getTime() - tDate.getTime()) / (1000 * 3600 * 24) <= 7;
-                } else if (selectedDateRange.name === 'Last 30 Days') {
-                    return (now.getTime() - tDate.getTime()) / (1000 * 3600 * 24) <= 30;
-                }
-                return true;
-            });
-        }
+    const fetchTransactions = (first: number) => {
+        setLoading(true);
+        const filters = {
+            status: activeTab !== 'All Transactions' ? activeTab : selectedStatus?.name !== 'All' ? selectedStatus?.name : undefined,
+            category: selectedCategory?.name !== 'All' ? selectedCategory?.name : undefined,
+            dateRange: selectedDateRange?.name === 'Last 7 Days' ? '7' : selectedDateRange?.name === 'Last 30 Days' ? '30' : undefined,
+            search: debouncedSearch || undefined
+        };
 
-        // Global Search
-        if (globalFilterValue) {
-            const val = globalFilterValue.toLowerCase();
-            data = data.filter((t) => {
-                return (
-                    (t.service_name && t.service_name.toLowerCase().includes(val)) ||
-                    (t.first_name && t.first_name.toLowerCase().includes(val)) ||
-                    (t.total_amount && t.total_amount.toString().includes(val)) ||
-                    (t.txn_id && t.txn_id.toLowerCase().includes(val))
-                );
-            });
-        }
+        reportService
+            .getTransactions(first, 10, type, filters)
+            .then((res) => {
+                if (res.results) setTransactions(res.results);
+                if (res.summary) setSummary(res.summary);
+                if (res.totalRecords !== undefined) setTotalRecords(res.totalRecords);
+            })
+            .catch((err) => console.error('Failed to fetch transactions', err))
+            .finally(() => setLoading(false));
+    };
 
-        return data;
-    }, [allTransactions, activeTab, selectedStatus, selectedCategory, selectedDateRange, globalFilterValue]);
+    const onPage = (event: DataTablePageEvent) => {
+        setLazyParams({ first: event.first, rows: event.rows, page: event.page || 0 });
+        fetchTransactions(event.first);
+    };
 
     const dateTemplate = (rowData: any) => {
         const dateObj = new Date(rowData.created_at);
@@ -222,13 +208,18 @@ const TransactionsPage = ({ type }: { type?: string }) => {
                         </span>
                     </div>
 
-                    {/* Flat DataTable */}
+                    {/* Lazy DataTable */}
                     <div className="w-full overflow-hidden">
                         <DataTable
                             value={transactions}
+                            lazy
+                            first={lazyParams.first}
+                            rows={10}
+                            totalRecords={totalRecords}
+                            onPage={onPage}
+                            loading={loading}
                             className="flat-datatable"
                             paginator
-                            rows={10}
                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} transactions"
                             paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
                             emptyMessage="No transactions found."
