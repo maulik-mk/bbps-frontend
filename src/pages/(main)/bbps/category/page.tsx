@@ -70,10 +70,19 @@ const CategorySelection = () => {
     );
 
     return (
-        <div className="grid">
-            <div className="col-12 lg:col-7 mt-5">
-                <BBPSPageCard title={`Pay ${decodedService} Bill`} subtitle="Fetch your bill instantly." onBack={() => navigate(-1)}>
-                    <div className="p-fluid">
+        <div className="w-full">
+            <div className="px-3 md:px-5 py-4 w-full" style={{ maxWidth: '100vw', overflowX: 'hidden' }}>
+                <div className="flex justify-content-between align-items-center mb-4 pb-3 border-bottom-1 border-200">
+                    <h1 className="m-0 text-900 font-bold text-2xl" style={{ lineHeight: '70px' }}>Pay {decodedService} Bill</h1>
+                    <div className="flex align-items-center h-full">
+                        <BBPSLogo type="bharat_connect" />
+                    </div>
+                </div>
+            </div>
+            <div className="grid px-3 md:px-5">
+                <div className="col-12 lg:col-7 mt-5">
+                    <BBPSPageCard title="Fetch your bill instantly." onBack={() => navigate(-1)} logoType="none">
+                        <div className="p-fluid">
                         <div className="field mb-5">
                             <label htmlFor="operator" className="text-xs font-bold text-500 uppercase tracking-wide block mb-2">
                                 Service Provider
@@ -255,7 +264,7 @@ const CategorySelection = () => {
 
                         <div className="w-full text-sm mt-4">
                             <div className="flex justify-content-between mb-4">
-                                <span className="text-900 font-bold w-5">BBPS Transaction ID</span>
+                                <span className="text-900 font-bold w-5">B-Connect Txn ID</span>
                                 <span className="text-900 font-bold w-7 text-right line-height-3" style={{ wordBreak: 'break-word' }}>
                                     {receiptData.bbpsRefNo}
                                 </span>
@@ -297,7 +306,7 @@ const CategorySelection = () => {
                                 <span className="text-900 font-bold text-right">₹573.00</span>
                             </div>
                             <div className="flex justify-content-between mb-4">
-                                <span className="text-900 font-bold">Customer Convenience Fees</span>
+                                <span className="text-900 font-bold">CCF</span>
                                 <span className="text-900 font-bold text-right">₹15.00</span>
                             </div>
                             <div className="flex justify-content-between mb-4">
@@ -328,6 +337,7 @@ const CategorySelection = () => {
                     </div>
                 )}
             </Dialog>
+        </div>
         </div>
     );
 };

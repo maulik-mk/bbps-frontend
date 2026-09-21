@@ -65,7 +65,7 @@ const AppMenu = () => {
                           label: 'Transaction Report',
                           items: [
                               { label: 'All Transactions', icon: 'pi pi-fw pi-wallet', to: '/transactions' },
-                              { label: 'BBPS Transactions', icon: 'pi pi-fw pi-wallet', to: '/bbps/transactions' },
+                              { label: 'Bharat Connect Transactions', icon: 'pi pi-fw pi-wallet', to: '/bbps/transactions' },
                               ...(isAdmin ? [{ label: 'Commission Ledger', icon: 'pi pi-fw pi-sitemap', to: '/reports/commissions' }] : [])
                           ]
                       }
@@ -78,7 +78,7 @@ const AppMenu = () => {
             ...(isRetailer
                 ? [
                       {
-                          label: 'BBPS Services',
+                          label: 'Bharat Connect Services',
                           items: [
                               { label: 'Complaint Registration', icon: 'pi pi-fw pi-file-edit', to: '/bbps/complaint/registration' },
                               { label: 'Check Complaint Status', icon: 'pi pi-fw pi-info-circle', to: '/bbps/complaint/track' },

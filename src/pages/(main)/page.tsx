@@ -75,7 +75,7 @@ const Dashboard = () => {
                             <div className="flex align-items-center justify-content-center mb-4 cursor-pointer transition-transform hover:-translate-y-1 mx-auto" onClick={() => navigate('/bbps/categories')} title="All Categories">
                                 <img src="/logo/B_mnemonic.png" alt="Bharat Connect" style={{ width: '55px' }} />
                             </div>
-                            <h5 className="text-2xl font-bold text-900 mb-2 mt-0 tracking-tight">Bharat Connect Bill Pay</h5>
+                            <h5 className="text-2xl font-bold text-900 mb-2 mt-0 tracking-tight">Bill Pay</h5>
                             <p className="text-600 text-base line-height-3 mb-5 font-medium">Pay electricity, mobile, DTH, and all other utilities securely in one place.</p>
                         </div>
                         <div className="relative" style={{ zIndex: 1 }}>
@@ -107,7 +107,7 @@ const Dashboard = () => {
                             <TransactionItem
                                 key={tx.id}
                                 title={tx.biller_name || tx.service_name || 'Bill Payment'}
-                                subtitle={`Txn ID: ${tx.txn_id}`}
+                                subtitle={`B-Connect Txn ID: ${tx.txn_id}`}
                                 amount={`${tx.type === 'credit' ? '+ ' : '- '}₹${parseFloat(tx.total_amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`}
                                 amountClass={tx.type === 'credit' ? 'text-green-600' : 'text-red-500'}
                                 icon={icon}

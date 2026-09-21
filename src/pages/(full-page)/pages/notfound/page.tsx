@@ -27,7 +27,7 @@ const NotFoundPage = () => {
                             </span>
                             <span className="ml-3 flex flex-column">
                                 <span className="font-bold mb-1">View Transactions</span>
-                                <span className="text-500 text-sm">Check your recent BBPS history</span>
+                                <span className="text-500 text-sm">Check your recent Bharat Connect history</span>
                             </span>
                         </Link>
 

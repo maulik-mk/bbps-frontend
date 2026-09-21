@@ -95,7 +95,7 @@ const ReceiptPage = () => {
                                 <span className="text-900 font-bold text-sm text-right">{transaction.biller_id || '0TME00005XXZ43'}</span>
                             </div>
                             <div className="w-full md:w-6 flex justify-content-between p-4 border-top-1 border-200 md:border-none">
-                                <span className="text-600 font-semibold text-sm">Customer Convenience Fees</span>
+                                <span className="text-600 font-semibold text-sm">CCF</span>
                                 <span className="text-900 font-bold text-sm text-right">{parseFloat(transaction.charge_amount || 0).toLocaleString('en-IN')}</span>
                             </div>
                         </div>
@@ -103,7 +103,7 @@ const ReceiptPage = () => {
                         {/* Row 3 */}
                         <div className="flex flex-column md:flex-row w-full border-bottom-1 border-200">
                             <div className="w-full md:w-6 flex justify-content-between p-4 border-none md:border-right-1 border-200">
-                                <span className="text-600 font-semibold text-sm">Bharat Connect Transaction ID</span>
+                                <span className="text-600 font-semibold text-sm">B-Connect Txn ID</span>
                                 <span className="text-900 font-bold text-sm text-right line-height-3 max-w-15rem" style={{ wordBreak: 'break-word' }}>
                                     {transaction.txn_id}
                                 </span>

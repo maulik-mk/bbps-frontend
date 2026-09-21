@@ -127,7 +127,7 @@ const LedgerPage = () => {
                         <i className="pi pi-phone mr-1" style={{ fontSize: '0.7rem', color: '#9ca3af' }}></i>
                         {rowData.user_mobile || 'N/A'}
                     </span>
-                    <span className="text-xs font-bold text-blue-700 bg-blue-100 px-2 py-1 border-round">BBPS</span>
+                    <span className="text-xs font-bold text-blue-700 bg-blue-100 px-2 py-1 border-round">Bharat Connect</span>
                 </div>
 
                 {rowData.txn_id && (

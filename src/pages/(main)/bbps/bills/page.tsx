@@ -208,7 +208,7 @@ const BillSummary = ({ billerIdProp, billerNameProp, onClose, isCanvas = false, 
 
                         {/* CCF Row */}
                         <div className="flex justify-content-between align-items-center py-3 border-top-1 border-bottom-1 border-blue-200 mb-3 px-2">
-                            <span className="text-blue-900 text-sm font-bold">Customer Convenience Fees</span>
+                            <span className="text-blue-900 text-sm font-bold">CCF</span>
                             <span className="text-blue-900 font-bold text-sm">{dummyBill.ccfAmount}</span>
                         </div>
 
@@ -280,7 +280,7 @@ const BillSummary = ({ billerIdProp, billerNameProp, onClose, isCanvas = false, 
 
                     <div className="w-full text-sm mt-4">
                         <div className="flex justify-content-between mb-4">
-                            <span className="text-900 font-bold w-5">BBPS Transaction ID</span>
+                            <span className="text-900 font-bold w-5">B-Connect Transaction ID</span>
                             <span className="text-900 font-bold w-7 text-right line-height-3" style={{ wordBreak: 'break-word' }}>
                                 {transactionResult?.bbpsRefNo || dummyBill.bbpsRefNo}
                             </span>
@@ -322,7 +322,7 @@ const BillSummary = ({ billerIdProp, billerNameProp, onClose, isCanvas = false, 
                             <span className="text-900 font-bold text-right">{dummyBill.billAmount}</span>
                         </div>
                         <div className="flex justify-content-between mb-4">
-                            <span className="text-900 font-bold">Customer Convenience Fees</span>
+                            <span className="text-900 font-bold">CCF</span>
                             <span className="text-900 font-bold text-right">{dummyBill.ccfAmount}</span>
                         </div>
                         <div className="flex justify-content-between mb-4">
