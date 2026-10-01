@@ -31,8 +31,8 @@ const ComplaintRegistration = () => {
         { label: 'Erroneously paid in wrong account', value: 'wrong_account' },
         { label: 'Duplicate Payment', value: 'duplicate_payment' },
         { label: 'Erroneously paid the wrong amount', value: 'wrong_amount' },
-        { label: 'Payment information not received from Biller or Delay in receiving payment information from the Biller', value: 'info_not_received_delay' },
-        { label: 'Bill Paid but Amount not adjusted or still showing due amount', value: 'paid_not_adjusted' }
+        { label: 'Payment information not received from Biller or Delay in receiving payment information from the Biller.', value: 'info_not_received_delay' },
+        { label: 'Bill Paid but Amount not adjusted or still showing due amount.', value: 'paid_not_adjusted' }
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -142,6 +142,7 @@ const ComplaintRegistration = () => {
                                         onChange={(e) => setFormData({ ...formData, complaintType: e.value })}
                                         options={complaintTypes}
                                         placeholder="Select Complaint Reason"
+                                        scrollHeight="350px"
                                         className="border-round-xl border-300 shadow-none hover:border-blue-400 transition-colors w-full dropdown-with-icon pl-2"
                                     />
                                 </div>
@@ -221,15 +222,25 @@ const ComplaintRegistration = () => {
                 </div>
 
                 {/* Registration Successful Dialog */}
-                <Dialog showHeader={false} visible={showSuccess} style={{ width: '450px' }} footer={dialogFooter} onHide={handleCloseDialog} breakpoints={{ '960px': '75vw', '641px': '90vw' }} contentClassName="p-4">
+                <Dialog 
+                    showHeader={false} 
+                    visible={showSuccess} 
+                    style={{ width: '450px' }} 
+                    footer={dialogFooter} 
+                    onHide={handleCloseDialog} 
+                    breakpoints={{ '960px': '75vw', '641px': '90vw' }} 
+                    contentClassName="p-4"
+                    maskStyle={{
+                        background: 'rgba(0, 0, 0, 0.2)',
+                        backdropFilter: 'blur(4px)',
+                        WebkitBackdropFilter: 'blur(8px)'
+                    }}
+                >
                     <div className="relative pt-2">
                         <div className="relative mb-5">
                             <div className="flex flex-column align-items-center text-center">
                                 <i className="pi pi-check-circle text-800 mb-2" style={{ fontSize: '3.5rem' }}></i>
                                 <span className="text-green-500 font-bold text-md mt-2">Successfully Registered</span>
-                            </div>
-                            <div className="absolute right-0 top-50" style={{ transform: 'translateY(-60%) scale(1.1)', transformOrigin: 'right center' }}>
-                                <BBPSLogo type="bharat_connect" />
                             </div>
                         </div>
 

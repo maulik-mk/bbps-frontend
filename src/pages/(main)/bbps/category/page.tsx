@@ -248,7 +248,20 @@ const CategorySelection = () => {
             </Dialog>
 
             {/* Payment Successful Dialog */}
-            <Dialog showHeader={false} visible={showReceipt} style={{ width: '450px' }} footer={receiptFooter} onHide={() => setShowReceipt(false)} breakpoints={{ '960px': '75vw', '641px': '90vw' }} contentClassName="p-4">
+            <Dialog 
+                showHeader={false} 
+                visible={showReceipt} 
+                style={{ width: '450px' }} 
+                footer={receiptFooter} 
+                onHide={() => setShowReceipt(false)} 
+                breakpoints={{ '960px': '75vw', '641px': '90vw' }} 
+                contentClassName="p-4"
+                maskStyle={{
+                    background: 'rgba(0, 0, 0, 0.2)',
+                    backdropFilter: 'blur(4px)',
+                    WebkitBackdropFilter: 'blur(8px)'
+                }}
+            >
                 {receiptData && (
                     <div className="relative pt-2">
                         <div className="relative mb-5">

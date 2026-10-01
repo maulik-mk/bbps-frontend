@@ -3,13 +3,14 @@
         "title": "Housing & Utilities",
         "services": [
             { "name": "Electricity", "icon": "pi-bolt" },
-            { "name": "LPG", "icon": "pi-box" },
+            { "name": "LPG Gas", "icon": "pi-box" },
             { "name": "Water", "icon": "pi-filter" },
             { "name": "Municipal Taxes", "icon": "pi-file" },
-            { "name": "Housing Society Maintenance", "icon": "pi-home" },
-            { "name": "Piped Gas", "icon": "pi-cloud" },
-            { "name": "Rent", "icon": "pi-key" },
-            { "name": "Prepaid Meter", "icon": "pi-bolt" }
+            { "name": "Municipal Services", "icon": "pi-file" },
+            { "name": "Housing Society", "icon": "pi-home" },
+            { "name": "Gas", "icon": "pi-cloud" },
+            { "name": "Prepaid Meter", "icon": "pi-bolt" },
+            { "name": "Rental", "icon": "pi-key" }
         ]
     },
     {
@@ -23,24 +24,21 @@
     {
         "title": "Travel",
         "services": [
-            { "name": "FASTag", "icon": "pi-car" },
-            { "name": "National Common Mobility Card (NCMC)", "icon": "pi-credit-card" },
+            { "name": "Fastag", "icon": "pi-car" },
+            { "name": "NCMC Recharge", "icon": "pi-credit-card" },
             { "name": "eChallan", "icon": "pi-ticket" },
             { "name": "EV Recharge", "icon": "pi-bolt" },
-            { "name": "Fleet Card Recharge", "icon": "pi-truck" },
-            { "name": "Forex", "icon":"pi-dollar"}
+            { "name": "Fleet Card Recharge", "icon": "pi-truck" }
         ]
     },
     {
         "title": "Finance",
         "services": [
             { "name": "Loan Repayment", "icon": "pi-building" },
-            { "name": "Credit Card Payments", "icon": "pi-credit-card" },
+            { "name": "Credit Card", "icon": "pi-credit-card" },
             { "name": "Insurance", "icon": "pi-shield" },
-            { "name": "Recurring Deposit", "icon": "pi-sync" },
             { "name": "Education Fees", "icon": "pi-book" },
-            { "name": "Donation", "icon": "pi-heart" },
-            { "name": "National Pension Scheme (NPS)", "icon": "pi-wallet" },
+            { "name": "National Pension System", "icon": "pi-wallet" },
             { "name": "Agent Collection", "icon": "pi-users" }
         ]
     },
@@ -50,8 +48,8 @@
             { "name": "Broadband Postpaid", "icon": "pi-wifi" },
             { "name": "Cable TV", "icon": "pi-desktop" },
             { "name": "DTH", "icon": "pi-desktop" },
-            { "name": "Subscriptions", "icon": "pi-sync" },
-            { "name": "Clubs & Associations", "icon": "pi-users" }
+            { "name": "Subscription", "icon": "pi-sync" },
+            { "name": "Clubs and Associations", "icon": "pi-users" }
         ]
     }
 ]

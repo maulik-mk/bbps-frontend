@@ -267,7 +267,20 @@ const BillSummary = ({ billerIdProp, billerNameProp, onClose, isCanvas = false, 
                 </div>
             </BBPSPageCard>
 
-            <Dialog showHeader={false} visible={showReceipt} style={{ width: '450px' }} footer={receiptFooter} onHide={() => setShowReceipt(false)} breakpoints={{ '960px': '75vw', '641px': '90vw' }} contentClassName="p-4">
+            <Dialog 
+                showHeader={false} 
+                visible={showReceipt} 
+                style={{ width: '450px' }} 
+                footer={receiptFooter} 
+                onHide={() => setShowReceipt(false)} 
+                breakpoints={{ '960px': '75vw', '641px': '90vw' }} 
+                contentClassName="p-4"
+                maskStyle={{
+                    background: 'rgba(0, 0, 0, 0.2)',
+                    backdropFilter: 'blur(4px)',
+                    WebkitBackdropFilter: 'blur(8px)'
+                }}
+            >
                 <div className="relative pt-2">
                     <div className="absolute top-0 right-0">
                         <BBPSLogo type="b_assured" />
